@@ -11,6 +11,7 @@ module.exports = {
     '!**/app.module.ts',
     '!**/main.ts',
     '!**/prisma.module.ts',
+    '!**/config/cors.config.ts', 
   ],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
