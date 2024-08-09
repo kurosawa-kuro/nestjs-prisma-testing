@@ -13,12 +13,12 @@ export class TodosController {
 
   @Get()
   index() {
-    return this.todoService.all();  // Changed from findAll to all
+    return this.todoService.all();
   }
 
   @Get(':id')
   show(@Param('id') id: string) {
-    return this.todoService.find(+id);  // Changed from findOne to find
+    return this.todoService.find(+id);
   }
 
   @Put(':id')
@@ -28,6 +28,6 @@ export class TodosController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.todoService.destroy(+id);  // Changed from remove to destroy
+    return this.todoService.destroy(+id);
   }
 }

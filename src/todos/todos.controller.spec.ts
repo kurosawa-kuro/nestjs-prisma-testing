@@ -51,7 +51,6 @@ describe('TodosController', () => {
       const expectedResult = [{ id: 1, userId: 1, title: 'Todo 1' }];
 
       jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
-
       expect(await controller.index()).toBe(expectedResult);
       expect(service.all).toHaveBeenCalled();
     });
