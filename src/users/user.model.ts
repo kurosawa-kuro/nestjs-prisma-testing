@@ -1,4 +1,4 @@
-// src/users/dto/user.dto.ts
+// src\users\user.model.ts
 
 import { IsString, IsEmail, MinLength } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';

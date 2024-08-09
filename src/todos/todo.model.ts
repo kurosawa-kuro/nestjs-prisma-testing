@@ -1,8 +1,22 @@
+// src/todos/todo.model.ts
+
+import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+
 export class CreateTodo {
-    userId: number;
-    title: string;
-  }
-  
-  export class UpdateTodo {
-    title?: string;
-  }
+  @IsNumber()
+  userId: number;
+
+  @IsString()
+  title: string;
+}
+
+export class UpdateTodo extends PartialType(CreateTodo) {
+  @IsOptional()
+  @IsNumber()
+  userId?: number;
+
+  @IsOptional()
+  @IsString()
+  title?: string;
+}
