@@ -8,9 +8,8 @@ module.exports = {
   collectCoverageFrom: [
     '**/*.(t|j)s',
     '!**/node_modules/**',
-    '!**/app.module.ts',
+    '!**/*.module.ts',  // すべての .module.ts ファイルを除外
     '!**/main.ts',
-    '!**/prisma.module.ts',
     '!**/config/cors.config.ts',
     '!**/config/swagger.config.ts', 
   ],

@@ -1,10 +1,9 @@
-// src\users\user.model.ts
-
-import { IsString, IsEmail, MinLength } from 'class-validator';
+import { IsString, IsEmail, MinLength, IsNotEmpty } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateUser {
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsEmail()
