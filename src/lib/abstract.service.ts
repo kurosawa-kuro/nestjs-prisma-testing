@@ -10,6 +10,10 @@ export abstract class AbstractService {
     protected readonly modelName: string
   ) {}
 
+  async create(data: any): Promise<any> {
+    return this.prisma[this.modelName].create({ data });
+  }
+
   async all(): Promise<any[]> {
     return this.prisma[this.modelName].findMany();
   }
@@ -30,10 +34,6 @@ export abstract class AbstractService {
     return this.prisma[this.modelName].findMany({
       where: condition,
     });
-  }
-
-  async create(data: any): Promise<any> {
-    return this.prisma[this.modelName].create({ data });
   }
 
   async update(id: number, data: any): Promise<any> {
