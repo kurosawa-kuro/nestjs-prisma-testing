@@ -1,0 +1,40 @@
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+### ユーザー作成
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+### 全ユーザー取得
+GET {{baseUrl}}/users
+
+### 特定のユーザー取得（IDを適切な値に変更してください）
+GET {{baseUrl}}/users/1
+
+### ユーザー更新（IDを適切な値に変更してください）
+PATCH {{baseUrl}}/users/1
+Content-Type: {{contentType}}
+
+{
+  "name": "John Updated",
+  "email": "john.updated@example.com"
+}
+
+### ユーザー削除（IDを適切な値に変更してください）
+DELETE {{baseUrl}}/users/1
+
+### 新しいユーザー作成（削除テスト用）
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "password456"
+}
