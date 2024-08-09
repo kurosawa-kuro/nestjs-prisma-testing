@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateTodoDto, UpdateTodoDto } from './dto/todo.dto';
 
 @Injectable()
-export class TodoService {
+export class TodosService {
   constructor(private prisma: PrismaService) {}
 
   create(createTodoDto: CreateTodoDto) {
