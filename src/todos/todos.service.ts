@@ -3,10 +3,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AbstractService } from '../lib/abstract.service';
-import { Todo, User } from '@prisma/client';
 import { TodoWithUser } from 'src/todos/todo.model';
-
-
 
 @Injectable()
 export class TodosService extends AbstractService {
@@ -19,14 +16,4 @@ export class TodosService extends AbstractService {
       include: { user: true },
     });
   }
-}
-
-interface PaginatedResult {
-  data: Todo[];
-  meta: {
-    total: number;
-    page: number;
-    per_page: number;
-    last_page: number;
-  };
 }

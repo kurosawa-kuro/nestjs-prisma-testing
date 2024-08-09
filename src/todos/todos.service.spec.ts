@@ -1,37 +1,19 @@
-// src/todos/todo_service.spec.ts
+// src/todos/todos.service.spec.ts
 
-import { Test, TestingModule } from '@nestjs/testing';
 import { TodosService } from './todos.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { Todo, User } from '@prisma/client';
-import { TodoWithUser } from 'src/todos/todo.model';
+import { setupTestModule } from '../../test/test-utils';
+import { TodoWithUser } from './todo.model';
 
 describe('TodosService', () => {
   let service: TodosService;
-  let prismaService: PrismaService;
+  let prismaService: jest.Mocked<PrismaService & { todo: jest.MockedFunction<any> }>;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        TodosService,
-        {
-          provide: PrismaService,
-          useValue: {
-            todo: {
-              findMany: jest.fn(),
-              create: jest.fn(),
-              findUnique: jest.fn(),
-              update: jest.fn(),
-              delete: jest.fn(),
-              count: jest.fn(),
-            },
-          },
-        },
-      ],
-    }).compile();
-
-    service = module.get<TodosService>(TodosService);
-    prismaService = module.get<PrismaService>(PrismaService);
+    // Using setupTestModule to initialize the service and mock Prisma service
+    const { service: todosService, prismaService: mockPrismaService } = await setupTestModule(TodosService, 'todo');
+    service = todosService;
+    prismaService = mockPrismaService;
   });
 
   it('should be defined', () => {
@@ -41,23 +23,33 @@ describe('TodosService', () => {
   describe('findAllWithUser', () => {
     it('should return todos with user information', async () => {
       const mockTodos: TodoWithUser[] = [
-        { 
-          id: 1, title: 'Todo 1', userId: 1, 
+        {
+          id: 1,
+          title: 'Todo 1',
+          userId: 1,
           user: {
-            id: 1, name: 'User 1', email: 'user1@example.com',
-            createdAt: new Date(), updatedAt: new Date()
-          } 
+            id: 1,
+            name: 'User 1',
+            email: 'user1@example.com',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }
         },
-        { 
-          id: 2, title: 'Todo 2', userId: 2, 
+        {
+          id: 2,
+          title: 'Todo 2',
+          userId: 2,
           user: {
-            id: 2, name: 'User 2', email: 'user2@example.com',
-            createdAt: new Date(), updatedAt: new Date()
-          } 
+            id: 2,
+            name: 'User 2',
+            email: 'user2@example.com',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }
         },
       ];
 
-      (prismaService.todo.findMany as jest.Mock).mockResolvedValue(mockTodos);
+      jest.spyOn(prismaService.todo, 'findMany').mockResolvedValue(mockTodos);
 
       const result = await service.findAllWithUser();
 
@@ -68,5 +60,5 @@ describe('TodosService', () => {
     });
   });
 
-  // その他のテストケース
+  // Other test cases would be similarly refactored to use the setupTestModule function
 });
