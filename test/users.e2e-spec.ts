@@ -34,7 +34,7 @@ describe('UsersController (e2e)', () => {
   });
 
   it('/users (POST)', async () => {
-    const createUserDto: CreateUser = {
+    const createUser: CreateUser = {
       name: 'John Doe',
       email: 'john@example.com',
       password: 'password123',
@@ -42,12 +42,12 @@ describe('UsersController (e2e)', () => {
 
     const response = await request(app.getHttpServer())
       .post('/users')
-      .send(createUserDto)
+      .send(createUser)
       .expect(201);
 
     expect(response.body).toHaveProperty('id');
-    expect(response.body.name).toBe(createUserDto.name);
-    expect(response.body.email).toBe(createUserDto.email);
+    expect(response.body.name).toBe(createUser.name);
+    expect(response.body.email).toBe(createUser.email);
     // expect(response.body).not.toHaveProperty('password');
   });
 

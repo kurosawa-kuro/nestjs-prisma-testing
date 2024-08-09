@@ -36,13 +36,13 @@ describe('TodosController', () => {
 
   describe('create', () => {
     it('should create a todo', async () => {
-      const createTodoDto: CreateTodo = { userId: 1, title: 'New Todo' };
-      const expectedResult = { id: 1, ...createTodoDto };
+      const createTodo: CreateTodo = { userId: 1, title: 'New Todo' };
+      const expectedResult = { id: 1, ...createTodo };
 
       jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
 
-      expect(await controller.create(createTodoDto)).toBe(expectedResult);
-      expect(service.create).toHaveBeenCalledWith(createTodoDto);
+      expect(await controller.create(createTodo)).toBe(expectedResult);
+      expect(service.create).toHaveBeenCalledWith(createTodo);
     });
   });
 
@@ -69,13 +69,13 @@ describe('TodosController', () => {
 
   describe('update', () => {
     it('should update a todo', async () => {
-      const updateTodoDto: UpdateTodo = { title: 'Updated Todo' };
+      const updateTodo: UpdateTodo = { title: 'Updated Todo' };
       const expectedResult = { id: 1, userId: 1, title: 'Updated Todo' };
 
       jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
 
-      expect(await controller.update('1', updateTodoDto)).toBe(expectedResult);
-      expect(service.update).toHaveBeenCalledWith(1, updateTodoDto);
+      expect(await controller.update('1', updateTodo)).toBe(expectedResult);
+      expect(service.update).toHaveBeenCalledWith(1, updateTodo);
     });
   });
 
