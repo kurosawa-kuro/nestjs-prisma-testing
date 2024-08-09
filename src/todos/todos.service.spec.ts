@@ -5,8 +5,12 @@ import { TodosService } from './todos.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { Todo, User } from '@prisma/client';
 
+interface UserWithPassword extends User {
+  password: string;
+}
+
 interface TodoWithUser extends Todo {
-  user?: User;
+  user?: UserWithPassword;
 }
 
 describe('TodosService', () => {

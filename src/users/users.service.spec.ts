@@ -5,6 +5,10 @@ import { UsersService } from './users.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
 
+interface UserWithPassword extends User {
+  password: string;
+}
+
 describe('UsersService', () => {
   let service: UsersService;
   let prismaService: PrismaService;
@@ -41,8 +45,14 @@ describe('UsersService', () => {
   describe('paginate', () => {
     it('should return paginated results without password', async () => {
       const mockUsers: User[] = [
-        { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' },
-        { id: 2, name: 'User 2', email: 'user2@example.com', password: 'password2' },
+        {
+            id: 1, name: 'User 1', email: 'user1@example.com',
+            password: ''
+        },
+        {
+            id: 2, name: 'User 2', email: 'user2@example.com',
+            password: ''
+        },
       ];
 
       const mockCount = 2;
@@ -66,7 +76,7 @@ describe('UsersService', () => {
 
   describe('find', () => {
     it('should find a user by id', async () => {
-      const mockUser: User = { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' };
+      const mockUser: UserWithPassword = { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' };
 
       (prismaService.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
 
@@ -79,7 +89,7 @@ describe('UsersService', () => {
 
   describe('findBy', () => {
     it('should find a user by condition', async () => {
-      const mockUser: User = { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' };
+      const mockUser: UserWithPassword = { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' };
 
       (prismaService.user.findFirst as jest.Mock).mockResolvedValue(mockUser);
 
@@ -92,7 +102,7 @@ describe('UsersService', () => {
 
   describe('create', () => {
     it('should create a new user', async () => {
-      const mockUser: User = { id: 1, name: 'New User', email: 'newuser@example.com', password: 'password' };
+      const mockUser: UserWithPassword = { id: 1, name: 'New User', email: 'newuser@example.com', password: 'password' };
 
       (prismaService.user.create as jest.Mock).mockResolvedValue(mockUser);
 
@@ -107,7 +117,7 @@ describe('UsersService', () => {
 
   describe('update', () => {
     it('should update a user', async () => {
-      const mockUser: User = { id: 1, name: 'Updated User', email: 'user1@example.com', password: 'password1' };
+      const mockUser: UserWithPassword = { id: 1, name: 'Updated User', email: 'user1@example.com', password: 'password1' };
 
       (prismaService.user.update as jest.Mock).mockResolvedValue(mockUser);
 
@@ -123,7 +133,7 @@ describe('UsersService', () => {
 
   describe('destroy', () => {
     it('should delete a user', async () => {
-      const mockUser: User = { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' };
+      const mockUser: UserWithPassword = { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' };
 
       (prismaService.user.delete as jest.Mock).mockResolvedValue(mockUser);
 
