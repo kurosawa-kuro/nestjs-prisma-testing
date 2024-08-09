@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export abstract class AbstractService {
   constructor(
     protected readonly prisma: PrismaService,
-    protected readonly modelName: string
+    protected readonly modelName: string,
   ) {}
 
   async create(data: any): Promise<any> {

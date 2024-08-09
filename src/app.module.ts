@@ -6,7 +6,7 @@ import { UsersModule } from './users/users.module';
 import { TodosModule } from './todos/todos.module';
 
 @Module({
-  imports: [PrismaModule,UsersModule, TodosModule],
+  imports: [PrismaModule, UsersModule, TodosModule],
   controllers: [AppController],
   providers: [AppService],
 })

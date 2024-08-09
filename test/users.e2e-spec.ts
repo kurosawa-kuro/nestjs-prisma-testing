@@ -5,7 +5,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
-import { CreateUser, UpdateUser } from '../src/users/user.model';
+import { CreateUser } from '../src/users/user.model';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
@@ -72,6 +72,4 @@ describe('UsersController (e2e)', () => {
     expect(response.body[0]).toHaveProperty('email');
     expect(response.body[0]).not.toHaveProperty('password');
   });
-
-
 });

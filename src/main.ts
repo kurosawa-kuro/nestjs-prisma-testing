@@ -9,11 +9,13 @@ async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    transform: true,
-    forbidNonWhitelisted: true,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
 
   setupSwagger(app);
   app.enableCors(corsConfig);
@@ -21,6 +23,8 @@ async function bootstrap() {
   const port = process.env.BACKEND_PORT || 8080;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
-  console.log(`Swagger documentation is available at: http://localhost:${port}/api`);
+  console.log(
+    `Swagger documentation is available at: http://localhost:${port}/api`,
+  );
 }
 bootstrap();

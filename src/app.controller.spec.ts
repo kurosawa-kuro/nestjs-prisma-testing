@@ -28,7 +28,9 @@ describe('AppController', () => {
   describe('root', () => {
     it('should return database connection status', async () => {
       const result = 'データベース接続に成功しました！';
-      jest.spyOn(appService, 'getDatabaseConnectionStatus').mockResolvedValue(result);
+      jest
+        .spyOn(appService, 'getDatabaseConnectionStatus')
+        .mockResolvedValue(result);
 
       expect(await appController.getDatabaseStatus()).toBe(result);
     });

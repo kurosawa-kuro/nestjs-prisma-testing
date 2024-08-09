@@ -24,10 +24,10 @@ describe('AppController (e2e)', () => {
   });
 
   it('/ (GET)', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/')
-      .expect(200);
+    const response = await request(app.getHttpServer()).get('/').expect(200);
 
-    expect(response.text).toMatch(/データベース接続に成功しました！|データベース接続に失敗しました/);
+    expect(response.text).toMatch(
+      /データベース接続に成功しました！|データベース接続に失敗しました/,
+    );
   });
 });

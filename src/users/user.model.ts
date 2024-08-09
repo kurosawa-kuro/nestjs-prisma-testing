@@ -1,6 +1,12 @@
 // src/users/user.model.ts
 
-import { IsString, IsEmail, MinLength, IsNotEmpty, Matches } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  MinLength,
+  IsNotEmpty,
+  Matches,
+} from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateUser {
@@ -20,7 +26,7 @@ export class CreateUser {
     {
       message:
         'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character',
-    }
+    },
   )
   password: string;
 }

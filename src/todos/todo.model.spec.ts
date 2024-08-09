@@ -16,7 +16,7 @@ describe('Todo Model', () => {
 
     it('should fail validation with invalid userId', async () => {
       const todo = new CreateTodo();
-      todo.userId = 'invalid' as any;  // TypeScriptの型チェックを回避するためにanyを使用
+      todo.userId = 'invalid' as any; // TypeScriptの型チェックを回避するためにanyを使用
       todo.title = 'Test Todo';
 
       const errors = await validate(todo);
@@ -27,7 +27,7 @@ describe('Todo Model', () => {
     it('should fail validation with invalid title', async () => {
       const todo = new CreateTodo();
       todo.userId = 1;
-      todo.title = 123 as any;  // TypeScriptの型チェックを回避するためにanyを使用
+      todo.title = 123 as any; // TypeScriptの型チェックを回避するためにanyを使用
 
       const errors = await validate(todo);
       expect(errors.length).toBeGreaterThan(0);

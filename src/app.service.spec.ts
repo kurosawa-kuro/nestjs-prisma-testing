@@ -34,7 +34,9 @@ describe('AppService', () => {
 
     it('データベース接続に失敗した場合、エラーメッセージを返すべき', async () => {
       const errorMessage = 'Connection failed';
-      (prismaService.$queryRaw as jest.Mock).mockRejectedValue(new Error(errorMessage));
+      (prismaService.$queryRaw as jest.Mock).mockRejectedValue(
+        new Error(errorMessage),
+      );
 
       const result = await appService.getDatabaseConnectionStatus();
       expect(result).toBe(`データベース接続に失敗しました: ${errorMessage}`);

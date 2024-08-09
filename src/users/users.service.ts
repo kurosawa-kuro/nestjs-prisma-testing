@@ -19,9 +19,9 @@ export class UsersService extends AbstractService {
         name: true,
         email: true,
         createdAt: true,
-        updatedAt: true
+        updatedAt: true,
         // password フィールドは含まれません
-      }
+      },
     });
     return user;
   }
@@ -33,9 +33,9 @@ export class UsersService extends AbstractService {
         name: true,
         email: true,
         createdAt: true,
-        updatedAt: true
+        updatedAt: true,
         // password フィールドは含まれません
-      }
+      },
     });
   }
 

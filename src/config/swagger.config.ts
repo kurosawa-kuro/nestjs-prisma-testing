@@ -10,7 +10,7 @@ export function setupSwagger(app: INestApplication) {
     .setVersion('1.0')
     .addTag('your-tag')
     .build();
-  
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 }

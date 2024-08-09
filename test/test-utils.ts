@@ -5,7 +5,7 @@ import { PrismaService } from '../src/prisma/prisma.service';
 
 export const setupTestModule = async <T>(
   ServiceClass: new (...args: any[]) => T,
-  modelName: string
+  modelName: string,
 ): Promise<{ service: T; prismaService: jest.Mocked<PrismaService> }> => {
   const module: TestingModule = await Test.createTestingModule({
     providers: [
@@ -28,7 +28,9 @@ export const setupTestModule = async <T>(
   }).compile();
 
   const service = module.get<T>(ServiceClass);
-  const prismaService = module.get<PrismaService>(PrismaService) as jest.Mocked<PrismaService>;
+  const prismaService = module.get<PrismaService>(
+    PrismaService,
+  ) as jest.Mocked<PrismaService>;
 
   return { service, prismaService };
 };

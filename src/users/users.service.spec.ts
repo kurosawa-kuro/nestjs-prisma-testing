@@ -8,10 +8,19 @@ import { createMockUser } from '../../test/mock-factories';
 
 describe('UsersService', () => {
   let service: UsersService;
-  let prismaService: jest.Mocked<PrismaService & { user: { create: jest.MockedFunction<any>, findMany: jest.MockedFunction<any>, count: jest.MockedFunction<any> } }>;
+  let prismaService: jest.Mocked<
+    PrismaService & {
+      user: {
+        create: jest.MockedFunction<any>;
+        findMany: jest.MockedFunction<any>;
+        count: jest.MockedFunction<any>;
+      };
+    }
+  >;
 
   beforeEach(async () => {
-    const { service: userService, prismaService: mockPrismaService } = await setupTestModule(UsersService, 'user');
+    const { service: userService, prismaService: mockPrismaService } =
+      await setupTestModule(UsersService, 'user');
     service = userService;
     prismaService = mockPrismaService;
   });
@@ -30,7 +39,9 @@ describe('UsersService', () => {
 
       const mockUser = createMockUser(createUser);
 
-      jest.spyOn(prismaService.user, 'create').mockImplementation(() => Promise.resolve(mockUser));
+      jest
+        .spyOn(prismaService.user, 'create')
+        .mockImplementation(() => Promise.resolve(mockUser));
 
       const result = await service.create(createUser);
 
@@ -42,8 +53,8 @@ describe('UsersService', () => {
           name: true,
           email: true,
           createdAt: true,
-          updatedAt: true
-        }
+          updatedAt: true,
+        },
       });
     });
   });
@@ -51,8 +62,20 @@ describe('UsersService', () => {
   describe('all', () => {
     it('should return all users without passwords', async () => {
       const users: User[] = [
-        createMockUser({ id: 1, name: 'John Doe', email: 'john@example.com', createdAt: new Date(), updatedAt: new Date() }),
-        createMockUser({ id: 2, name: 'Jane Doe', email: 'jane@example.com', createdAt: new Date(), updatedAt: new Date() })
+        createMockUser({
+          id: 1,
+          name: 'John Doe',
+          email: 'john@example.com',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }),
+        createMockUser({
+          id: 2,
+          name: 'Jane Doe',
+          email: 'jane@example.com',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }),
       ];
 
       jest.spyOn(prismaService.user, 'findMany').mockResolvedValue(users);
@@ -66,8 +89,8 @@ describe('UsersService', () => {
           name: true,
           email: true,
           createdAt: true,
-          updatedAt: true
-        }
+          updatedAt: true,
+        },
       });
     });
   });
@@ -76,7 +99,7 @@ describe('UsersService', () => {
     it('should return paginated user results', async () => {
       const users: User[] = [
         createMockUser({ id: 1, name: 'John Doe', email: 'john@example.com' }),
-        createMockUser({ id: 2, name: 'Jane Doe', email: 'jane@example.com' })
+        createMockUser({ id: 2, name: 'Jane Doe', email: 'jane@example.com' }),
       ];
 
       const page = 1;
@@ -93,11 +116,11 @@ describe('UsersService', () => {
         total: totalUsers,
         page: page,
         per_page: perPage,
-        last_page: Math.ceil(totalUsers / perPage)
+        last_page: Math.ceil(totalUsers / perPage),
       });
       expect(prismaService.user.findMany).toHaveBeenCalledWith({
         take: perPage,
-        skip: (page - 1) * perPage
+        skip: (page - 1) * perPage,
       });
       expect(prismaService.user.count).toHaveBeenCalled();
     });

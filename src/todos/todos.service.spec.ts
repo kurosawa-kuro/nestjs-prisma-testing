@@ -7,11 +7,14 @@ import { TodoWithUser } from './todo.model';
 
 describe('TodosService', () => {
   let service: TodosService;
-  let prismaService: jest.Mocked<PrismaService & { todo: jest.MockedFunction<any> }>;
+  let prismaService: jest.Mocked<
+    PrismaService & { todo: jest.MockedFunction<any> }
+  >;
 
   beforeEach(async () => {
     // Using setupTestModule to initialize the service and mock Prisma service
-    const { service: todosService, prismaService: mockPrismaService } = await setupTestModule(TodosService, 'todo');
+    const { service: todosService, prismaService: mockPrismaService } =
+      await setupTestModule(TodosService, 'todo');
     service = todosService;
     prismaService = mockPrismaService;
   });
@@ -33,7 +36,7 @@ describe('TodosService', () => {
             email: 'user1@example.com',
             createdAt: new Date(),
             updatedAt: new Date(),
-          }
+          },
         },
         {
           id: 2,
@@ -45,7 +48,7 @@ describe('TodosService', () => {
             email: 'user2@example.com',
             createdAt: new Date(),
             updatedAt: new Date(),
-          }
+          },
         },
       ];
 

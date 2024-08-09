@@ -52,7 +52,9 @@ describe('UsersController', () => {
 
   describe('index', () => {
     it('should return an array of users', async () => {
-      const expectedResult = [{ id: 1, name: 'John Doe', email: 'john@example.com' }];
+      const expectedResult = [
+        { id: 1, name: 'John Doe', email: 'john@example.com' },
+      ];
 
       jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
 
@@ -63,7 +65,11 @@ describe('UsersController', () => {
 
   describe('show', () => {
     it('should return a user', async () => {
-      const expectedResult = { id: 1, name: 'John Doe', email: 'john@example.com' };
+      const expectedResult = {
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+      };
 
       jest.spyOn(service, 'findBy').mockResolvedValue(expectedResult);
 
@@ -75,7 +81,11 @@ describe('UsersController', () => {
   describe('update', () => {
     it('should update a user', async () => {
       const updateUser: UpdateUser = { name: 'Jane Doe' };
-      const expectedResult = { id: 1, name: 'Jane Doe', email: 'john@example.com' };
+      const expectedResult = {
+        id: 1,
+        name: 'Jane Doe',
+        email: 'john@example.com',
+      };
 
       jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
 
@@ -86,7 +96,11 @@ describe('UsersController', () => {
 
   describe('remove', () => {
     it('should remove a user', async () => {
-      const expectedResult = { id: 1, name: 'John Doe', email: 'john@example.com' };
+      const expectedResult = {
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+      };
 
       jest.spyOn(service, 'destroy').mockResolvedValue(expectedResult);
 

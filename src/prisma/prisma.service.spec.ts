@@ -8,7 +8,7 @@ describe('PrismaService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [PrismaService],
     }).compile();
-  
+
     prismaService = module.get<PrismaService>(PrismaService);
     jest.clearAllMocks();
   });
@@ -24,7 +24,9 @@ describe('PrismaService', () => {
 
   describe('onModuleInit', () => {
     it('should connect to the database', async () => {
-      const connectSpy = jest.spyOn(prismaService, '$connect').mockResolvedValue();
+      const connectSpy = jest
+        .spyOn(prismaService, '$connect')
+        .mockResolvedValue();
       await prismaService.onModuleInit();
       expect(connectSpy).toHaveBeenCalledTimes(1);
     });
@@ -32,13 +34,17 @@ describe('PrismaService', () => {
     it('should throw an error if connection fails', async () => {
       const error = new Error('Connection failed');
       jest.spyOn(prismaService, '$connect').mockRejectedValue(error);
-      await expect(prismaService.onModuleInit()).rejects.toThrow('Connection failed');
+      await expect(prismaService.onModuleInit()).rejects.toThrow(
+        'Connection failed',
+      );
     });
   });
 
   describe('onModuleDestroy', () => {
     it('should disconnect from the database', async () => {
-      const disconnectSpy = jest.spyOn(prismaService, '$disconnect').mockResolvedValue();
+      const disconnectSpy = jest
+        .spyOn(prismaService, '$disconnect')
+        .mockResolvedValue();
       await prismaService.onModuleDestroy();
       expect(disconnectSpy).toHaveBeenCalledTimes(1);
     });

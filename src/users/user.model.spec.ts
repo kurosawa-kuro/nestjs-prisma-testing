@@ -17,7 +17,7 @@ describe('User Model', () => {
 
     it('should fail validation with invalid name', async () => {
       const user = new CreateUser();
-      user.name = 'J';  // Invalid: less than 2 characters
+      user.name = 'J'; // Invalid: less than 2 characters
       user.email = 'john@example.com';
       user.password = 'Password123!';
 
@@ -29,7 +29,7 @@ describe('User Model', () => {
     it('should fail validation with invalid email', async () => {
       const user = new CreateUser();
       user.name = 'John Doe';
-      user.email = 'invalid-email';  // Invalid: not an email format
+      user.email = 'invalid-email'; // Invalid: not an email format
       user.password = 'Password123!';
 
       const errors = await validate(user);
@@ -41,7 +41,7 @@ describe('User Model', () => {
       const user = new CreateUser();
       user.name = 'John Doe';
       user.email = 'john@example.com';
-      user.password = 'Pass1!';  // Invalid: less than 8 characters
+      user.password = 'Pass1!'; // Invalid: less than 8 characters
 
       const errors = await validate(user);
       expect(errors.length).toBeGreaterThan(0);
@@ -52,7 +52,7 @@ describe('User Model', () => {
       const user = new CreateUser();
       user.name = 'John Doe';
       user.email = 'john@example.com';
-      user.password = 'password123!';  // Invalid: missing uppercase
+      user.password = 'password123!'; // Invalid: missing uppercase
 
       const errors = await validate(user);
       expect(errors.length).toBeGreaterThan(0);
@@ -63,7 +63,7 @@ describe('User Model', () => {
       const user = new CreateUser();
       user.name = 'John Doe';
       user.email = 'john@example.com';
-      user.password = 'PASSWORD123!';  // Invalid: missing lowercase
+      user.password = 'PASSWORD123!'; // Invalid: missing lowercase
 
       const errors = await validate(user);
       expect(errors.length).toBeGreaterThan(0);
@@ -74,7 +74,7 @@ describe('User Model', () => {
       const user = new CreateUser();
       user.name = 'John Doe';
       user.email = 'john@example.com';
-      user.password = 'PasswordABC!';  // Invalid: missing number
+      user.password = 'PasswordABC!'; // Invalid: missing number
 
       const errors = await validate(user);
       expect(errors.length).toBeGreaterThan(0);
@@ -85,7 +85,7 @@ describe('User Model', () => {
       const user = new CreateUser();
       user.name = 'John Doe';
       user.email = 'john@example.com';
-      user.password = 'Password123';  // Invalid: missing special character
+      user.password = 'Password123'; // Invalid: missing special character
 
       const errors = await validate(user);
       expect(errors.length).toBeGreaterThan(0);
@@ -96,7 +96,7 @@ describe('User Model', () => {
   describe('UpdateUser', () => {
     it('should allow partial updates', async () => {
       const user = new UpdateUser();
-      user.name = 'John Doe';  // Only updating name
+      user.name = 'John Doe'; // Only updating name
 
       const errors = await validate(user);
       expect(errors.length).toBe(0);
@@ -104,7 +104,7 @@ describe('User Model', () => {
 
     it('should still validate provided fields', async () => {
       const user = new UpdateUser();
-      user.email = 'invalid-email';  // Invalid: not an email format
+      user.email = 'invalid-email'; // Invalid: not an email format
 
       const errors = await validate(user);
       expect(errors.length).toBeGreaterThan(0);

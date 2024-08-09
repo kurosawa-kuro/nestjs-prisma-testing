@@ -41,7 +41,8 @@ describe('AbstractService', () => {
       providers: [
         {
           provide: TestService,
-          useFactory: () => new TestService(mockPrismaService as unknown as PrismaService),
+          useFactory: () =>
+            new TestService(mockPrismaService as unknown as PrismaService),
         },
         {
           provide: PrismaService,
@@ -76,7 +77,9 @@ describe('AbstractService', () => {
 
       expect(result).toEqual(mockData);
       expect(prismaService.testModel.create).toHaveBeenCalledTimes(1);
-      expect(prismaService.testModel.create).toHaveBeenCalledWith({ data: mockData });
+      expect(prismaService.testModel.create).toHaveBeenCalledWith({
+        data: mockData,
+      });
     });
   });
 
@@ -188,9 +191,13 @@ describe('AbstractService', () => {
     it('should throw an error if record not found', async () => {
       const id = 999;
       const updateData = { name: 'Updated Test' };
-      prismaService.testModel.update.mockRejectedValue(new Error('Record not found'));
+      prismaService.testModel.update.mockRejectedValue(
+        new Error('Record not found'),
+      );
 
-      await expect(service.update(id, updateData)).rejects.toThrow('Record not found');
+      await expect(service.update(id, updateData)).rejects.toThrow(
+        'Record not found',
+      );
       expect(prismaService.testModel.update).toHaveBeenCalledTimes(1);
       expect(prismaService.testModel.update).toHaveBeenCalledWith({
         where: { id },
@@ -216,7 +223,9 @@ describe('AbstractService', () => {
 
     it('should throw an error if record not found', async () => {
       const id = 999;
-      prismaService.testModel.delete.mockRejectedValue(new Error('Record not found'));
+      prismaService.testModel.delete.mockRejectedValue(
+        new Error('Record not found'),
+      );
 
       await expect(service.destroy(id)).rejects.toThrow('Record not found');
       expect(prismaService.testModel.delete).toHaveBeenCalledTimes(1);

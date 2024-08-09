@@ -1,6 +1,15 @@
 // src/users/users.controller.ts
 
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUser, UpdateUser } from './user.model';
 
@@ -24,7 +33,10 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() UpdateUser: UpdateUser) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() UpdateUser: UpdateUser,
+  ) {
     return this.usersService.update(id, UpdateUser);
   }
 
