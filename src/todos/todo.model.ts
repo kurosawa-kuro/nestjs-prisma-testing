@@ -1,8 +1,8 @@
-export class CreateTodoDto {
+export class CreateTodo {
     userId: number;
     title: string;
   }
   
-  export class UpdateTodoDto {
+  export class UpdateTodo {
     title?: string;
   }

@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateTodoDto, UpdateTodoDto } from './todo.model';
+import { CreateTodo, UpdateTodo } from './todo.model';
 
 @Injectable()
 export class TodosService {
   constructor(private prisma: PrismaService) {}
 
-  create(createTodoDto: CreateTodoDto) {
+  create(CreateTodo: CreateTodo) {
     return this.prisma.todo.create({
-      data: createTodoDto,
+      data: CreateTodo,
     });
   }
 
@@ -22,10 +22,10 @@ export class TodosService {
     });
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
+  update(id: number, UpdateTodo: UpdateTodo) {
     return this.prisma.todo.update({
       where: { id },
-      data: updateTodoDto,
+      data: UpdateTodo,
     });
   }
 
