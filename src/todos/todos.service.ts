@@ -1,9 +1,13 @@
-// src/app/services/todo_service.ts
+// src/todos/todo_service.ts
 
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AbstractService } from '../lib/abstract.service';
-import { Todo } from '@prisma/client';
+import { Todo, User } from '@prisma/client';
+
+interface TodoWithUser extends Todo {
+  user?: User;
+}
 
 @Injectable()
 export class TodosService extends AbstractService {
@@ -11,7 +15,7 @@ export class TodosService extends AbstractService {
     super(prismaService, 'todo');
   }
 
-  async findAllWithUser(): Promise<Todo[]> {
+  async findAllWithUser(): Promise<TodoWithUser[]> {
     return this.prismaService.todo.findMany({
       include: { user: true },
     });

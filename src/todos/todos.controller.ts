@@ -12,12 +12,12 @@ export class TodosController {
   }
 
   @Get()
-  findAll() {
+  index() {
     return this.todoService.all();  // Changed from findAll to all
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  show(@Param('id') id: string) {
     return this.todoService.find(+id);  // Changed from findOne to find
   }
 

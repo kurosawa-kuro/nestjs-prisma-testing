@@ -14,12 +14,12 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
+  index() {
     return this.usersService.all();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  show(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findBy(id);
   }
 

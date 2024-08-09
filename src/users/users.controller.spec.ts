@@ -50,24 +50,24 @@ describe('UsersController', () => {
     });
   });
 
-  describe('findAll', () => {
+  describe('index', () => {
     it('should return an array of users', async () => {
       const expectedResult = [{ id: 1, name: 'John Doe', email: 'john@example.com' }];
 
       jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
 
-      expect(await controller.findAll()).toBe(expectedResult);
+      expect(await controller.index()).toBe(expectedResult);
       expect(service.all).toHaveBeenCalled();
     });
   });
 
-  describe('findOne', () => {
+  describe('show', () => {
     it('should return a user', async () => {
       const expectedResult = { id: 1, name: 'John Doe', email: 'john@example.com' };
 
       jest.spyOn(service, 'findBy').mockResolvedValue(expectedResult);
 
-      expect(await controller.findOne(1)).toBe(expectedResult);
+      expect(await controller.show(1)).toBe(expectedResult);
       expect(service.findBy).toHaveBeenCalledWith(1);
     });
   });
