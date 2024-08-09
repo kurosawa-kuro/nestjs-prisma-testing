@@ -3,7 +3,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateUser, User, UserWithPassword } from './user.model';
+import { CreateUser, User, UserWithPassword, UpdateUser } from './user.model';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -172,6 +172,54 @@ describe('UsersService', () => {
       });
 
       expect(prismaService.user.count).toHaveBeenCalled();
+    });
+  });
+
+  describe('update', () => {
+    it('should update a user', async () => {
+      const updateUserDto: UpdateUser = {
+        name: 'John Updated',
+        email: 'john.updated@example.com',
+      };
+
+      const mockUpdatedUser: User = {
+        id: 1,
+        name: 'John Updated',
+        email: 'john.updated@example.com',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      (prismaService.user.update as jest.Mock).mockResolvedValue(mockUpdatedUser);
+
+      const result = await service.update(1, updateUserDto);
+
+      expect(result).toEqual(mockUpdatedUser);
+      expect(prismaService.user.update).toHaveBeenCalledWith({
+        where: { id: 1 },
+        data: updateUserDto,
+      });
+    });
+  });
+
+  describe('destroy', () => {
+    it('should delete a user', async () => {
+      const mockDeletedUser: User = {
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      (prismaService.user.delete as jest.Mock).mockResolvedValue(mockDeletedUser);
+
+      const result = await service.destroy(1);
+
+      expect(result).toEqual(mockDeletedUser);
+      expect(prismaService.user.delete).toHaveBeenCalledWith({
+        where: { id: 1 },
+      });
     });
   });
 });
