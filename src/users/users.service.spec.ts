@@ -64,5 +64,114 @@ describe('UsersService', () => {
     });
   });
 
-  // 他のメソッドのテストも同様に追加してください
+  describe('all', () => {
+    it('should return all users', async () => {
+      const mockUsers: User[] = [
+        { id: 1, name: 'John Doe', email: 'john@example.com', createdAt: new Date(), updatedAt: new Date() },
+        { id: 2, name: 'Jane Doe', email: 'jane@example.com', createdAt: new Date(), updatedAt: new Date() },
+      ];
+
+      (prismaService.user.findMany as jest.Mock).mockResolvedValue(mockUsers);
+
+      const result = await service.all();
+
+      expect(result).toEqual(mockUsers);
+      expect(prismaService.user.findMany).toHaveBeenCalled();
+    });
+  });
+
+  describe('find', () => {
+    it('should find a user by id', async () => {
+      const mockUser: User = {
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      (prismaService.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+
+      const result = await service.find(1);
+
+      expect(result).toEqual(mockUser);
+      expect(prismaService.user.findUnique).toHaveBeenCalledWith({
+        where: { id: 1 },
+      });
+    });
+  });
+
+  describe('findBy', () => {
+    it('should find a user by condition', async () => {
+      const mockUser: User = {
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      (prismaService.user.findFirst as jest.Mock).mockResolvedValue(mockUser);
+
+      const result = await service.findBy({ email: 'john@example.com' });
+
+      expect(result).toEqual(mockUser);
+      expect(prismaService.user.findFirst).toHaveBeenCalledWith({
+        where: { email: 'john@example.com' },
+      });
+    });
+  });
+
+  describe('where', () => {
+    it('should return users matching condition', async () => {
+      const mockUsers: User[] = [
+        { id: 1, name: 'John Doe', email: 'john@example.com', createdAt: new Date(), updatedAt: new Date() },
+        { id: 2, name: 'Jane Doe', email: 'jane@example.com', createdAt: new Date(), updatedAt: new Date() },
+      ];
+
+      (prismaService.user.findMany as jest.Mock).mockResolvedValue(mockUsers);
+
+      const result = await service.where({ name: 'Doe' });
+
+      expect(result).toEqual(mockUsers);
+      expect(prismaService.user.findMany).toHaveBeenCalledWith({
+        where: { name: 'Doe' },
+      });
+    });
+  });
+
+  describe('paginate', () => {
+    it('should return paginated users', async () => {
+      const mockUsers: User[] = [
+        { id: 1, name: 'John Doe', email: 'john@example.com', createdAt: new Date(), updatedAt: new Date() },
+        { id: 2, name: 'Jane Doe', email: 'jane@example.com', createdAt: new Date(), updatedAt: new Date() },
+      ];
+
+      const mockCount = 10;
+      const page = 1;
+      const perPage = 2;
+
+      (prismaService.user.findMany as jest.Mock).mockResolvedValue(mockUsers);
+      (prismaService.user.count as jest.Mock).mockResolvedValue(mockCount);
+
+      const result = await service.paginate(page, perPage);
+
+      expect(result).toEqual({
+        data: mockUsers,
+        meta: {
+          total: mockCount,
+          page: page,
+          per_page: perPage,
+          last_page: Math.ceil(mockCount / perPage),
+        },
+      });
+
+      expect(prismaService.user.findMany).toHaveBeenCalledWith({
+        take: perPage,
+        skip: (page - 1) * perPage,
+      });
+
+      expect(prismaService.user.count).toHaveBeenCalled();
+    });
+  });
 });
