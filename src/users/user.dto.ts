@@ -1,6 +1,7 @@
-// src/users/dto/create-user.dto.ts
+// src/users/dto/user.dto.ts
 
 import { IsString, IsEmail, MinLength } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateUserDto {
   @IsString()
@@ -13,3 +14,5 @@ export class CreateUserDto {
   @MinLength(6)
   password: string;
 }
+
+export class UpdateUserDto extends PartialType(CreateUserDto) {}
