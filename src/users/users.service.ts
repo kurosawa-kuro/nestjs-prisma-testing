@@ -2,49 +2,33 @@
 
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import * as bcrypt from 'bcrypt';
+import { AbstractService } from '../common/abstract.service';
+import { User } from '@prisma/client';
 
 @Injectable()
-export class UsersService {
-  constructor(private prisma: PrismaService) {}
-
-  async create(createUserDto: CreateUserDto) {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-    return this.prisma.user.create({
-      data: {
-        ...createUserDto,
-        password: hashedPassword,
-      },
-    });
+export class UsersService extends AbstractService {
+  constructor(private readonly prismaService: PrismaService) {
+    super(prismaService, 'user');
   }
 
-  findAll() {
-    return this.prisma.user.findMany({
-      select: { id: true, name: true, email: true },
-    });
-  }
+  async paginate(page = 1, relations = []): Promise<PaginatedResult> {
+    const { data, meta } = await super.paginate(page, relations);
 
-  findOne(id: number) {
-    return this.prisma.user.findUnique({
-      where: { id },
-      select: { id: true, name: true, email: true },
-    });
+    return {
+      data: data.map((user: User) => {
+        const { password, ...data } = user;
+        return data;
+      }),
+      meta,
+    };
   }
+}
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    if (updateUserDto.password) {
-      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
-    }
-    return this.prisma.user.update({
-      where: { id },
-      data: updateUserDto,
-      select: { id: true, name: true, email: true },
-    });
-  }
-
-  remove(id: number) {
-    return this.prisma.user.delete({ where: { id } });
-  }
+interface PaginatedResult {
+  data: Partial<User>[];
+  meta: {
+    total: number;
+    page: number;
+    last_page: number;
+  };
 }
