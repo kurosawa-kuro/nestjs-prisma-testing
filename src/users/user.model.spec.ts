@@ -9,7 +9,7 @@ describe('User Model', () => {
       const user = new CreateUser();
       user.name = 'John Doe';
       user.email = 'john@example.com';
-      user.password = 'password123';
+      user.password = 'Password123!';
 
       const errors = await validate(user);
       expect(errors.length).toBe(0);
@@ -17,9 +17,9 @@ describe('User Model', () => {
 
     it('should fail validation with invalid name', async () => {
       const user = new CreateUser();
-      user.name = '';  // Invalid: empty string
+      user.name = 'J';  // Invalid: less than 2 characters
       user.email = 'john@example.com';
-      user.password = 'password123';
+      user.password = 'Password123!';
 
       const errors = await validate(user);
       expect(errors.length).toBeGreaterThan(0);
@@ -30,7 +30,7 @@ describe('User Model', () => {
       const user = new CreateUser();
       user.name = 'John Doe';
       user.email = 'invalid-email';  // Invalid: not an email format
-      user.password = 'password123';
+      user.password = 'Password123!';
 
       const errors = await validate(user);
       expect(errors.length).toBeGreaterThan(0);
@@ -41,7 +41,51 @@ describe('User Model', () => {
       const user = new CreateUser();
       user.name = 'John Doe';
       user.email = 'john@example.com';
-      user.password = '12345';  // Invalid: less than 6 characters
+      user.password = 'Pass1!';  // Invalid: less than 8 characters
+
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('password');
+    });
+
+    it('should fail validation with password missing uppercase', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'john@example.com';
+      user.password = 'password123!';  // Invalid: missing uppercase
+
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('password');
+    });
+
+    it('should fail validation with password missing lowercase', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'john@example.com';
+      user.password = 'PASSWORD123!';  // Invalid: missing lowercase
+
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('password');
+    });
+
+    it('should fail validation with password missing number', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'john@example.com';
+      user.password = 'PasswordABC!';  // Invalid: missing number
+
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('password');
+    });
+
+    it('should fail validation with password missing special character', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'john@example.com';
+      user.password = 'Password123';  // Invalid: missing special character
 
       const errors = await validate(user);
       expect(errors.length).toBeGreaterThan(0);

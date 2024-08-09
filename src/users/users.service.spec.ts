@@ -1,103 +1,68 @@
-// src/users/user.model.spec.ts
+// src/users/users.service.spec.ts
 
-import { validate } from 'class-validator';
-import { CreateUser, UpdateUser } from './user.model';
+import { Test, TestingModule } from '@nestjs/testing';
+import { UsersService } from './users.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateUser, User, UserWithPassword } from './user.model';
 
-describe('User Model', () => {
-  describe('CreateUser', () => {
-    it('should pass validation with valid data', async () => {
-      const user = new CreateUser();
-      user.name = 'John Doe';
-      user.email = 'john@example.com';
-      user.password = 'Password123';
+describe('UsersService', () => {
+  let service: UsersService;
+  let prismaService: PrismaService;
 
-      const errors = await validate(user);
-      expect(errors.length).toBe(0);
-    });
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersService,
+        {
+          provide: PrismaService,
+          useValue: {
+            user: {
+              findMany: jest.fn(),
+              count: jest.fn(),
+              findUnique: jest.fn(),
+              findFirst: jest.fn(),
+              create: jest.fn(),
+              update: jest.fn(),
+              delete: jest.fn(),
+            },
+          },
+        },
+      ],
+    }).compile();
 
-    it('should fail validation with invalid name', async () => {
-      const user = new CreateUser();
-      user.name = '';  // Invalid: empty string
-      user.email = 'john@example.com';
-      user.password = 'Password123';
+    service = module.get<UsersService>(UsersService);
+    prismaService = module.get<PrismaService>(PrismaService);
+  });
 
-      const errors = await validate(user);
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('name');
-    });
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
 
-    it('should fail validation with invalid email', async () => {
-      const user = new CreateUser();
-      user.name = 'John Doe';
-      user.email = 'invalid-email';  // Invalid: not an email format
-      user.password = 'Password123';
+  describe('create', () => {
+    it('should create a new user', async () => {
+      const createUserDto: CreateUser = {
+        name: 'John Doe',
+        email: 'john@example.com',
+        password: 'Password123!',
+      };
 
-      const errors = await validate(user);
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('email');
-    });
+      const mockUser: UserWithPassword = {
+        id: 1,
+        ...createUserDto,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
-    it('should fail validation with short password', async () => {
-      const user = new CreateUser();
-      user.name = 'John Doe';
-      user.email = 'john@example.com';
-      user.password = 'Short1';  // Invalid: less than 8 characters
+      (prismaService.user.create as jest.Mock).mockResolvedValue(mockUser);
 
-      const errors = await validate(user);
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('password');
-    });
+      const result = await service.create(createUserDto);
 
-    it('should fail validation with password missing uppercase', async () => {
-      const user = new CreateUser();
-      user.name = 'John Doe';
-      user.email = 'john@example.com';
-      user.password = 'password123';  // Invalid: missing uppercase
-
-      const errors = await validate(user);
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('password');
-    });
-
-    it('should fail validation with password missing lowercase', async () => {
-      const user = new CreateUser();
-      user.name = 'John Doe';
-      user.email = 'john@example.com';
-      user.password = 'PASSWORD123';  // Invalid: missing lowercase
-
-      const errors = await validate(user);
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('password');
-    });
-
-    it('should fail validation with password missing number', async () => {
-      const user = new CreateUser();
-      user.name = 'John Doe';
-      user.email = 'john@example.com';
-      user.password = 'PasswordABC';  // Invalid: missing number
-
-      const errors = await validate(user);
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('password');
+      expect(result).toEqual(mockUser);
+      expect(prismaService.user.create).toHaveBeenCalledWith({
+        data: createUserDto,
+      });
     });
   });
 
-  describe('UpdateUser', () => {
-    it('should allow partial updates', async () => {
-      const user = new UpdateUser();
-      user.name = 'John Doe';  // Only updating name
-
-      const errors = await validate(user);
-      expect(errors.length).toBe(0);
-    });
-
-    it('should still validate provided fields', async () => {
-      const user = new UpdateUser();
-      user.email = 'invalid-email';  // Invalid: not an email format
-
-      const errors = await validate(user);
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('email');
-    });
-  });
+  // 他のメソッドのテストも同様に追加してください
 });
