@@ -1,37 +1,29 @@
+// src/app/services/todo_service.ts
+
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateTodo, UpdateTodo } from './todo.model';
+import { AbstractService } from '../lib/abstract.service';
+import { Todo } from '@prisma/client';
 
 @Injectable()
-export class TodosService {
-  constructor(private prisma: PrismaService) {}
+export class TodosService extends AbstractService {
+  constructor(private readonly prismaService: PrismaService) {
+    super(prismaService, 'todo');
+  }
 
-  create(CreateTodo: CreateTodo) {
-    return this.prisma.todo.create({
-      data: CreateTodo,
+  async findAllWithUser(): Promise<Todo[]> {
+    return this.prismaService.todo.findMany({
+      include: { user: true },
     });
   }
+}
 
-  findAll() {
-    return this.prisma.todo.findMany();
-  }
-
-  findOne(id: number) {
-    return this.prisma.todo.findUnique({
-      where: { id },
-    });
-  }
-
-  update(id: number, UpdateTodo: UpdateTodo) {
-    return this.prisma.todo.update({
-      where: { id },
-      data: UpdateTodo,
-    });
-  }
-
-  remove(id: number) {
-    return this.prisma.todo.delete({
-      where: { id },
-    });
-  }
+interface PaginatedResult {
+  data: Todo[];
+  meta: {
+    total: number;
+    page: number;
+    per_page: number;
+    last_page: number;
+  };
 }

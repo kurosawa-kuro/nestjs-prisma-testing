@@ -7,27 +7,27 @@ export class TodosController {
   constructor(private readonly todoService: TodosService) {}
 
   @Post()
-  create(@Body() CreateTodo: CreateTodo) {
-    return this.todoService.create(CreateTodo);
+  create(@Body() createTodo: CreateTodo) {
+    return this.todoService.create(createTodo);
   }
 
   @Get()
   findAll() {
-    return this.todoService.findAll();
+    return this.todoService.all();  // Changed from findAll to all
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.todoService.findOne(+id);
+    return this.todoService.find(+id);  // Changed from findOne to find
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() UpdateTodo: UpdateTodo) {
-    return this.todoService.update(+id, UpdateTodo);
+  update(@Param('id') id: string, @Body() updateTodo: UpdateTodo) {
+    return this.todoService.update(+id, updateTodo);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.todoService.remove(+id);
+    return this.todoService.destroy(+id);  // Changed from remove to destroy
   }
 }
