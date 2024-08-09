@@ -4,10 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
-
-interface UserWithPassword extends User {
-  password: string;
-}
+import { UserWithPassword } from './user.model';
 
 describe('UsersService', () => {
   let service: UsersService;
