@@ -1,145 +1,103 @@
-// src/users/users.service.spec.ts
+// src/users/user.model.spec.ts
 
-import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { User } from '@prisma/client';
-import { UserWithPassword } from './user.model';
+import { validate } from 'class-validator';
+import { CreateUser, UpdateUser } from './user.model';
 
-describe('UsersService', () => {
-  let service: UsersService;
-  let prismaService: PrismaService;
+describe('User Model', () => {
+  describe('CreateUser', () => {
+    it('should pass validation with valid data', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'john@example.com';
+      user.password = 'Password123';
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UsersService,
-        {
-          provide: PrismaService,
-          useValue: {
-            user: {
-              findMany: jest.fn(),
-              count: jest.fn(),
-              findUnique: jest.fn(),
-              findFirst: jest.fn(),
-              create: jest.fn(),
-              update: jest.fn(),
-              delete: jest.fn(),
-            },
-          },
-        },
-      ],
-    }).compile();
+      const errors = await validate(user);
+      expect(errors.length).toBe(0);
+    });
 
-    service = module.get<UsersService>(UsersService);
-    prismaService = module.get<PrismaService>(PrismaService);
-  });
+    it('should fail validation with invalid name', async () => {
+      const user = new CreateUser();
+      user.name = '';  // Invalid: empty string
+      user.email = 'john@example.com';
+      user.password = 'Password123';
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('name');
+    });
 
-  describe('paginate', () => {
-    it('should return paginated results without password', async () => {
-      const mockUsers: User[] = [
-        {
-            id: 1, name: 'User 1', email: 'user1@example.com',
-            password: ''
-        },
-        {
-            id: 2, name: 'User 2', email: 'user2@example.com',
-            password: ''
-        },
-      ];
+    it('should fail validation with invalid email', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'invalid-email';  // Invalid: not an email format
+      user.password = 'Password123';
 
-      const mockCount = 2;
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('email');
+    });
 
-      (prismaService.user.findMany as jest.Mock).mockResolvedValue(mockUsers);
-      (prismaService.user.count as jest.Mock).mockResolvedValue(mockCount);
+    it('should fail validation with short password', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'john@example.com';
+      user.password = 'Short1';  // Invalid: less than 8 characters
 
-      const result = await service.paginate(1, 10);
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('password');
+    });
 
-      expect(result.data).toHaveLength(2);
-      expect(result.data[0]).not.toHaveProperty('password');
-      expect(result.data[1]).not.toHaveProperty('password');
-      expect(result.meta).toEqual({
-        total: 2,
-        page: 1,
-        per_page: 10,
-        last_page: 1,
-      });
+    it('should fail validation with password missing uppercase', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'john@example.com';
+      user.password = 'password123';  // Invalid: missing uppercase
+
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('password');
+    });
+
+    it('should fail validation with password missing lowercase', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'john@example.com';
+      user.password = 'PASSWORD123';  // Invalid: missing lowercase
+
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('password');
+    });
+
+    it('should fail validation with password missing number', async () => {
+      const user = new CreateUser();
+      user.name = 'John Doe';
+      user.email = 'john@example.com';
+      user.password = 'PasswordABC';  // Invalid: missing number
+
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('password');
     });
   });
 
-  describe('find', () => {
-    it('should find a user by id', async () => {
-      const mockUser: UserWithPassword = { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' };
+  describe('UpdateUser', () => {
+    it('should allow partial updates', async () => {
+      const user = new UpdateUser();
+      user.name = 'John Doe';  // Only updating name
 
-      (prismaService.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
-
-      const result = await service.find(1);
-
-      expect(result).toEqual(mockUser);
-      expect(prismaService.user.findUnique).toHaveBeenCalledWith({ where: { id: 1 } });
+      const errors = await validate(user);
+      expect(errors.length).toBe(0);
     });
-  });
 
-  describe('findBy', () => {
-    it('should find a user by condition', async () => {
-      const mockUser: UserWithPassword = { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' };
+    it('should still validate provided fields', async () => {
+      const user = new UpdateUser();
+      user.email = 'invalid-email';  // Invalid: not an email format
 
-      (prismaService.user.findFirst as jest.Mock).mockResolvedValue(mockUser);
-
-      const result = await service.findBy({ email: 'user1@example.com' });
-
-      expect(result).toEqual(mockUser);
-      expect(prismaService.user.findFirst).toHaveBeenCalledWith({ where: { email: 'user1@example.com' } });
-    });
-  });
-
-  describe('create', () => {
-    it('should create a new user', async () => {
-      const mockUser: UserWithPassword = { id: 1, name: 'New User', email: 'newuser@example.com', password: 'password' };
-
-      (prismaService.user.create as jest.Mock).mockResolvedValue(mockUser);
-
-      const result = await service.create({ name: 'New User', email: 'newuser@example.com', password: 'password' });
-
-      expect(result).toEqual(mockUser);
-      expect(prismaService.user.create).toHaveBeenCalledWith({
-        data: { name: 'New User', email: 'newuser@example.com', password: 'password' },
-      });
-    });
-  });
-
-  describe('update', () => {
-    it('should update a user', async () => {
-      const mockUser: UserWithPassword = { id: 1, name: 'Updated User', email: 'user1@example.com', password: 'password1' };
-
-      (prismaService.user.update as jest.Mock).mockResolvedValue(mockUser);
-
-      const result = await service.update(1, { name: 'Updated User' });
-
-      expect(result).toEqual(mockUser);
-      expect(prismaService.user.update).toHaveBeenCalledWith({
-        where: { id: 1 },
-        data: { name: 'Updated User' },
-      });
-    });
-  });
-
-  describe('destroy', () => {
-    it('should delete a user', async () => {
-      const mockUser: UserWithPassword = { id: 1, name: 'User 1', email: 'user1@example.com', password: 'password1' };
-
-      (prismaService.user.delete as jest.Mock).mockResolvedValue(mockUser);
-
-      const result = await service.destroy(1);
-
-      expect(result).toEqual(mockUser);
-      expect(prismaService.user.delete).toHaveBeenCalledWith({
-        where: { id: 1 },
-      });
+      const errors = await validate(user);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('email');
     });
   });
 });

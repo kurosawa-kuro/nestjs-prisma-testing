@@ -16,7 +16,7 @@ export class UsersService extends AbstractService {
 
     return {
       data: data.map((user: User) => {
-        const { password, ...userData } = user as User & { password: string };
+        const { password, ...userData } = user;
         return userData;
       }),
       meta,
