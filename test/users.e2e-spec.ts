@@ -48,7 +48,7 @@ describe('UsersController (e2e)', () => {
     expect(response.body).toHaveProperty('id');
     expect(response.body.name).toBe(createUser.name);
     expect(response.body.email).toBe(createUser.email);
-    // expect(response.body).not.toHaveProperty('password');
+    expect(response.body).not.toHaveProperty('password');
   });
 
   it('/users (GET)', async () => {
@@ -70,7 +70,7 @@ describe('UsersController (e2e)', () => {
     expect(response.body[0]).toHaveProperty('id');
     expect(response.body[0]).toHaveProperty('name');
     expect(response.body[0]).toHaveProperty('email');
-    // expect(response.body[0]).not.toHaveProperty('password');
+    expect(response.body[0]).not.toHaveProperty('password');
   });
 
 

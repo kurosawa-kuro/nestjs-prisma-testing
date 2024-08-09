@@ -3,7 +3,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AbstractService } from '../lib/abstract.service';
-import { User } from '@prisma/client';
+import { CreateUser, User } from './user.model';
 
 @Injectable()
 export class UsersService extends AbstractService {
@@ -11,12 +11,40 @@ export class UsersService extends AbstractService {
     super(prismaService, 'user');
   }
 
+  async create(data: CreateUser): Promise<User> {
+    const user = await this.prisma['user'].create({
+      data,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true
+        // password フィールドは含まれません
+      }
+    });
+    return user;
+  }
+
+  async all(): Promise<User[]> {
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true
+        // password フィールドは含まれません
+      }
+    });
+  }
+
   async paginate(page = 1, perPage = 15): Promise<PaginatedResult> {
     const { data, meta } = await super.paginate(page, perPage);
 
     return {
       data: data.map((user: User) => {
-        const { password, ...userData } = user;
+        const { ...userData } = user;
         return userData;
       }),
       meta,

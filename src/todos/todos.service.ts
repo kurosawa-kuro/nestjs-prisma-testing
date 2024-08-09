@@ -4,10 +4,9 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AbstractService } from '../lib/abstract.service';
 import { Todo, User } from '@prisma/client';
+import { TodoWithUser } from 'src/todos/todo.model';
 
-interface TodoWithUser extends Todo {
-  user?: User;
-}
+
 
 @Injectable()
 export class TodosService extends AbstractService {
