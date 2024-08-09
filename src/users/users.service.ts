@@ -11,13 +11,13 @@ export class UsersService extends AbstractService {
     super(prismaService, 'user');
   }
 
-  async paginate(page = 1, relations = []): Promise<PaginatedResult> {
-    const { data, meta } = await super.paginate(page, relations);
+  async paginate(page = 1, perPage = 15): Promise<PaginatedResult> {
+    const { data, meta } = await super.paginate(page, perPage);
 
     return {
       data: data.map((user: User) => {
-        const { password, ...data } = user;
-        return data;
+        const { password, ...userData } = user;
+        return userData;
       }),
       meta,
     };
@@ -29,6 +29,7 @@ interface PaginatedResult {
   meta: {
     total: number;
     page: number;
+    per_page: number;
     last_page: number;
   };
 }
