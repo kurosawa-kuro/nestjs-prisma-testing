@@ -7,7 +7,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PaginatedResult } from '../lib/types';
 
-
 @Injectable()
 export abstract class AbstractService {
   constructor(

@@ -1,3 +1,5 @@
+// src\lib\types.ts
+
 export type PaginatedResult<T = any> = {
   data: T[];
   meta: {

@@ -1,5 +1,6 @@
 // src/config/cors.config.ts
 
+// External libraries
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 export const corsConfig: CorsOptions = {

@@ -1,3 +1,5 @@
+// src\main.ts
+
 // External libraries
 import * as dotenv from 'dotenv';
 import { NestFactory } from '@nestjs/core';

@@ -6,7 +6,6 @@ import { Module } from '@nestjs/common';
 // Internal modules
 import { PrismaService } from './prisma.service';
 
-
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
