@@ -1,9 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+// External libraries
 import * as dotenv from 'dotenv';
+import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+
+// Internal modules
+import { AppModule } from './app.module';
 import { corsConfig } from './config/cors.config';
 import { setupSwagger } from './config/swagger.config';
-import { ValidationPipe } from '@nestjs/common';
+
 
 async function bootstrap() {
   dotenv.config();

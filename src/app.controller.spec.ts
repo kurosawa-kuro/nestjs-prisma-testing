@@ -1,4 +1,7 @@
+// External libraries
 import { Test, TestingModule } from '@nestjs/testing';
+
+// Internal modules
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma/prisma.service';

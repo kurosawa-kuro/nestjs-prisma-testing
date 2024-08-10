@@ -1,11 +1,15 @@
 // test/users.e2e-spec.ts
 
+// External libraries
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+
+// Internal modules
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { CreateUser } from '../src/users/user.model';
+
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;

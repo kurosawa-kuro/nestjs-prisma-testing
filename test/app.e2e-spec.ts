@@ -1,8 +1,12 @@
+// External libraries
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+
+// Internal modules
 import { AppModule } from './../src/app.module';
 import { PrismaService } from './../src/prisma/prisma.service';
+
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;

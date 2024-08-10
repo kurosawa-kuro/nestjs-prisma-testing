@@ -1,5 +1,9 @@
+// External libraries
 import { Injectable } from '@nestjs/common';
+
+// Internal modules
 import { PrismaService } from './prisma/prisma.service';
+
 
 @Injectable()
 export class AppService {
