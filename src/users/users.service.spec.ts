@@ -2,7 +2,8 @@
 
 import { UsersService } from './users.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateUser, User } from './user.model';
+import { CreateUser } from './user.model';
+import { User } from '../lib/types';
 import { setupTestModule } from '../../test/test-utils';
 import { createMockUser } from '../../test/mock-factories';
 

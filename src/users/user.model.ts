@@ -32,15 +32,3 @@ export class CreateUser {
 }
 
 export class UpdateUser extends PartialType(CreateUser) {}
-
-export type User = {
-  id: number;
-  name: string;
-  email: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-};
-
-export type UserWithPassword = User & {
-  password: string;
-};

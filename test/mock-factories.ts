@@ -1,7 +1,7 @@
 // src/test/mock-factories.ts
 
 import { Todo } from '@prisma/client';
-import { User } from '../src/users/user.model';
+import { User } from '../src/lib/types';
 
 export const createMockUser = (override: Partial<User> = {}): User => ({
   id: 1,

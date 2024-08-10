@@ -2,6 +2,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PaginatedResult } from '../lib/types';
 
 @Injectable()
 export abstract class AbstractService {
@@ -71,13 +72,3 @@ export abstract class AbstractService {
     };
   }
 }
-
-type PaginatedResult = {
-  data: any[];
-  meta: {
-    total: number;
-    page: number;
-    per_page: number;
-    last_page: number;
-  };
-};

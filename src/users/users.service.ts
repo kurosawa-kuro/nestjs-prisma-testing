@@ -3,7 +3,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AbstractService } from '../lib/abstract.service';
-import { CreateUser, User } from './user.model';
+import { CreateUser } from './user.model';
+import { User } from '../lib/types';
+import { UserPaginatedResult } from '../lib/types';
 
 @Injectable()
 export class UsersService extends AbstractService {
@@ -37,7 +39,7 @@ export class UsersService extends AbstractService {
     });
   }
 
-  async paginate(page = 1, perPage = 15): Promise<PaginatedResult> {
+  async paginate(page = 1, perPage = 15): Promise<UserPaginatedResult> {
     const { data, meta } = await super.paginate(page, perPage);
 
     return {
@@ -49,13 +51,3 @@ export class UsersService extends AbstractService {
     };
   }
 }
-
-type PaginatedResult = {
-  data: Partial<User>[];
-  meta: {
-    total: number;
-    page: number;
-    per_page: number;
-    last_page: number;
-  };
-};
