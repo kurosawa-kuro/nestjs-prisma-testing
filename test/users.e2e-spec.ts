@@ -31,10 +31,7 @@ describe('UsersController (e2e)', () => {
   });
 
   beforeEach(async () => {
-    // Clear related tables first
-    await prismaService.todo.deleteMany();
-    // Then clear the users table
-    await prismaService.user.deleteMany();
+    await prismaService.cleanDatabase();
   });
 
   it('/users (POST)', async () => {
