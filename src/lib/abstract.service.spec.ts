@@ -1,6 +1,10 @@
+// External libraries
 import { Test, TestingModule } from '@nestjs/testing';
+
+// Internal modules
 import { PrismaService } from '../prisma/prisma.service';
 import { AbstractService } from './abstract.service';
+
 
 class TestService extends AbstractService {
   constructor(prisma: PrismaService) {

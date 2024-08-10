@@ -1,5 +1,9 @@
+// External libraries
 import { Test, TestingModule } from '@nestjs/testing';
+
+// Internal modules
 import { PrismaService } from './prisma.service';
+
 
 describe('PrismaService', () => {
   let prismaService: PrismaService;
