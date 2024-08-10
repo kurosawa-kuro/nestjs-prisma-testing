@@ -1,39 +1,40 @@
-// test\app.e2e-spec.ts
-
-// External libraries
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-
-// Internal modules
 import { AppModule } from './../src/app.module';
-import { PrismaService } from './../src/prisma/prisma.service';
-
+import { PrismaService } from '../src/prisma/prisma.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let prismaService: PrismaService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    prismaService = app.get<PrismaService>(PrismaService);
     await app.init();
+
+    prismaService = app.get<PrismaService>(PrismaService);
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await prismaService.$disconnect();
     await app.close();
   });
 
-  it('/ (GET)', async () => {
-    const response = await request(app.getHttpServer()).get('/').expect(200);
-
-    expect(response.text).toMatch(
-      /データベース接続に成功しました！|データベース接続に失敗しました/,
-    );
+  beforeEach(async () => {
+    // Clean the database before each test
+    await prismaService.cleanDatabase();
   });
+
+  it('/ (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/')
+      .expect(200)
+      .expect('データベース接続に成功しました！');
+  });
+
+  // Add more test cases here
 });
