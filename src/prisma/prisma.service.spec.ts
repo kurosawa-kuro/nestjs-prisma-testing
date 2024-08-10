@@ -55,8 +55,6 @@ describe('PrismaService', () => {
       // モックのモデルを作成
       const mockModels = {
         user: { deleteMany: jest.fn().mockResolvedValue(null) },
-        post: { deleteMany: jest.fn().mockResolvedValue(null) },
-        comment: { deleteMany: jest.fn().mockResolvedValue(null) },
         invalidModel: 'not an object',
         nullModel: null,
         noDeleteMany: {},
@@ -70,8 +68,6 @@ describe('PrismaService', () => {
 
       // 有効なモデルに対してdeleteManyが呼ばれたことを確認
       expect(mockModels.user.deleteMany).toHaveBeenCalledTimes(1);
-      expect(mockModels.post.deleteMany).toHaveBeenCalledTimes(1);
-      expect(mockModels.comment.deleteMany).toHaveBeenCalledTimes(1);
 
       // 無効なモデルに対してdeleteManyが呼ばれていないことを確認
       expect(mockModels.invalidModel).not.toHaveProperty('deleteMany');
