@@ -50,7 +50,7 @@ export class UsersService extends AbstractService {
   }
 }
 
-interface PaginatedResult {
+type PaginatedResult = {
   data: Partial<User>[];
   meta: {
     total: number;
@@ -58,4 +58,4 @@ interface PaginatedResult {
     per_page: number;
     last_page: number;
   };
-}
+};

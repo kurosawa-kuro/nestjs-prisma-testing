@@ -72,7 +72,7 @@ export abstract class AbstractService {
   }
 }
 
-interface PaginatedResult {
+type PaginatedResult = {
   data: any[];
   meta: {
     total: number;
@@ -80,4 +80,4 @@ interface PaginatedResult {
     per_page: number;
     last_page: number;
   };
-}
+};

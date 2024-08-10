@@ -23,6 +23,6 @@ export class UpdateTodo extends PartialType(CreateTodo) {
   title?: string;
 }
 
-export interface TodoWithUser extends Todo {
+export type TodoWithUser = Todo & {
   user?: User;
-}
+};

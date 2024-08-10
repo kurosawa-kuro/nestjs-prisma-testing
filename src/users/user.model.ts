@@ -33,14 +33,14 @@ export class CreateUser {
 
 export class UpdateUser extends PartialType(CreateUser) {}
 
-export interface User {
+export type User = {
   id: number;
   name: string;
   email: string;
   createdAt?: Date;
   updatedAt?: Date;
-}
+};
 
-export interface UserWithPassword extends User {
+export type UserWithPassword = User & {
   password: string;
-}
+};
