@@ -36,7 +36,7 @@ describe('TodosService', () => {
             email: 'user1@example.com',
             createdAt: new Date(),
             updatedAt: new Date(),
-            avatar: ''
+            avatar: '',
           },
         },
         {
@@ -49,7 +49,7 @@ describe('TodosService', () => {
             email: 'user2@example.com',
             createdAt: new Date(),
             updatedAt: new Date(),
-            avatar: ''
+            avatar: '',
           },
         },
       ];

@@ -7,7 +7,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AbstractService } from '@/lib/abstract.service';
 
-
 class TestService extends AbstractService {
   constructor(prisma: PrismaService) {
     super(prisma, 'testModel');

@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '@/users/users.controller';
 import { UsersService } from '@/users/users.service';
 import { CreateUser, UpdateUser } from '@/users/user.model';
-import { User } from '@/lib/types';  // User型をインポート
+import { User } from '@/lib/types'; // User型をインポート
 
 describe('UsersController', () => {
   let controller: UsersController;

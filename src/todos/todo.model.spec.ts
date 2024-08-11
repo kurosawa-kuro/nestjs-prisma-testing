@@ -6,7 +6,6 @@ import { validate } from 'class-validator';
 // Internal modules
 import { CreateTodo, UpdateTodo } from '@/todos/todo.model';
 
-
 describe('Todo Model', () => {
   describe('CreateTodo', () => {
     it('should pass validation with valid data', async () => {

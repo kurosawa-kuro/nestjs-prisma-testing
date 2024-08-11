@@ -73,17 +73,23 @@ describe('PrismaService', () => {
       expect(mockModels.invalidModel).not.toHaveProperty('deleteMany');
       expect(mockModels.nullModel).toBeNull();
       // expect(mockModels.noDeleteMany.deleteMany).toBeUndefined();
-      expect(typeof mockModels.invalidDeleteMany.deleteMany).not.toBe('function');
+      expect(typeof mockModels.invalidDeleteMany.deleteMany).not.toBe(
+        'function',
+      );
     });
 
     it('should handle errors when deleteMany fails', async () => {
       const mockModels = {
-        user: { deleteMany: jest.fn().mockRejectedValue(new Error('Delete failed')) },
+        user: {
+          deleteMany: jest.fn().mockRejectedValue(new Error('Delete failed')),
+        },
       };
 
       Object.assign(prismaService, mockModels);
 
-      await expect(prismaService.cleanDatabase()).rejects.toThrow('Delete failed');
+      await expect(prismaService.cleanDatabase()).rejects.toThrow(
+        'Delete failed',
+      );
     });
   });
 });

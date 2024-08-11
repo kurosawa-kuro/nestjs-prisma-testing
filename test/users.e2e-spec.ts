@@ -10,7 +10,6 @@ import { AppModule } from '@/app.module';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateUser } from '@/users/user.model';
 
-
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
   let prismaService: PrismaService;
