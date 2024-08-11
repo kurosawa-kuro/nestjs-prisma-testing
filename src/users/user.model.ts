@@ -6,6 +6,7 @@ import {
   MinLength,
   IsNotEmpty,
   Matches,
+  IsOptional,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
@@ -29,6 +30,10 @@ export class CreateUser {
     },
   )
   password: string;
+
+  @IsOptional()
+  @IsString()
+  avatar?: string;
 }
 
 export class UpdateUser extends PartialType(CreateUser) {}

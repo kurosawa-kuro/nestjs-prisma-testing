@@ -18,9 +18,10 @@ describe('UsersController', () => {
           useValue: {
             create: jest.fn(),
             all: jest.fn(),
-            findBy: jest.fn(),
+            find: jest.fn(),
             update: jest.fn(),
             destroy: jest.fn(),
+            updateAvatar: jest.fn(),
           },
         },
       ],
@@ -71,10 +72,10 @@ describe('UsersController', () => {
         email: 'john@example.com',
       };
 
-      jest.spyOn(service, 'findBy').mockResolvedValue(expectedResult);
+      jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
 
       expect(await controller.show(1)).toBe(expectedResult);
-      expect(service.findBy).toHaveBeenCalledWith(1);
+      expect(service.find).toHaveBeenCalledWith(1);
     });
   });
 
@@ -108,4 +109,6 @@ describe('UsersController', () => {
       expect(service.destroy).toHaveBeenCalledWith(1);
     });
   });
+
+  // Note: Avatar upload test is not included as it requires more complex setup for file upload simulation
 });

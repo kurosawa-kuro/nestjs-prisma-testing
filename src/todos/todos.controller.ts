@@ -1,3 +1,5 @@
+// src/todos/todos.controller.ts
+
 import {
   Controller,
   Get,
@@ -6,6 +8,7 @@ import {
   Delete,
   Body,
   Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { TodosService } from '@/todos/todos.service';
 import { CreateTodo, UpdateTodo } from '@/todos/todo.model';
@@ -25,17 +28,17 @@ export class TodosController {
   }
 
   @Get(':id')
-  show(@Param('id') id: string) {
-    return this.todoService.find(+id);
+  show(@Param('id', ParseIntPipe) id: number) {
+    return this.todoService.find(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateTodo: UpdateTodo) {
-    return this.todoService.update(+id, updateTodo);
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateTodo: UpdateTodo) {
+    return this.todoService.update(id, updateTodo);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoService.destroy(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.todoService.destroy(id);
   }
 }

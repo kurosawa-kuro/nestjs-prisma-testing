@@ -1,3 +1,5 @@
+// src\users\upload.controller.ts
+
 import {Controller, Get, Param, Post, Res, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from 'multer';
@@ -20,7 +22,7 @@ export class UploadController {
     uploadFile(@UploadedFile() file) {
         console.log(file);
         return {
-            url: `http://localhost:8000/api/uploads/${file.filename}`
+            url: `http://localhost:8080/api/uploads/${file.filename}`
         }
     }
 

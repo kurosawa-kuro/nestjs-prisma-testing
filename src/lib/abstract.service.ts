@@ -1,8 +1,6 @@
-// src\lib\abstract.service.ts
+// src/lib/abstract.service.ts
 
-// External libraries
 import { Injectable } from '@nestjs/common';
-
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginatedResult } from '@/lib/types';
 
@@ -27,13 +25,13 @@ export abstract class AbstractService {
     });
   }
 
-  async findBy(condition: any): Promise<any> {
+  async findBy(condition: Record<string, any>): Promise<any> {
     return this.prisma[this.modelName].findFirst({
       where: condition,
     });
   }
 
-  async where(condition: any): Promise<any[]> {
+  async where(condition: Record<string, any>): Promise<any[]> {
     return this.prisma[this.modelName].findMany({
       where: condition,
     });

@@ -1,19 +1,19 @@
-// src\app.module.ts
+// src/app.module.ts
 
-// External libraries
 import { Module } from '@nestjs/common';
-
-// Internal modules
-import { AppController } from '@/app.controller';
-import { AppService } from '@/app.service';
-import { PrismaModule } from '@/prisma/prisma.module';
-import { UsersModule } from '@/users/users.module';
-import { TodosModule } from '@/todos/todos.module';
-
+import { UsersModule } from './users/users.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
-  imports: [PrismaModule, UsersModule, TodosModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    UsersModule,
+    PrismaModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
+  ],
 })
 export class AppModule {}

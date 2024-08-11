@@ -50,4 +50,8 @@ export class UsersService extends AbstractService {
       meta,
     };
   }
+
+  async updateAvatar(id: number, avatarUrl: string) {
+    return this.update(id, { avatar: avatarUrl });
+  }
 }

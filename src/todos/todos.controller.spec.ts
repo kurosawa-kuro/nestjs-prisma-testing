@@ -62,7 +62,7 @@ describe('TodosController', () => {
 
       jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
 
-      expect(await controller.show('1')).toBe(expectedResult);
+      expect(await controller.show(1)).toBe(expectedResult);
       expect(service.find).toHaveBeenCalledWith(1);
     });
   });
@@ -74,7 +74,7 @@ describe('TodosController', () => {
 
       jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
 
-      expect(await controller.update('1', updateTodo)).toBe(expectedResult);
+      expect(await controller.update(1, updateTodo)).toBe(expectedResult);
       expect(service.update).toHaveBeenCalledWith(1, updateTodo);
     });
   });
@@ -85,7 +85,7 @@ describe('TodosController', () => {
 
       jest.spyOn(service, 'destroy').mockResolvedValue(expectedResult);
 
-      expect(await controller.remove('1')).toBe(expectedResult);
+      expect(await controller.remove(1)).toBe(expectedResult);
       expect(service.destroy).toHaveBeenCalledWith(1);
     });
   });
