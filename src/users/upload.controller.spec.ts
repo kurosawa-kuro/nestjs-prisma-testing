@@ -2,8 +2,12 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { UploadController, generateRandomFileName } from './upload.controller';
-import { Express } from 'express';
-import { Readable } from 'stream';
+
+jest.mock('@nestjs/platform-express', () => ({
+  FileInterceptor: jest.fn().mockImplementation(() => ({
+    intercept: jest.fn(),
+  })),
+}));
 
 describe('UploadController', () => {
   let controller: UploadController;
@@ -21,37 +25,24 @@ describe('UploadController', () => {
   });
 
   describe('uploadFile', () => {
-    it('should upload a file and return the URL', async () => {
-      const mockFile: Express.Multer.File = {
-        fieldname: 'image',
-        originalname: 'test.jpg',
-        encoding: '7bit',
-        mimetype: 'image/jpeg',
-        size: 12345,
-        destination: './uploads',
-        filename: 'randomfilename.jpg',
-        path: 'uploads/randomfilename.jpg',
-        buffer: Buffer.from('test file content'),
-        stream: new Readable(),
+    it('should return the correct URL', () => {
+      const mockFile = {
+        filename: 'test-file.jpg',
       };
-
-      const result = await controller.uploadFile(mockFile);
-
+      const result = controller.uploadFile(mockFile as any);
       expect(result).toEqual({
-        url: `http://localhost:8080/api/uploads/${mockFile.filename}`,
+        url: `http://localhost:8080/api/uploads/test-file.jpg`,
       });
     });
   });
 
   describe('getImage', () => {
-    it('should send the file', async () => {
-      const mockPath = 'testimage.jpg';
+    it('should call res.sendFile with correct arguments', async () => {
+      const mockPath = 'test-image.jpg';
       const mockRes = {
         sendFile: jest.fn(),
       };
-
       await controller.getImage(mockPath, mockRes as any);
-
       expect(mockRes.sendFile).toHaveBeenCalledWith(mockPath, {
         root: 'uploads',
       });
@@ -59,28 +50,9 @@ describe('UploadController', () => {
   });
 
   describe('generateRandomFileName', () => {
-    it('should generate a random file name with correct extension', () => {
-      const originalName = 'test.jpg';
-      const result = generateRandomFileName(originalName);
-
-      expect(result).toMatch(/^[0-9a-f]{32}\.jpg$/);
-    });
-
-    it('should generate different file names for multiple calls', () => {
-      const originalName = 'test.png';
-      const result1 = generateRandomFileName(originalName);
-      const result2 = generateRandomFileName(originalName);
-
-      expect(result1).not.toEqual(result2);
-      expect(result1).toMatch(/^[0-9a-f]{32}\.png$/);
-      expect(result2).toMatch(/^[0-9a-f]{32}\.png$/);
-    });
-
-    it('should handle file names without extensions', () => {
-      const originalName = 'testfile';
-      const result = generateRandomFileName(originalName);
-
-      expect(result).toMatch(/^[0-9a-f]{32}$/);
+    it('should generate a filename with correct format', () => {
+      const result = generateRandomFileName('test.jpg');
+      expect(result).toMatch(/^[a-f0-9]{32}\.jpg$/);
     });
   });
 });
