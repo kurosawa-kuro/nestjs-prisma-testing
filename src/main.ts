@@ -6,7 +6,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
 // Internal modules
-import { AppModule } from './app.module';
+import { AppModule } from '@/app.module';
 import { corsConfig } from './config/cors.config';
 import { setupSwagger } from './config/swagger.config';
 
