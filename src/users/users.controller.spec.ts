@@ -4,6 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '@/users/users.controller';
 import { UsersService } from '@/users/users.service';
 import { CreateUser, UpdateUser } from '@/users/user.model';
+import { User } from '@/lib/types';  // User型をインポート
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -40,9 +41,16 @@ describe('UsersController', () => {
       const createUser: CreateUser = {
         name: 'John Doe',
         email: 'john@example.com',
-        password: 'password123',
+        password: 'Password123!',
       };
-      const expectedResult = { id: 1, ...createUser };
+      const expectedResult: User = {
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        avatar: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
       jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
 
@@ -53,8 +61,15 @@ describe('UsersController', () => {
 
   describe('index', () => {
     it('should return an array of users', async () => {
-      const expectedResult = [
-        { id: 1, name: 'John Doe', email: 'john@example.com' },
+      const expectedResult: User[] = [
+        {
+          id: 1,
+          name: 'John Doe',
+          email: 'john@example.com',
+          avatar: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ];
 
       jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
@@ -66,10 +81,13 @@ describe('UsersController', () => {
 
   describe('show', () => {
     it('should return a user', async () => {
-      const expectedResult = {
+      const expectedResult: User = {
         id: 1,
         name: 'John Doe',
         email: 'john@example.com',
+        avatar: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
@@ -82,10 +100,13 @@ describe('UsersController', () => {
   describe('update', () => {
     it('should update a user', async () => {
       const updateUser: UpdateUser = { name: 'Jane Doe' };
-      const expectedResult = {
+      const expectedResult: User = {
         id: 1,
         name: 'Jane Doe',
         email: 'john@example.com',
+        avatar: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
@@ -97,10 +118,13 @@ describe('UsersController', () => {
 
   describe('remove', () => {
     it('should remove a user', async () => {
-      const expectedResult = {
+      const expectedResult: User = {
         id: 1,
         name: 'John Doe',
         email: 'john@example.com',
+        avatar: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'destroy').mockResolvedValue(expectedResult);

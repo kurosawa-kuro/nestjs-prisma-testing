@@ -12,13 +12,14 @@ export type PaginatedResult<T = any> = {
 
 export type UserPaginatedResult = PaginatedResult<Partial<User>>;
 
-export type User = {
+export interface User {
   id: number;
   name: string;
   email: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-};
+  avatar: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export type UserWithPassword = User & {
   password: string;

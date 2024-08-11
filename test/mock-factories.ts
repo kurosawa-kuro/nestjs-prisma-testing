@@ -1,16 +1,13 @@
-// test\mock-factories.ts
+// test/mock-factories.ts
 
-// External libraries
 import { Todo } from '@prisma/client';
-
-// Internal modules
 import { User } from '@/lib/types';
-
 
 export const createMockUser = (override: Partial<User> = {}): User => ({
   id: 1,
   name: 'John Doe',
   email: 'john@example.com',
+  avatar: null,  // デフォルト値として null を設定
   createdAt: new Date(),
   updatedAt: new Date(),
   ...override,

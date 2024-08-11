@@ -53,6 +53,7 @@ describe('UsersService', () => {
           id: true,
           name: true,
           email: true,
+          avatar: true,
           createdAt: true,
           updatedAt: true,
         },
@@ -89,6 +90,7 @@ describe('UsersService', () => {
           id: true,
           name: true,
           email: true,
+          avatar: true,
           createdAt: true,
           updatedAt: true,
         },
@@ -126,6 +128,4 @@ describe('UsersService', () => {
       expect(prismaService.user.count).toHaveBeenCalled();
     });
   });
-
-  // Any additional test cases would be placed here.
 });
