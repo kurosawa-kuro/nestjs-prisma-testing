@@ -10,8 +10,8 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUser, UpdateUser } from './user.model';
+import { UsersService } from '@/users/users.service';
+import { CreateUser, UpdateUser } from '@/users/user.model';
 
 @Controller('users')
 export class UsersController {

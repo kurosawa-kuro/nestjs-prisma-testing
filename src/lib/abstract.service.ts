@@ -3,9 +3,8 @@
 // External libraries
 import { Injectable } from '@nestjs/common';
 
-// Internal modules
-import { PrismaService } from '../prisma/prisma.service';
-import { PaginatedResult } from '../lib/types';
+import { PrismaService } from '@/prisma/prisma.service';
+import { PaginatedResult } from '@/lib/types';
 
 @Injectable()
 export abstract class AbstractService {

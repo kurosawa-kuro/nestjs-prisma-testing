@@ -2,7 +2,7 @@
 
 import { TodosService } from './todos.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { setupTestModule } from '../../test/test-utils';
+import { setupTestModule } from '@test/test-utils';
 import { TodoWithUser } from './todo.model';
 
 describe('TodosService', () => {

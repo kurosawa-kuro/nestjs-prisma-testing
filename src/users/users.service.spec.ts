@@ -4,8 +4,8 @@ import { UsersService } from '@/users/users.service';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateUser } from '@/users/user.model';
 import { User } from '@/lib/types';
-import { setupTestModule } from '../../test/test-utils';
-import { createMockUser } from '../../test/mock-factories';
+import { setupTestModule } from '@test/test-utils';
+import { createMockUser } from '@test/mock-factories';
 
 describe('UsersService', () => {
   let service: UsersService;

@@ -7,8 +7,8 @@ import {
   Body,
   Param,
 } from '@nestjs/common';
-import { TodosService } from './todos.service';
-import { CreateTodo, UpdateTodo } from './todo.model';
+import { TodosService } from '@/todos/todos.service';
+import { CreateTodo, UpdateTodo } from '@/todos/todo.model';
 
 @Controller('todos')
 export class TodosController {

@@ -1,7 +1,7 @@
 // src/users/user.model.spec.ts
 
 import { validate } from 'class-validator';
-import { CreateUser, UpdateUser } from './user.model';
+import { CreateUser, UpdateUser } from '@/users/user.model';
 
 describe('User Model', () => {
   describe('CreateUser', () => {

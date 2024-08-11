@@ -4,8 +4,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 // Internal modules
-import { PrismaService } from '../prisma/prisma.service';
-import { AbstractService } from './abstract.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { AbstractService } from '@/lib/abstract.service';
 
 
 class TestService extends AbstractService {
