@@ -1,9 +1,9 @@
 // src/users/users.service.spec.ts
 
-import { UsersService } from './users.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateUser } from './user.model';
-import { User } from '../lib/types';
+import { UsersService } from '@/users/users.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { CreateUser } from '@/users/user.model';
+import { User } from '@/lib/types';
 import { setupTestModule } from '../../test/test-utils';
 import { createMockUser } from '../../test/mock-factories';
 

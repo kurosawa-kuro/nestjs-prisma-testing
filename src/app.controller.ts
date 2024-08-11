@@ -4,7 +4,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 // Internal modules
-import { AppService } from './app.service';
+import { AppService } from '@/app.service';
 
 
 @Controller()

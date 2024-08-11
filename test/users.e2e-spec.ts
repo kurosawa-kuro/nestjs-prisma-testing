@@ -6,9 +6,9 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 
 // Internal modules
-import { AppModule } from '../src/app.module';
-import { PrismaService } from '../src/prisma/prisma.service';
-import { CreateUser } from '../src/users/user.model';
+import { AppModule } from '@/app.module';
+import { PrismaService } from '@/prisma/prisma.service';
+import { CreateUser } from '@/users/user.model';
 
 
 describe('UsersController (e2e)', () => {

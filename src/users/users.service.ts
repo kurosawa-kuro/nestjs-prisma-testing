@@ -1,11 +1,11 @@
 // src/users/users.service.ts
 
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { AbstractService } from '../lib/abstract.service';
-import { CreateUser } from './user.model';
-import { User } from '../lib/types';
-import { UserPaginatedResult } from '../lib/types';
+import { PrismaService } from '@/prisma/prisma.service';
+import { AbstractService } from '@/lib/abstract.service';
+import { CreateUser } from '@/users/user.model';
+import { User } from '@/lib/types';
+import { UserPaginatedResult } from '@/lib/types';
 
 @Injectable()
 export class UsersService extends AbstractService {

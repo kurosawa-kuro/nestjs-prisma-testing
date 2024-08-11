@@ -4,7 +4,7 @@
 import { Todo } from '@prisma/client';
 
 // Internal modules
-import { User } from '../src/lib/types';
+import { User } from '@/lib/types';
 
 
 export const createMockUser = (override: Partial<User> = {}): User => ({

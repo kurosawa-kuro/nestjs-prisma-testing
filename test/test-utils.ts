@@ -4,7 +4,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 // Internal modules
-import { PrismaService } from '../src/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 
 export const setupTestModule = async <T>(
