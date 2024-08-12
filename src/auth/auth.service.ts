@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { UsersService } from '@/users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { TokenUtility } from './token.utility';
-import { RegisterDto } from './register.model';
+import { RegisterDto } from './auth.model';
 
 @Injectable()
 export class AuthService {

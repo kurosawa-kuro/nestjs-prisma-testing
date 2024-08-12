@@ -12,7 +12,7 @@ import {
   import { Request, Response } from 'express';
   import { AuthGuard } from './auth.guard';
   import { AuthService } from './auth.service';
-  import { RegisterDto } from './register.model';
+  import { RegisterDto } from './auth.model';
   
   @UseInterceptors(ClassSerializerInterceptor)
   @Controller('auth')

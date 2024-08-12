@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "name": "John Doe",
-  "email": "john2@example.com",
+  "email": "john4@example.com",
   "password": "password123",
   "passwordConfirm": "password123"
 }

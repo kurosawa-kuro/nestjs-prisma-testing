@@ -1,11 +1,11 @@
-// src/lib/abstract.service.ts
+// src/lib/base.service.ts
 
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginatedResult } from '@/lib/types';
 
 @Injectable()
-export abstract class AbstractService {
+export abstract class BaseService {
   constructor(
     protected readonly prisma: PrismaService,
     protected readonly modelName: string,

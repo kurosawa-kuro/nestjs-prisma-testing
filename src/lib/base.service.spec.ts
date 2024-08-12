@@ -1,13 +1,13 @@
-// src\lib\abstract.service.spec.ts
+// src\lib\base.service.spec.ts
 
 // External libraries
 import { Test, TestingModule } from '@nestjs/testing';
 
 // Internal modules
 import { PrismaService } from '@/prisma/prisma.service';
-import { AbstractService } from '@/lib/abstract.service';
+import { BaseService } from '@/lib/base.service';
 
-class TestService extends AbstractService {
+class TestService extends BaseService {
   constructor(prisma: PrismaService) {
     super(prisma, 'testModel');
   }
@@ -25,7 +25,7 @@ type MockPrismaService = {
   };
 };
 
-describe('AbstractService', () => {
+describe('BaseService', () => {
   let service: TestService;
   let prismaService: MockPrismaService;
 
