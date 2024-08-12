@@ -25,6 +25,6 @@ import { extname } from 'path';
   ],
   controllers: [UsersController],
   providers: [UsersService, PrismaService],
-  exports: [UsersService]
+  exports: [UsersService],
 })
 export class UsersModule {}
