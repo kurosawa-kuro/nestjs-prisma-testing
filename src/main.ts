@@ -4,6 +4,7 @@
 import * as dotenv from 'dotenv';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 // Internal modules
 import { AppModule } from '@/app.module';
@@ -25,7 +26,7 @@ async function bootstrap() {
 
   setupSwagger(app);
   app.enableCors(corsConfig);
-
+  app.use(cookieParser());
   const port = process.env.BACKEND_PORT || 8080;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
