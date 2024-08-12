@@ -70,7 +70,6 @@ import {
     @UseGuards(AuthGuard)
     @Get('user')
     async user(@Req() request: Request) {
-        console.log("★★★★★★ Check user★★★★★★");
       try {
         const id = await this.authService.userId(request);
         const user = await this.userService.find(id);
