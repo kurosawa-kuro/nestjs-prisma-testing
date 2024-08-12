@@ -14,7 +14,7 @@ import {
   } from '@nestjs/common';
   import { UsersService } from '@/users/users.service';
   import * as bcrypt from 'bcryptjs';
-  import { RegisterDto } from './models/register.dto';
+  import { RegisterDto } from './register.model';
   import { JwtService } from '@nestjs/jwt';
   import { Request, Response } from 'express';
   import { AuthGuard } from './auth.guard';
