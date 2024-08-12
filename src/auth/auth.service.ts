@@ -1,30 +1,58 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import { Request, Response } from 'express';
+import { UsersService } from '@/users/users.service';
+import * as bcrypt from 'bcryptjs';
+import { TokenUtility } from './token.utility';
+import { RegisterDto } from './register.model';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private usersService: UsersService
+  ) {}
 
-  async userId(request: Request): Promise<number> {
-    const token = this.extractTokenFromRequest(request);
-
-    try {
-      const payload = await this.jwtService.verifyAsync(token);
-      return payload.id;
-    } catch {
-      throw new UnauthorizedException('Invalid token');
+  async register(registerDto: RegisterDto) {
+    if (registerDto.password !== registerDto.passwordConfirm) {
+      throw new BadRequestException('Passwords do not match!');
     }
+
+    const hashed = await bcrypt.hash(registerDto.password, 12);
+
+    return this.usersService.create({
+      name: registerDto.name,
+      email: registerDto.email,
+      password: hashed,
+    });
   }
 
-  private extractTokenFromRequest(request: Request): string {
-    const authHeader = request.headers.authorization;
-    if (authHeader && authHeader.split(' ')[0] === 'Bearer') {
-      return authHeader.split(' ')[1];
+  async login(email: string, password: string): Promise<{ user: any, token: string }> {
+    const user = await this.usersService.findBy({ email });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      throw new UnauthorizedException('Invalid credentials');
     }
-    if (request.cookies && request.cookies.jwt) {
-      return request.cookies.jwt;
+
+    const token = await this.jwtService.signAsync({ id: user.id });
+
+    return { user, token };
+  }
+
+  async getCurrentUser(request: Request) {
+    const token = TokenUtility.extractTokenFromRequest(request);
+    const payload = await this.jwtService.verifyAsync(token);
+    const user = await this.usersService.find(payload.id);
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
     }
-    throw new UnauthorizedException('No token found');
+
+    const { password, ...result } = user;
+    return result;
+  }
+
+  logout(response: Response) {
+    response.clearCookie('jwt');
   }
 }
