@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "name": "John Doe",
-  "email": "john4@example.com",
+  "email": "john5@example.com",
   "password": "password123",
   "passwordConfirm": "password123"
 }
@@ -16,17 +16,17 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "john@example.com",
+  "email": "john5@example.com",
   "password": "password123"
 }
 
 ### Get current user (requires authentication)
 GET {{baseUrl}}/auth/user
-Cookie: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzIzNDM5ODMyLCJleHAiOjE3MjM1MjYyMzJ9.6tXFhXD1HWQZjsISkMPg1AciNPqCmWSd1JqC-6rUzEM
+Cookie: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzIzNDQzNzQ5LCJleHAiOjE3MjM1MzAxNDl9.y8vGlrRb6Z0_PGRPFYOaAAyNWSJ80baHJwodWzsvzAs
 
 ### Logout (requires authentication)
 POST {{baseUrl}}/auth/logout
-Cookie: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzIzNDM5ODkyLCJleHAiOjE3MjM1MjYyOTJ9.KjGe2WTHZDoOr_Y_sV6qvZbtIEBKSXE9OWcnCOVDhIg
+Cookie: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzIzNDQzNzQ5LCJleHAiOjE3MjM1MzAxNDl9.y8vGlrRb6Z0_PGRPFYOaAAyNWSJ80baHJwodWzsvzAs
 
 ### Get all users
 GET {{baseUrl}}/users
