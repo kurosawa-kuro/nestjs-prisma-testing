@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { BaseService } from '@/lib/base.service';
+import { PrismaBaseService } from '@/lib/prismaBase.service';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Todo } from '@prisma/client';
 
 @Injectable()
-export class TodosService extends BaseService<Todo> {
+export class TodosService extends PrismaBaseService<Todo> {
   constructor(prisma: PrismaService) {
     super(prisma, 'todo');
   }

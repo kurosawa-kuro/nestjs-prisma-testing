@@ -35,7 +35,7 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<{ user: any; token: string }> {
-    const user = await this.usersService.findBy({ email });
+    const user = await this.usersService.findByEmail(email);
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');
