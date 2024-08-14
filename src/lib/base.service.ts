@@ -1,6 +1,6 @@
 // src/lib/base.service.ts
 
-export type BaseService<T> = {
+export interface BaseService<T> {
   create(attributes: any): Promise<T>;
   all(options?: any): Promise<T[]>;
   find(id: number): Promise<T | null>;
@@ -11,4 +11,4 @@ export type BaseService<T> = {
   count(options?: any): Promise<number>;
   first(options?: any): Promise<T | null>;
   last(options?: any): Promise<T | null>;
-};
+}

@@ -4,11 +4,11 @@
 import { Injectable } from '@nestjs/common';
 
 // Internal modules
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaClientService } from '@/prisma/prisma-client.service';
 
 @Injectable()
 export class AppService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaClientService) {}
 
   async getDatabaseConnectionStatus(): Promise<string> {
     try {

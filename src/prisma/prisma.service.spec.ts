@@ -1,40 +1,40 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaClientService } from '@/prisma/prisma-client.service';
 
-describe('PrismaService', () => {
-  let prismaService: PrismaService;
+describe('PrismaClientService', () => {
+  let PrismaClientService: PrismaClientService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PrismaService],
+      providers: [PrismaClientService],
     }).compile();
 
-    prismaService = module.get<PrismaService>(PrismaService);
+    PrismaClientService = module.get<PrismaClientService>(PrismaClientService);
     jest.clearAllMocks();
   });
 
   afterEach(async () => {
-    await prismaService.$disconnect();
+    await PrismaClientService.$disconnect();
     jest.clearAllMocks();
   });
 
   it('should be defined', () => {
-    expect(prismaService).toBeDefined();
+    expect(PrismaClientService).toBeDefined();
   });
 
   describe('onModuleInit', () => {
     it('should connect to the database', async () => {
       const connectSpy = jest
-        .spyOn(prismaService, '$connect')
+        .spyOn(PrismaClientService, '$connect')
         .mockResolvedValue();
-      await prismaService.onModuleInit();
+      await PrismaClientService.onModuleInit();
       expect(connectSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an error if connection fails', async () => {
       const error = new Error('Connection failed');
-      jest.spyOn(prismaService, '$connect').mockRejectedValue(error);
-      await expect(prismaService.onModuleInit()).rejects.toThrow(
+      jest.spyOn(PrismaClientService, '$connect').mockRejectedValue(error);
+      await expect(PrismaClientService.onModuleInit()).rejects.toThrow(
         'Connection failed',
       );
     });
@@ -43,9 +43,9 @@ describe('PrismaService', () => {
   describe('onModuleDestroy', () => {
     it('should disconnect from the database', async () => {
       const disconnectSpy = jest
-        .spyOn(prismaService, '$disconnect')
+        .spyOn(PrismaClientService, '$disconnect')
         .mockResolvedValue();
-      await prismaService.onModuleDestroy();
+      await PrismaClientService.onModuleDestroy();
       expect(disconnectSpy).toHaveBeenCalledTimes(1);
     });
   });
@@ -61,10 +61,10 @@ describe('PrismaService', () => {
         invalidDeleteMany: { deleteMany: 'not a function' },
       };
 
-      // PrismaServiceのインスタンスにモックモデルを追加
-      Object.assign(prismaService, mockModels);
+      // PrismaClientServiceのインスタンスにモックモデルを追加
+      Object.assign(PrismaClientService, mockModels);
 
-      await prismaService.cleanDatabase();
+      await PrismaClientService.cleanDatabase();
 
       // 有効なモデルに対してdeleteManyが呼ばれたことを確認
       expect(mockModels.user.deleteMany).toHaveBeenCalledTimes(1);
@@ -85,9 +85,9 @@ describe('PrismaService', () => {
         },
       };
 
-      Object.assign(prismaService, mockModels);
+      Object.assign(PrismaClientService, mockModels);
 
-      await expect(prismaService.cleanDatabase()).rejects.toThrow(
+      await expect(PrismaClientService.cleanDatabase()).rejects.toThrow(
         'Delete failed',
       );
     });

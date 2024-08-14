@@ -7,12 +7,12 @@ import * as request from 'supertest';
 
 // Internal modules
 import { AppModule } from '@/app.module';
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaClientService } from '@/prisma/prisma-client.service';
 import { CreateUser } from '@/users/user.model';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
-  let prismaService: PrismaService;
+  let PrismaClientService: PrismaClientService;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -20,17 +20,17 @@ describe('UsersController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    prismaService = app.get<PrismaService>(PrismaService);
+    PrismaClientService = app.get<PrismaClientService>(PrismaClientService);
     await app.init();
   });
 
   afterAll(async () => {
-    await prismaService.$disconnect();
+    await PrismaClientService.$disconnect();
     await app.close();
   });
 
   beforeEach(async () => {
-    await prismaService.cleanDatabase();
+    await PrismaClientService.cleanDatabase();
   });
 
   it('/users (POST)', async () => {
@@ -53,7 +53,7 @@ describe('UsersController (e2e)', () => {
 
   it('/users (GET)', async () => {
     // Create a user first
-    await prismaService.user.create({
+    await PrismaClientService.user.create({
       data: {
         name: 'Jane Doe',
         email: 'jane@example.com',

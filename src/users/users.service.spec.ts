@@ -1,7 +1,7 @@
 // src/users/users.service.spec.ts
 
 import { UsersService } from '@/users/users.service';
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaClientService } from '@/prisma/prisma-client.service';
 import { CreateUser } from '@/users/user.model';
 import { User } from '@/lib/types';
 import { setupTestModule } from '@test/test-utils';
@@ -9,8 +9,8 @@ import { createMockUser } from '@test/mock-factories';
 
 describe('UsersService', () => {
   let service: UsersService;
-  let prismaService: jest.Mocked<
-    PrismaService & {
+  let PrismaClientService: jest.Mocked<
+    PrismaClientService & {
       user: {
         create: jest.MockedFunction<any>;
         findMany: jest.MockedFunction<any>;
@@ -20,10 +20,10 @@ describe('UsersService', () => {
   >;
 
   beforeEach(async () => {
-    const { service: userService, prismaService: mockPrismaService } =
+    const { service: userService, PrismaClientService: mockPrismaClientService } =
       await setupTestModule(UsersService, 'user');
     service = userService;
-    prismaService = mockPrismaService;
+    PrismaClientService = mockPrismaClientService;
   });
 
   it('should be defined', () => {
@@ -41,13 +41,13 @@ describe('UsersService', () => {
       const mockUser = createMockUser(createUser);
 
       jest
-        .spyOn(prismaService.user, 'create')
+        .spyOn(PrismaClientService.user, 'create')
         .mockImplementation(() => Promise.resolve(mockUser));
 
       const result = await service.create(createUser);
 
       expect(result).toEqual(mockUser);
-      expect(prismaService.user.create).toHaveBeenCalledWith({
+      expect(PrismaClientService.user.create).toHaveBeenCalledWith({
         data: createUser,
         select: {
           id: true,
@@ -80,12 +80,12 @@ describe('UsersService', () => {
         }),
       ];
 
-      jest.spyOn(prismaService.user, 'findMany').mockResolvedValue(users);
+      jest.spyOn(PrismaClientService.user, 'findMany').mockResolvedValue(users);
 
       const result = await service.all();
 
       expect(result).toEqual(users);
-      expect(prismaService.user.findMany).toHaveBeenCalledWith({
+      expect(PrismaClientService.user.findMany).toHaveBeenCalledWith({
         select: {
           id: true,
           name: true,
@@ -109,8 +109,8 @@ describe('UsersService', () => {
       const perPage = 15;
       const totalUsers = 2;
 
-      jest.spyOn(prismaService.user, 'findMany').mockResolvedValue(users);
-      jest.spyOn(prismaService.user, 'count').mockResolvedValue(totalUsers);
+      jest.spyOn(PrismaClientService.user, 'findMany').mockResolvedValue(users);
+      jest.spyOn(PrismaClientService.user, 'count').mockResolvedValue(totalUsers);
 
       const result = await service.paginate(page, perPage);
 
@@ -121,11 +121,11 @@ describe('UsersService', () => {
         per_page: perPage,
         last_page: Math.ceil(totalUsers / perPage),
       });
-      expect(prismaService.user.findMany).toHaveBeenCalledWith({
+      expect(PrismaClientService.user.findMany).toHaveBeenCalledWith({
         take: perPage,
         skip: (page - 1) * perPage,
       });
-      expect(prismaService.user.count).toHaveBeenCalled();
+      expect(PrismaClientService.user.count).toHaveBeenCalled();
     });
   });
 });

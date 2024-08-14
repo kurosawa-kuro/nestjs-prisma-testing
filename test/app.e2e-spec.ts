@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '@/app.module';
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaClientService } from '@/prisma/prisma-client.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let prismaService: PrismaService;
+  let PrismaClientService: PrismaClientService;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -16,17 +16,17 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
-    prismaService = app.get<PrismaService>(PrismaService);
+    PrismaClientService = app.get<PrismaClientService>(PrismaClientService);
   });
 
   afterAll(async () => {
-    await prismaService.$disconnect();
+    await PrismaClientService.$disconnect();
     await app.close();
   });
 
   beforeEach(async () => {
     // Clean the database before each test
-    await prismaService.cleanDatabase();
+    await PrismaClientService.cleanDatabase();
   });
 
   it('/ (GET)', () => {

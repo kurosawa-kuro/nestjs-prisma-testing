@@ -1,22 +1,22 @@
 // src/todos/todos.service.spec.ts
 
 import { TodosService } from './todos.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaClientService } from '../prisma/prisma-client.service';
 import { setupTestModule } from '@test/test-utils';
 import { TodoWithUser } from './todo.model';
 
 describe('TodosService', () => {
   let service: TodosService;
-  let prismaService: jest.Mocked<
-    PrismaService & { todo: jest.MockedFunction<any> }
+  let PrismaClientService: jest.Mocked<
+    PrismaClientService & { todo: jest.MockedFunction<any> }
   >;
 
   beforeEach(async () => {
     // Using setupTestModule to initialize the service and mock Prisma service
-    const { service: todosService, prismaService: mockPrismaService } =
+    const { service: todosService, PrismaClientService: mockPrismaClientService } =
       await setupTestModule(TodosService, 'todo');
     service = todosService;
-    prismaService = mockPrismaService;
+    PrismaClientService = mockPrismaClientService;
   });
 
   it('should be defined', () => {
@@ -54,12 +54,12 @@ describe('TodosService', () => {
         },
       ];
 
-      jest.spyOn(prismaService.todo, 'findMany').mockResolvedValue(mockTodos);
+      jest.spyOn(PrismaClientService.todo, 'findMany').mockResolvedValue(mockTodos);
 
       const result = await service.findAllWithUser();
 
       expect(result).toEqual(mockTodos);
-      expect(prismaService.todo.findMany).toHaveBeenCalledWith({
+      expect(PrismaClientService.todo.findMany).toHaveBeenCalledWith({
         include: { user: true },
       });
     });

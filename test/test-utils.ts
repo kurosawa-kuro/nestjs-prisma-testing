@@ -4,17 +4,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 // Internal modules
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaClientService } from '@/prisma/prisma-client.service';
 
 export const setupTestModule = async <T>(
   ServiceClass: new (...args: any[]) => T,
   modelName: string,
-): Promise<{ service: T; prismaService: jest.Mocked<PrismaService> }> => {
+): Promise<{ service: T; PrismaClientService: jest.Mocked<PrismaClientService> }> => {
   const module: TestingModule = await Test.createTestingModule({
     providers: [
       ServiceClass,
       {
-        provide: PrismaService,
+        provide: PrismaClientService,
         useValue: {
           [modelName]: {
             findMany: jest.fn(),
@@ -31,9 +31,9 @@ export const setupTestModule = async <T>(
   }).compile();
 
   const service = module.get<T>(ServiceClass);
-  const prismaService = module.get<PrismaService>(
-    PrismaService,
-  ) as jest.Mocked<PrismaService>;
+  const PrismaClientService = module.get<PrismaClientService>(
+    PrismaClientService,
+  ) as jest.Mocked<PrismaClientService>;
 
-  return { service, prismaService };
+  return { service, PrismaClientService };
 };

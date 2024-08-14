@@ -6,7 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 // Internal modules
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaClientService } from '@/prisma/prisma-client.service';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -18,7 +18,7 @@ describe('AppController', () => {
       providers: [
         AppService,
         {
-          provide: PrismaService,
+          provide: PrismaClientService,
           useValue: {
             $queryRaw: jest.fn().mockResolvedValue([{ 1: 1 }]),
           },
