@@ -1,44 +1,42 @@
-// // PrismaClient のメソッドをモック化しますが、PrismaClientService クラス自体はそのままにします。
-// jest.mock('@prisma/client', () => {
-//   const actualPrismaClient = jest.requireActual('@prisma/client').PrismaClient;
-//   return {
-//     PrismaClient: jest.fn().mockImplementation(() => ({
-//       ...new actualPrismaClient(),
-//       $connect: jest.fn().mockResolvedValue(undefined),
-//       $disconnect: jest.fn().mockResolvedValue(undefined),
-//       user: { deleteMany: jest.fn().mockResolvedValue(undefined) },
-//       todo: { deleteMany: jest.fn().mockResolvedValue(undefined) },
-//     })),
-//   };
-// });
-
+import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClientService } from './prisma-client.service';
 
 describe('PrismaClientService', () => {
   let service: PrismaClientService;
 
-  beforeEach(() => {
-    // PrismaClientService インスタンスの生成
-    service = new PrismaClientService();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [PrismaClientService],
+    }).compile();
+
+    service = module.get<PrismaClientService>(PrismaClientService);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  it('should call $connect on onModuleInit', async () => {
+    // PrismaClient の $connect メソッドをモックします
+    const connectSpy = jest.spyOn(service, '$connect').mockResolvedValue(undefined);
 
-  it('should connect when module is initialized', async () => {
+    // onModuleInit メソッドを呼び出します
     await service.onModuleInit();
-    expect(service.$connect).toHaveBeenCalled();
+
+    // $connect メソッドが呼び出されたかを確認します
+    expect(connectSpy).toHaveBeenCalled();
+
+    // モックをリセットします
+    connectSpy.mockRestore();
   });
 
-  it('should disconnect when module is destroyed', async () => {
+  it('should call $disconnect on onModuleDestroy', async () => {
+    // PrismaClient の $disconnect メソッドをモックします
+    const disconnectSpy = jest.spyOn(service, '$disconnect').mockResolvedValue(undefined);
+
+    // onModuleDestroy メソッドを呼び出します
     await service.onModuleDestroy();
-    expect(service.$disconnect).toHaveBeenCalled();
-  });
 
-  // it('should clean the database before module is destroyed', async () => {
-  //   await service.cleanDatabase();
-  //   expect(service.user.deleteMany).toHaveBeenCalled();
-  //   expect(service.todo.deleteMany).toHaveBeenCalled();
-  // });
+    // $disconnect メソッドが呼び出されたかを確認します
+    expect(disconnectSpy).toHaveBeenCalled();
+
+    // モックをリセットします
+    disconnectSpy.mockRestore();
+  });
 });

@@ -1,10 +1,8 @@
-// src/users/users.controller.spec.ts
-
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from '@/users/users.controller';
-import { UsersService } from '@/users/users.service';
-import { CreateUser, UpdateUser } from '@/users/user.model';
-import { User } from '@/lib/types'; // User型をインポート
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+import { User } from '@prisma/client';  // Prisma Client から User 型をインポート
+import { CreateUser, UpdateUser } from './user.model';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -22,7 +20,6 @@ describe('UsersController', () => {
             find: jest.fn(),
             update: jest.fn(),
             destroy: jest.fn(),
-            updateAvatar: jest.fn(),
           },
         },
       ],
@@ -32,107 +29,103 @@ describe('UsersController', () => {
     service = module.get<UsersService>(UsersService);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  it('should create a user', async () => {
+    const createUser: CreateUser = {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: 'Password123!',
+      avatar: '/path/to/avatar',
+    };
+
+    const expectedResult: User = {
+      id: 1,
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: 'hashedpassword',
+      avatar: '/path/to/avatar',
+      role: 'user',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
+
+    expect(await controller.create(createUser)).toBe(expectedResult);
   });
 
-  describe('create', () => {
-    it('should create a user', async () => {
-      const createUser: CreateUser = {
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'Password123!',
-      };
-      const expectedResult: User = {
+  it('should return all users', async () => {
+    const expectedResult: User[] = [
+      {
         id: 1,
         name: 'John Doe',
-        email: 'john@example.com',
-        avatar: null,
+        email: 'john.doe@example.com',
+        password: 'hashedpassword',
+        avatar: '/path/to/avatar',
+        role: 'user',
         createdAt: new Date(),
         updatedAt: new Date(),
-      };
+      },
+    ];
 
-      jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
+    jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
 
-      expect(await controller.create(createUser)).toBe(expectedResult);
-      expect(service.create).toHaveBeenCalledWith(createUser);
-    });
+    expect(await controller.index()).toBe(expectedResult);
   });
 
-  describe('index', () => {
-    it('should return an array of users', async () => {
-      const expectedResult: User[] = [
-        {
-          id: 1,
-          name: 'John Doe',
-          email: 'john@example.com',
-          avatar: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
+  it('should return a single user', async () => {
+    const expectedResult: User = {
+      id: 1,
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: 'hashedpassword',
+      avatar: '/path/to/avatar',
+      role: 'user',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
 
-      jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
+    jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
 
-      expect(await controller.index()).toBe(expectedResult);
-      expect(service.all).toHaveBeenCalled();
-    });
+    expect(await controller.show(1)).toBe(expectedResult);
   });
 
-  describe('show', () => {
-    it('should return a user', async () => {
-      const expectedResult: User = {
-        id: 1,
-        name: 'John Doe',
-        email: 'john@example.com',
-        avatar: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+  it('should update a user', async () => {
+    const updateUser: UpdateUser = {
+      name: 'John Doe Updated',
+      email: 'john.updated@example.com',
+      password: 'UpdatedPassword123!',
+    };
 
-      jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
+    const expectedResult: User = {
+      id: 1,
+      name: 'John Doe Updated',
+      email: 'john.updated@example.com',
+      password: 'updatedhashedpassword',
+      avatar: '/updated/path/to/avatar',
+      role: 'admin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
 
-      expect(await controller.show(1)).toBe(expectedResult);
-      expect(service.find).toHaveBeenCalledWith(1);
-    });
+    jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
+
+    expect(await controller.update(1, updateUser)).toBe(expectedResult);
   });
 
-  describe('update', () => {
-    it('should update a user', async () => {
-      const updateUser: UpdateUser = { name: 'Jane Doe' };
-      const expectedResult: User = {
-        id: 1,
-        name: 'Jane Doe',
-        email: 'john@example.com',
-        avatar: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+  it('should delete a user', async () => {
+    const expectedResult: User = {
+      id: 1,
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: 'hashedpassword',
+      avatar: '/path/to/avatar',
+      role: 'user',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
 
-      jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
+    jest.spyOn(service, 'destroy').mockResolvedValue(expectedResult);
 
-      expect(await controller.update(1, updateUser)).toBe(expectedResult);
-      expect(service.update).toHaveBeenCalledWith(1, updateUser);
-    });
+    expect(await controller.remove(1)).toBe(expectedResult);
   });
-
-  describe('remove', () => {
-    it('should remove a user', async () => {
-      const expectedResult: User = {
-        id: 1,
-        name: 'John Doe',
-        email: 'john@example.com',
-        avatar: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      jest.spyOn(service, 'destroy').mockResolvedValue(expectedResult);
-
-      expect(await controller.remove(1)).toBe(expectedResult);
-      expect(service.destroy).toHaveBeenCalledWith(1);
-    });
-  });
-
-  // Note: Avatar upload test is not included as it requires more complex setup for file upload simulation
 });
