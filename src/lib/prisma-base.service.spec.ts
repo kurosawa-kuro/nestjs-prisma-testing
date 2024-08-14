@@ -1,59 +1,57 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaClientService } from '@/prisma/prisma-client.service';
-import { PrismaBaseService } from '@/lib/prisma-base.service';
+import { PrismaBaseService } from './prisma-base.service';
+import { PrismaClientService } from '../prisma/prisma-client.service';
+import { Inject } from '@nestjs/common';
 
-// テスト用のモデル型
-interface TestModel {
-  id: number;
-  name: string;
-}
+// モックのPrismaClientService
+const mockPrismaClientService = {
+  modelName: {
+    create: jest.fn(),
+  },
+};
 
-// PrismaBaseServiceを継承したテスト用のサービス
-class TestService extends PrismaBaseService<TestModel> {
-  constructor(prisma: PrismaClientService) {
-    super(prisma, 'test');
+// テスト用の具体的なサービスクラス
+class TestService extends PrismaBaseService<any> {
+  constructor(prisma: PrismaClientService, @Inject('modelName') modelName: string) {
+    super(prisma, modelName);
   }
 }
 
-describe('PrismaBaseService', () => {
+describe('PrismaBaseService - create', () => {
   let service: TestService;
-  let prismaService: jest.Mocked<PrismaClientService>;
 
   beforeEach(async () => {
-    const mockPrismaService = {
-      test: {
-        create: jest.fn(),
-      },
-    };
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TestService,
         {
           provide: PrismaClientService,
-          useValue: mockPrismaService,
+          useValue: mockPrismaClientService,
+        },
+        {
+          provide: 'modelName', // modelNameを提供するプロバイダ
+          useValue: 'modelName',
         },
       ],
     }).compile();
 
     service = module.get<TestService>(TestService);
-    prismaService = module.get(PrismaClientService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  it('should create a new record', async () => {
+    const attributes = { name: 'test' };
+    const createdRecord = { id: 1, name: 'test' };
+    
+    // PrismaClientServiceのcreateメソッドをモックし、期待される結果を返すようにする
+    mockPrismaClientService.modelName.create.mockResolvedValue(createdRecord);
 
-  describe('create', () => {
-    it('should create a new item', async () => {
-      const newItem: TestModel = { id: 1, name: 'Test Item' };
-      (prismaService as any).test.create.mockResolvedValue(newItem);
-
-      const result = await service.create(newItem);
-      expect(result).toEqual(newItem);
-      expect((prismaService as any).test.create).toHaveBeenCalledWith({
-        data: newItem,
-      });
-    });
+    // PrismaBaseServiceのcreateメソッドを呼び出し、結果を確認する
+    const result = await service.create(attributes);
+    
+    // 結果が期待通りであることを確認
+    expect(result).toEqual(createdRecord);
+    
+    // PrismaClientServiceのcreateメソッドが正しい引数で呼ばれたことを確認
+    expect(mockPrismaClientService.modelName.create).toHaveBeenCalledWith({ data: attributes });
   });
 });
