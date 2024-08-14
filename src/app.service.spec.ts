@@ -4,50 +4,46 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 // Internal modules
-import { AppService } from '@/app.service';
-import { PrismaClientService } from '@/prisma/prisma-client.service';
+import { AppService } from './app.service'; // 相対パスに変更が必要かもしれません
+import { PrismaClientService } from './prisma/prisma-client.service'; // 相対パスに変更が必要かもしれません
 
 describe('AppService', () => {
   let appService: AppService;
-  let PrismaClientService: PrismaClientService;
+  let prismaClientServiceMock: Partial<PrismaClientService>; // Mock インスタンスの名前を変更
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AppService,
         {
-          provide: PrismaClientService,
-          useValue: {
-            $queryRaw: jest.fn(),
+          provide: PrismaClientService, // この行はそのままで良いです
+          useValue: { // モックの具体的な値
+            $queryRaw: jest.fn().mockResolvedValue([{ 1: 1 }]), // デフォルトのモック実装を設定
           },
         },
       ],
     }).compile();
 
     appService = module.get<AppService>(AppService);
-    PrismaClientService = module.get<PrismaClientService>(PrismaClientService);
+    prismaClientServiceMock = module.get<PrismaClientService>(PrismaClientService); // 変数名を変更
   });
 
   describe('getDatabaseConnectionStatus', () => {
     it('データベース接続に成功した場合、成功メッセージを返すべき', async () => {
-      (PrismaClientService.$queryRaw as jest.Mock).mockResolvedValue([
-        { 1: 1 },
-      ]);
-
       const result = await appService.getDatabaseConnectionStatus();
       expect(result).toBe('データベース接続に成功しました！');
-      expect(PrismaClientService.$queryRaw).toHaveBeenCalled();
+      expect(prismaClientServiceMock.$queryRaw).toHaveBeenCalled(); // モックが呼び出されたことを検証
     });
 
     it('データベース接続に失敗した場合、エラーメッセージを返すべき', async () => {
       const errorMessage = 'Connection failed';
-      (PrismaClientService.$queryRaw as jest.Mock).mockRejectedValue(
-        new Error(errorMessage),
+      (prismaClientServiceMock.$queryRaw as jest.Mock).mockRejectedValueOnce(
+        new Error(errorMessage)
       );
 
       const result = await appService.getDatabaseConnectionStatus();
       expect(result).toBe(`データベース接続に失敗しました: ${errorMessage}`);
-      expect(PrismaClientService.$queryRaw).toHaveBeenCalled();
+      expect(prismaClientServiceMock.$queryRaw).toHaveBeenCalled();
     });
   });
 });
