@@ -1,4 +1,4 @@
-// src\lib\types.ts
+// src\types\index.ts
 
 export type PaginatedResult<T = any> = {
   data: T[];
