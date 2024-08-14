@@ -1,11 +1,11 @@
-// src/lib/prismaBase.service.ts
+// src/lib/PrismaBaseService.service.ts
 
 import { Injectable } from '@nestjs/common';
 import { PrismaClientService } from '../prisma/prisma-client.service';
 import { BaseService } from './base.service';
 
 @Injectable()
-export abstract class PrismaModelBase<T> implements BaseService<T> {
+export abstract class PrismaBaseService<T> implements BaseService<T> {
   constructor(
     protected readonly prisma: PrismaClientService,
     protected readonly modelName: string
