@@ -64,7 +64,7 @@ describe('UsersService', () => {
         where: { name: 'User' },
         orderBy: [{ name: 'asc' }], // 配列として指定
       };
-      
+
       const result = await service.findAll(params);
       expect(result).toEqual(users);
       expect(prismaClientService.user.findMany).toHaveBeenCalledWith(params);

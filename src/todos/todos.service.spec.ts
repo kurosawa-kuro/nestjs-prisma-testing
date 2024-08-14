@@ -16,16 +16,16 @@ describe('TodosService', () => {
             todo: {
               findMany: jest.fn().mockResolvedValue([
                 { id: 1, title: 'Test Todo 1', isComplete: false },
-                { id: 2, title: 'Test Todo 2', isComplete: true }
+                { id: 2, title: 'Test Todo 2', isComplete: true },
               ]),
               findUnique: jest.fn().mockResolvedValue({
                 id: 1,
                 title: 'Test Todo 1',
-                isComplete: false
-              })
-            }
-          }
-        }
+                isComplete: false,
+              }),
+            },
+          },
+        },
       ],
     }).compile();
 
@@ -42,7 +42,7 @@ describe('TodosService', () => {
       const todos = await service.all();
       expect(todos).toEqual([
         { id: 1, title: 'Test Todo 1', isComplete: false },
-        { id: 2, title: 'Test Todo 2', isComplete: true }
+        { id: 2, title: 'Test Todo 2', isComplete: true },
       ]);
       expect(prismaClientService.todo.findMany).toHaveBeenCalled();
     });
@@ -54,10 +54,10 @@ describe('TodosService', () => {
       expect(todo).toEqual({
         id: 1,
         title: 'Test Todo 1',
-        isComplete: false
+        isComplete: false,
       });
       expect(prismaClientService.todo.findUnique).toHaveBeenCalledWith({
-        where: { id: 1 }
+        where: { id: 1 },
       });
     });
   });

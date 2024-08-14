@@ -12,7 +12,10 @@ const mockPrismaClientService = {
 
 // テスト用の具体的なサービスクラス
 class TestService extends PrismaBaseService<any> {
-  constructor(prisma: PrismaClientService, @Inject('modelName') modelName: string) {
+  constructor(
+    prisma: PrismaClientService,
+    @Inject('modelName') modelName: string,
+  ) {
     super(prisma, modelName);
   }
 }
@@ -41,17 +44,19 @@ describe('PrismaBaseService - create', () => {
   it('should create a new record', async () => {
     const attributes = { name: 'test' };
     const createdRecord = { id: 1, name: 'test' };
-    
+
     // PrismaClientServiceのcreateメソッドをモックし、期待される結果を返すようにする
     mockPrismaClientService.modelName.create.mockResolvedValue(createdRecord);
 
     // PrismaBaseServiceのcreateメソッドを呼び出し、結果を確認する
     const result = await service.create(attributes);
-    
+
     // 結果が期待通りであることを確認
     expect(result).toEqual(createdRecord);
-    
+
     // PrismaClientServiceのcreateメソッドが正しい引数で呼ばれたことを確認
-    expect(mockPrismaClientService.modelName.create).toHaveBeenCalledWith({ data: attributes });
+    expect(mockPrismaClientService.modelName.create).toHaveBeenCalledWith({
+      data: attributes,
+    });
   });
 });

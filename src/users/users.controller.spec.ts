@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { User } from '@prisma/client';  // Prisma Client から User 型をインポート
+import { User } from '@prisma/client'; // Prisma Client から User 型をインポート
 import { CreateUser, UpdateUser } from './user.model';
 
 describe('UsersController', () => {
