@@ -13,8 +13,10 @@ describe('TodosService', () => {
 
   beforeEach(async () => {
     // Using setupTestModule to initialize the service and mock Prisma service
-    const { service: todosService, PrismaClientService: mockPrismaClientService } =
-      await setupTestModule(TodosService, 'todo');
+    const {
+      service: todosService,
+      PrismaClientService: mockPrismaClientService,
+    } = await setupTestModule(TodosService, 'todo');
     service = todosService;
     PrismaClientService = mockPrismaClientService;
   });
@@ -54,7 +56,9 @@ describe('TodosService', () => {
         },
       ];
 
-      jest.spyOn(PrismaClientService.todo, 'findMany').mockResolvedValue(mockTodos);
+      jest
+        .spyOn(PrismaClientService.todo, 'findMany')
+        .mockResolvedValue(mockTodos);
 
       const result = await service.findAllWithUser();
 

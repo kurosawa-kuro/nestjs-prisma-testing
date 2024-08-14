@@ -9,7 +9,10 @@ import { PrismaClientService } from '@/prisma/prisma-client.service';
 export const setupTestModule = async <T>(
   ServiceClass: new (...args: any[]) => T,
   modelName: string,
-): Promise<{ service: T; PrismaClientService: jest.Mocked<PrismaClientService> }> => {
+): Promise<{
+  service: T;
+  PrismaClientService: jest.Mocked<PrismaClientService>;
+}> => {
   const module: TestingModule = await Test.createTestingModule({
     providers: [
       ServiceClass,

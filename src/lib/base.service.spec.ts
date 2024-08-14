@@ -47,7 +47,9 @@ describe('BaseService', () => {
         {
           provide: TestService,
           useFactory: () =>
-            new TestService(mockPrismaClientService as unknown as PrismaClientService),
+            new TestService(
+              mockPrismaClientService as unknown as PrismaClientService,
+            ),
         },
         {
           provide: PrismaClientService,
@@ -57,7 +59,9 @@ describe('BaseService', () => {
     }).compile();
 
     service = module.get<TestService>(TestService);
-    PrismaClientService = module.get(PrismaClientService) as unknown as MockPrismaClientService;
+    PrismaClientService = module.get(
+      PrismaClientService,
+    ) as unknown as MockPrismaClientService;
   });
 
   describe('all', () => {

@@ -20,8 +20,10 @@ describe('UsersService', () => {
   >;
 
   beforeEach(async () => {
-    const { service: userService, PrismaClientService: mockPrismaClientService } =
-      await setupTestModule(UsersService, 'user');
+    const {
+      service: userService,
+      PrismaClientService: mockPrismaClientService,
+    } = await setupTestModule(UsersService, 'user');
     service = userService;
     PrismaClientService = mockPrismaClientService;
   });
@@ -110,7 +112,9 @@ describe('UsersService', () => {
       const totalUsers = 2;
 
       jest.spyOn(PrismaClientService.user, 'findMany').mockResolvedValue(users);
-      jest.spyOn(PrismaClientService.user, 'count').mockResolvedValue(totalUsers);
+      jest
+        .spyOn(PrismaClientService.user, 'count')
+        .mockResolvedValue(totalUsers);
 
       const result = await service.paginate(page, perPage);
 

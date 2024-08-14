@@ -30,7 +30,9 @@ describe('AppService', () => {
 
   describe('getDatabaseConnectionStatus', () => {
     it('データベース接続に成功した場合、成功メッセージを返すべき', async () => {
-      (PrismaClientService.$queryRaw as jest.Mock).mockResolvedValue([{ 1: 1 }]);
+      (PrismaClientService.$queryRaw as jest.Mock).mockResolvedValue([
+        { 1: 1 },
+      ]);
 
       const result = await appService.getDatabaseConnectionStatus();
       expect(result).toBe('データベース接続に成功しました！');

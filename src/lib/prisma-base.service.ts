@@ -8,7 +8,7 @@ import { BaseService } from './base.service';
 export abstract class PrismaBaseService<T> implements BaseService<T> {
   constructor(
     protected readonly prisma: PrismaClientService,
-    protected readonly modelName: string
+    protected readonly modelName: string,
   ) {}
 
   protected get model() {
