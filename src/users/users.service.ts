@@ -4,7 +4,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { User, Prisma } from '@prisma/client';
 
 @Injectable()
-export class UsersService extends BaseService<User, 'user'> {
+export class UsersService extends BaseService<User> {
   constructor(prisma: PrismaService) {
     super(prisma, 'user');
   }
@@ -20,10 +20,14 @@ export class UsersService extends BaseService<User, 'user'> {
     where?: Prisma.UserWhereInput;
     orderBy?: Prisma.UserOrderByWithRelationInput;
   }): Promise<User[]> {
-    return this.model.findMany(params);
+    return this.all(params);
   }
 
   async updateAvatar(id: number, avatarUrl: string): Promise<User> {
     return this.update(id, { avatar: avatarUrl });
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.findBy({ email });
   }
 }
