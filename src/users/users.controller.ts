@@ -1,5 +1,3 @@
-// src/users/users.controller.ts
-
 import {
   Controller,
   Get,
@@ -13,32 +11,59 @@ import {
   UploadedFile,
   BadRequestException,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUser, UpdateUser } from './user.model';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiBody({
+    description: 'The user to be created',
+    schema: {
+      example: {
+        name: 'John Doe',
+        email: 'john@example.com',
+        password: 'Password123!',
+      },
+    },
+  })
+  @ApiResponse({ status: 201, description: 'The user has been successfully created.' })
+  @ApiResponse({ status: 400, description: 'Bad request.' })
   create(@Body() createUser: CreateUser) {
     return this.usersService.create(createUser);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ status: 200, description: 'Return all users.', type: [CreateUser] })
+  @ApiResponse({ status: 400, description: 'Bad request.' })
   index() {
     return this.usersService.all();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a user by ID' })
+  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
+  @ApiResponse({ status: 200, description: 'The user has been successfully retrieved.', type: CreateUser })
+  @ApiResponse({ status: 404, description: 'User not found.' })
   show(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.find(id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update a user by ID' })
+  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
+  @ApiBody({ type: UpdateUser })
+  @ApiResponse({ status: 200, description: 'The user has been successfully updated.', type: CreateUser })
+  @ApiResponse({ status: 404, description: 'User not found.' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUser: UpdateUser,
@@ -47,6 +72,10 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a user by ID' })
+  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
+  @ApiResponse({ status: 200, description: 'The user has been successfully deleted.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.destroy(id);
   }
@@ -78,6 +107,10 @@ export class UsersController {
       },
     }),
   )
+  @ApiOperation({ summary: 'Upload avatar for a user' })
+  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
+  @ApiResponse({ status: 200, description: 'The avatar has been successfully uploaded.', type: Object })
+  @ApiResponse({ status: 400, description: 'Bad request.' })
   async uploadAvatar(
     @Param('id', ParseIntPipe) id: number,
     @UploadedFile() file: Express.Multer.File,

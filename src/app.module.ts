@@ -6,12 +6,14 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service'; // 追加
+import { TodosModule } from './todos/todos.module';
 
 @Module({
   imports: [
+    PrismaModule,
     AuthModule,
     UsersModule,
-    PrismaModule,
+    TodosModule, 
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
