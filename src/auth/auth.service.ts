@@ -55,8 +55,10 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
 
-    const { password, ...result } = user;
-    return result;
+    // Exclude password without using destructuring
+    return Object.fromEntries(
+      Object.entries(user).filter(([key]) => key !== 'password'),
+    );
   }
 
   logout(response: Response) {
