@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
 import { UsersService } from '@/users/users.service';
 import * as bcrypt from 'bcryptjs';
-import { TokenUtility } from '../helpers/token.utility';
+import { TokenUtility } from '../helpers/token.util';
 import { RegisterDto } from './auth.model';
 
 @Injectable()
