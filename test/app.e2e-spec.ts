@@ -1,40 +1,50 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { INestApplication } from '@nestjs/common';
-// import * as request from 'supertest';
-// import { AppModule } from '@/app.module';
-// import { PrismaClientService } from '@/prisma/prisma-client.service';
+// test/users.e2e-spec.ts
 
-// describe('AppController (e2e)', () => {
-//   let app: INestApplication;
-//   let PrismaClientService: PrismaClientService;
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
 
-//   beforeAll(async () => {
-//     const moduleFixture: TestingModule = await Test.createTestingModule({
-//       imports: [AppModule],
-//     }).compile();
+// Internal modules
+import { AppModule } from '@/app.module';
+import { PrismaClientService } from '@/prisma/prisma-client.service';
+import { CreateUser } from '@/users/user.model';
 
-//     app = moduleFixture.createNestApplication();
-//     await app.init();
+describe('UsersController (e2e)', () => {
+  let app: INestApplication;
+  let prismaClientService: PrismaClientService;
 
-//     PrismaClientService = app.get<PrismaClientService>(PrismaClientService);
-//   });
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
 
-//   afterAll(async () => {
-//     await PrismaClientService.$disconnect();
-//     await app.close();
-//   });
+    app = moduleFixture.createNestApplication();
+    await app.init();
+    prismaClientService = app.get<PrismaClientService>(PrismaClientService); // 修正
+  });
 
-//   beforeEach(async () => {
-//     // Clean the database before each test
-//     await PrismaClientService.cleanDatabase();
-//   });
+  afterAll(async () => {
+    await prismaClientService.$disconnect();
+    await app.close();
+  });
 
-//   it('/ (GET)', () => {
-//     return request(app.getHttpServer())
-//       .get('/')
-//       .expect(200)
-//       .expect('データベース接続に成功しました！');
-//   });
+  beforeEach(async () => {
+    // Clean the database before each test
+    await prismaClientService.user.deleteMany({});
+    await prismaClientService.todo.deleteMany({});
+  });
 
-//   // Add more test cases here
-// });
+  it('/ (GET)', async () => {
+
+    const response = await request(app.getHttpServer())
+      .get('/')
+      .expect(200);
+
+    // expect(Array.isArray(response.body)).toBe(true);
+    // expect(response.body.length).toBeGreaterThan(0);
+    // expect(response.body[0]).toHaveProperty('id');
+    // expect(response.body[0]).toHaveProperty('name');
+    // expect(response.body[0]).toHaveProperty('email');
+    // expect(response.body[0]).not.toHaveProperty('password');
+  });
+});
