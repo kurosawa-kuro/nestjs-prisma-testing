@@ -18,10 +18,11 @@ export class UsersService extends PrismaBaseService<User> {
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;
     where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
+    orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]; // 修正点
   }): Promise<User[]> {
     return this.all(params);
   }
+  
 
   async updateAvatar(id: number, avatarUrl: string): Promise<User> {
     return this.update(id, { avatar: avatarUrl });

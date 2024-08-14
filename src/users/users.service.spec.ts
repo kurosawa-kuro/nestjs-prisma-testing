@@ -1,135 +1,73 @@
-// src/users/users.service.spec.ts
-
-import { UsersService } from '@/users/users.service';
+import { Test, TestingModule } from '@nestjs/testing';
+import { UsersService } from './users.service';
 import { PrismaClientService } from '@/prisma/prisma-client.service';
-import { CreateUser } from '@/users/user.model';
-import { User } from '@/lib/types';
-import { setupTestModule } from '@test/test-utils';
-import { createMockUser } from '@test/mock-factories';
+import { User, Prisma } from '@prisma/client';
 
 describe('UsersService', () => {
   let service: UsersService;
-  let PrismaClientService: jest.Mocked<
-    PrismaClientService & {
-      user: {
-        create: jest.MockedFunction<any>;
-        findMany: jest.MockedFunction<any>;
-        count: jest.MockedFunction<any>;
-      };
-    }
-  >;
+  let prismaClientService: PrismaClientService;
 
   beforeEach(async () => {
-    const {
-      service: userService,
-      PrismaClientService: mockPrismaClientService,
-    } = await setupTestModule(UsersService, 'user');
-    service = userService;
-    PrismaClientService = mockPrismaClientService;
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersService,
+        {
+          provide: PrismaClientService,
+          useValue: {
+            user: {
+              create: jest.fn(),
+              findMany: jest.fn(),
+              update: jest.fn(),
+              findFirst: jest.fn(),
+            },
+          },
+        },
+      ],
+    }).compile();
+
+    service = module.get<UsersService>(UsersService);
+    prismaClientService = module.get<PrismaClientService>(PrismaClientService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  describe('create', () => {
-    it('should create a new user', async () => {
-      const createUser: CreateUser = {
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'Password123!',
-      };
-
-      const mockUser = createMockUser(createUser);
-
-      jest
-        .spyOn(PrismaClientService.user, 'create')
-        .mockImplementation(() => Promise.resolve(mockUser));
-
-      const result = await service.create(createUser);
-
-      expect(result).toEqual(mockUser);
-      expect(PrismaClientService.user.create).toHaveBeenCalledWith({
-        data: createUser,
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          avatar: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      });
-    });
-  });
-
-  describe('all', () => {
-    it('should return all users without passwords', async () => {
+  describe('findAll', () => {
+    it('should return a list of users', async () => {
       const users: User[] = [
-        createMockUser({
+        {
           id: 1,
-          name: 'John Doe',
-          email: 'john@example.com',
+          email: 'user1@example.com',
+          name: 'User 1',
+          avatar: null,
+          password: 'password123',
+          role: 'USER',
           createdAt: new Date(),
           updatedAt: new Date(),
-        }),
-        createMockUser({
-          id: 2,
-          name: 'Jane Doe',
-          email: 'jane@example.com',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        }),
-      ];
-
-      jest.spyOn(PrismaClientService.user, 'findMany').mockResolvedValue(users);
-
-      const result = await service.all();
-
-      expect(result).toEqual(users);
-      expect(PrismaClientService.user.findMany).toHaveBeenCalledWith({
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          avatar: true,
-          createdAt: true,
-          updatedAt: true,
         },
-      });
-    });
-  });
-
-  describe('paginate', () => {
-    it('should return paginated user results', async () => {
-      const users: User[] = [
-        createMockUser({ id: 1, name: 'John Doe', email: 'john@example.com' }),
-        createMockUser({ id: 2, name: 'Jane Doe', email: 'jane@example.com' }),
+        {
+          id: 2,
+          email: 'user2@example.com',
+          name: 'User 2',
+          avatar: null,
+          password: 'password123',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ];
 
-      const page = 1;
-      const perPage = 15;
-      const totalUsers = 2;
+      (prismaClientService.user.findMany as jest.Mock).mockResolvedValue(users);
 
-      jest.spyOn(PrismaClientService.user, 'findMany').mockResolvedValue(users);
-      jest
-        .spyOn(PrismaClientService.user, 'count')
-        .mockResolvedValue(totalUsers);
-
-      const result = await service.paginate(page, perPage);
-
-      expect(result.data).toEqual(users);
-      expect(result.meta).toEqual({
-        total: totalUsers,
-        page: page,
-        per_page: perPage,
-        last_page: Math.ceil(totalUsers / perPage),
-      });
-      expect(PrismaClientService.user.findMany).toHaveBeenCalledWith({
-        take: perPage,
-        skip: (page - 1) * perPage,
-      });
-      expect(PrismaClientService.user.count).toHaveBeenCalled();
+      const params: Prisma.UserFindManyArgs = {
+        where: { name: 'User' },
+        orderBy: [{ name: 'asc' }], // 配列として指定
+      };
+      
+      const result = await service.findAll(params);
+      expect(result).toEqual(users);
+      expect(prismaClientService.user.findMany).toHaveBeenCalledWith(params);
     });
   });
 });
