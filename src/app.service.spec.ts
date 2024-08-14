@@ -17,7 +17,8 @@ describe('AppService', () => {
         AppService,
         {
           provide: PrismaClientService, // この行はそのままで良いです
-          useValue: { // モックの具体的な値
+          useValue: {
+            // モックの具体的な値
             $queryRaw: jest.fn().mockResolvedValue([{ 1: 1 }]), // デフォルトのモック実装を設定
           },
         },
@@ -25,7 +26,8 @@ describe('AppService', () => {
     }).compile();
 
     appService = module.get<AppService>(AppService);
-    prismaClientServiceMock = module.get<PrismaClientService>(PrismaClientService); // 変数名を変更
+    prismaClientServiceMock =
+      module.get<PrismaClientService>(PrismaClientService); // 変数名を変更
   });
 
   describe('getDatabaseConnectionStatus', () => {
@@ -38,7 +40,7 @@ describe('AppService', () => {
     it('データベース接続に失敗した場合、エラーメッセージを返すべき', async () => {
       const errorMessage = 'Connection failed';
       (prismaClientServiceMock.$queryRaw as jest.Mock).mockRejectedValueOnce(
-        new Error(errorMessage)
+        new Error(errorMessage),
       );
 
       const result = await appService.getDatabaseConnectionStatus();

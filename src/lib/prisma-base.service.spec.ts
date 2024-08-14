@@ -51,7 +51,9 @@ describe('PrismaBaseService', () => {
 
       const result = await service.create(newItem);
       expect(result).toEqual(newItem);
-      expect((prismaService as any).test.create).toHaveBeenCalledWith({ data: newItem });
+      expect((prismaService as any).test.create).toHaveBeenCalledWith({
+        data: newItem,
+      });
     });
   });
 });
