@@ -3,7 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
-import { RegisterDto } from './auth.model';
+import { CreateUser } from './auth.model';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthController', () => {
@@ -48,7 +48,7 @@ describe('AuthController', () => {
 
   describe('register', () => {
     it('should call AuthService.register with RegisterDto', async () => {
-      const dto = new RegisterDto();
+      const dto = new CreateUser();
       dto.name = 'John Doe';
       dto.email = 'john@example.com';
       dto.password = 'password';

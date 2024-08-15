@@ -8,7 +8,7 @@ import { Request, Response } from 'express';
 import { UsersService } from '@/users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { TokenUtility } from '../helpers/token.util';
-import { RegisterDto } from './auth.model';
+import { CreateUser } from './auth.model';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +17,7 @@ export class AuthService {
     private usersService: UsersService,
   ) {}
 
-  async register(registerDto: RegisterDto) {
+  async register(registerDto: CreateUser) {
     if (registerDto.password !== registerDto.passwordConfirm) {
       throw new BadRequestException('Passwords do not match!');
     }

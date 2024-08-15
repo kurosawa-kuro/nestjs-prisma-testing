@@ -1,3 +1,5 @@
+// src\auth\auth.model.ts
+
 import {
   IsEmail,
   IsNotEmpty,
@@ -6,7 +8,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-export class RegisterDto {
+export class CreateUser {
   @IsNotEmpty()
   @IsString()
   @MinLength(2)
