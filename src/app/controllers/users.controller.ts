@@ -35,48 +35,51 @@ export class UsersController extends BaseController<CreateUser> {
     super(usersService, 'User');
   }
 
+  @Post()
+  @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({
-    description: 'The user to be created',
-    schema: {
-      example: {
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'Password123!',
+    type: CreateUser,
+    description: 'User creation data',
+    examples: {
+      user: {
+        summary: 'New user example',
+        value: {
+          name: 'John Doe',
+          email: 'john@example.com',
+          password: 'Password123!',
+        },
       },
     },
   })
-  @ApiResponse({
-    status: 201,
-    description: 'The user has been successfully created.',
-  })
-  @ApiResponse({ status: 400, description: 'Bad request.' })
   create(@Body() createUser: CreateUser) {
     return super.create(createUser);
   }
 
-  @ApiResponse({
-    status: 200,
-    description: 'Return all users.',
-    type: [CreateUser],
-  })
+  @ApiOperation({ summary: 'Get all users' })
   findAll() {
     return super.findAll();
   }
 
-  @ApiResponse({
-    status: 200,
-    description: 'The user has been successfully retrieved.',
-    type: CreateUser,
-  })
+  @ApiOperation({ summary: 'Get a user by ID' })
+  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return super.findOne(id);
   }
 
-  @ApiBody({ type: UpdateUser })
-  @ApiResponse({
-    status: 200,
-    description: 'The user has been successfully updated.',
-    type: CreateUser,
+  @ApiOperation({ summary: 'Update a user by ID' })
+  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
+  @ApiBody({
+    type: UpdateUser,
+    description: 'User update data',
+    examples: {
+      user: {
+        summary: 'Update user example',
+        value: {
+          name: 'John Updated',
+          email: 'john.updated@example.com',
+        },
+      },
+    },
   })
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -85,10 +88,8 @@ export class UsersController extends BaseController<CreateUser> {
     return super.update(id, updateUser as CreateUser);
   }
 
-  @ApiResponse({
-    status: 200,
-    description: 'The user has been successfully deleted.',
-  })
+  @ApiOperation({ summary: 'Delete a user by ID' })
+  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return super.remove(id);
   }
