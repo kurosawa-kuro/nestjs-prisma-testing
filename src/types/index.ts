@@ -17,6 +17,7 @@ export type UserWithoutPassword = {
   name: string;
   email: string;
   avatar: string | null;
+  role: string;
   createdAt: Date;
   updatedAt: Date;
 };
