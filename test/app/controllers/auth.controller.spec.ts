@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { CreateUser } from '@/app/models/auth.model';
 import { AuthGuard } from '@/app/guards/auth.guard';
+import { BadRequestException } from '@nestjs/common';
 
 // Update MockAuthService interface
 interface MockAuthService {
@@ -95,6 +96,19 @@ describe('AuthController', () => {
         httpOnly: true,
       });
     });
+
+    it('should throw BadRequestException when login fails', async () => {
+      const mockResponse = { cookie: jest.fn() } as unknown as Response;
+      authService.login.mockRejectedValue(new Error('Login error'));
+
+      await expect(
+        controller.login('email@example.com', 'password', mockResponse)
+      ).rejects.toThrow(BadRequestException);
+      expect(authService.login).toHaveBeenCalledWith(
+        'email@example.com',
+        'password'
+      );
+    });
   });
 
   describe('user', () => {
@@ -126,6 +140,16 @@ describe('AuthController', () => {
       expect(authService.logout).toHaveBeenCalledWith(mockResponse);
       expect(result).toEqual({ message: 'Success' });
       expect(mockResponse.clearCookie).toHaveBeenCalledWith('jwt');
+    });
+
+    it('should throw BadRequestException when logout fails', async () => {
+      const mockResponse = { clearCookie: jest.fn() } as unknown as Response;
+      authService.logout.mockImplementation(() => {
+        throw new Error('Logout error');
+      });
+
+      await expect(controller.logout(mockResponse)).rejects.toThrow(BadRequestException);
+      expect(authService.logout).toHaveBeenCalledWith(mockResponse);
     });
   });
 });
