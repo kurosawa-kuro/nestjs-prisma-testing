@@ -10,17 +10,17 @@ export type PaginatedResult<T = any> = {
   };
 };
 
-export type UserPaginatedResult = PaginatedResult<Partial<User>>;
+export type UserPaginatedResult = PaginatedResult<Partial<UserWithoutPassword>>;
 
-export interface User {
+export type UserWithoutPassword = {
   id: number;
   name: string;
   email: string;
   avatar: string | null;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
-export type UserWithPassword = User & {
+export type UserWithPassword = UserWithoutPassword & {
   password: string;
 };

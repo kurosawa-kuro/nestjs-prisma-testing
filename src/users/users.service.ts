@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaBaseService } from '@/lib/prisma-base.service';
 import { PrismaClientService } from '@/prisma/prisma-client.service';
 import { User, Prisma } from '@prisma/client';
+import { UserWithoutPassword } from '@/types'; 
+
 
 @Injectable()
 export class UsersService extends PrismaBaseService<User> {
@@ -9,7 +11,7 @@ export class UsersService extends PrismaBaseService<User> {
     super(prisma, 'user');
   }
 
-  async createUser(data: Prisma.UserCreateInput): Promise<User> {
+  async createUser(data: Prisma.UserCreateInput): Promise<UserWithoutPassword> {
     return this.create(data);
   }
 
@@ -21,11 +23,11 @@ export class UsersService extends PrismaBaseService<User> {
     orderBy?:
       | Prisma.UserOrderByWithRelationInput
       | Prisma.UserOrderByWithRelationInput[]; // 修正点
-  }): Promise<User[]> {
+  }): Promise<UserWithoutPassword[]> {
     return this.all(params);
   }
 
-  async updateAvatar(id: number, avatarUrl: string): Promise<User> {
+  async updateAvatar(id: number, avatarUrl: string): Promise<UserWithoutPassword> {
     return this.update(id, { avatar: avatarUrl });
   }
 

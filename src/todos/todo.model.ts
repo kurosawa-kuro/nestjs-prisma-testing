@@ -1,7 +1,7 @@
 import { IsString, IsNumber, IsOptional } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { Todo } from '@prisma/client';
-import { User } from '@/types'; // パスを更新
+import { UserWithoutPassword } from '@/types'; // パスを更新
 
 export class CreateTodo {
   @IsNumber()
@@ -22,5 +22,5 @@ export class UpdateTodo extends PartialType(CreateTodo) {
 }
 
 export type TodoWithUser = Todo & {
-  user?: User;
+  user?: UserWithoutPassword;
 };
