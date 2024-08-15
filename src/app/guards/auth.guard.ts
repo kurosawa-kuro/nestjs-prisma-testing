@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { TokenUtility } from '@/helpers/token.util';
+import { TokenUtility } from '@/app/helpers/token.util';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
