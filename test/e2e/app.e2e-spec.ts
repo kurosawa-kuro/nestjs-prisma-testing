@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 
 // Internal modules
-import { AppModule } from '@/app/modules/app.module';
+import { AppModule } from '@/config/app.module';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 
 describe('UsersController (e2e)', () => {

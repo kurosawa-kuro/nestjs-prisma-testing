@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users.module';
+import { UsersModule } from '@/config/users.module';
 import { PrismaModule } from '@/orm/prisma.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth.module';
-import { AppController } from '../controllers/app.controller';
+import { AppController } from '@/app/controllers/app.controller';
 import { AppService } from '@/app/services/app.service'; // 追加
-import { TodosModule } from './todos.module';
+import { TodosModule } from '@/config/todos.module';
 
 @Module({
   imports: [

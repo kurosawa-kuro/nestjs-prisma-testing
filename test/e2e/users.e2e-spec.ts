@@ -6,7 +6,7 @@ import * as request from 'supertest';
 import { cleanDatabase } from '../util/prisma-cleanup';
 
 // Internal modules
-import { AppModule } from '@/app/modules/app.module';
+import { AppModule } from '@/config/app.module';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 import { CreateUser } from '@/app/models/user.model';
 
