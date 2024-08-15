@@ -1,21 +1,24 @@
 import { 
   Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, 
-  UseInterceptors, UploadedFile, BadRequestException
+  UseInterceptors, UploadedFile, BadRequestException, Inject
 } from '@nestjs/common';
 import { 
   ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiConsumes
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { Express } from 'express';
 
 import { UsersService } from './users.service';
 import { CreateUser, UpdateUser } from './user.model';
+import { FileUploadService } from './file-upload.service';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    @Inject('FileUploadService') private readonly fileUploadService: FileUploadService
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
@@ -75,32 +78,7 @@ export class UsersController {
   }
 
   @Post(':id/avatar')
-  @UseInterceptors(
-    FileInterceptor('avatar', {
-      storage: diskStorage({
-        destination: './uploads/avatars',
-        filename: (req, file, callback) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          return callback(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-      fileFilter: (req, file, callback) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-          return callback(
-            new BadRequestException('Only image files are allowed!'),
-            false,
-          );
-        }
-        callback(null, true);
-      },
-      limits: {
-        fileSize: 1024 * 1024 * 5, // 5MB
-      },
-    }),
-  )
+  @UseInterceptors(FileInterceptor('avatar'))
   @ApiOperation({ summary: 'Upload avatar for a user' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -124,7 +102,16 @@ export class UsersController {
     if (!file) {
       throw new BadRequestException('File is required');
     }
-    const avatarUrl = `/uploads/avatars/${file.filename}`;
+
+    const isValid = this.fileUploadService.validateFile(file);
+    if (!isValid) {
+      throw new BadRequestException('Only image files are allowed!');
+    }
+
+    const filename = this.fileUploadService.generateFilename(file);
+    await this.fileUploadService.saveFile(file, filename);
+
+    const avatarUrl = `/uploads/avatars/${filename}`;
     const updatedUser = await this.usersService.updateAvatar(id, avatarUrl);
     return { avatarUrl: updatedUser.avatar };
   }

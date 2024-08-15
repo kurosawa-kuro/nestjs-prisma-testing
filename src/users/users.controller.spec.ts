@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { FileUploadService } from './file-upload.service';
 import { User } from '@prisma/client';
 import { CreateUser, UpdateUser } from './user.model';
 import { BadRequestException } from '@nestjs/common';
@@ -8,6 +9,7 @@ import { BadRequestException } from '@nestjs/common';
 describe('UsersController', () => {
   let controller: UsersController;
   let service: UsersService;
+  let fileUploadService: FileUploadService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,11 +26,20 @@ describe('UsersController', () => {
             updateAvatar: jest.fn(),
           },
         },
+        {
+          provide: 'FileUploadService',
+          useValue: {
+            generateFilename: jest.fn(),
+            validateFile: jest.fn(),
+            saveFile: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
     service = module.get<UsersService>(UsersService);
+    fileUploadService = module.get('FileUploadService');
   });
 
   it('should create a user', async () => {
@@ -136,34 +147,57 @@ describe('UsersController', () => {
     expect(service.destroy).toHaveBeenCalledWith(1);
   });
 
-  // 新しく追加したテストケース
   describe('uploadAvatar', () => {
     it('should upload an avatar for a user', async () => {
-      const file = {
-        filename: 'avatar.jpg',
+      const mockFile = { 
+        buffer: Buffer.from('test'),
+        originalname: 'test.jpg',
+        mimetype: 'image/jpeg'
       } as Express.Multer.File;
-
+      
+      const expectedFilename = 'generated-filename.jpg';
+      const expectedAvatarUrl = `/uploads/avatars/${expectedFilename}`;
+      
       const expectedResult: User = {
         id: 1,
         name: 'John Doe',
         email: 'john.doe@example.com',
         password: 'hashedpassword',
-        avatar: '/uploads/avatars/avatar.jpg',
+        avatar: expectedAvatarUrl,
         role: 'user',
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
-      jest.spyOn(service, 'updateAvatar').mockResolvedValue(expectedResult);
+      (fileUploadService.validateFile as jest.Mock).mockReturnValue(true);
+      (fileUploadService.generateFilename as jest.Mock).mockReturnValue(expectedFilename);
+      (fileUploadService.saveFile as jest.Mock).mockResolvedValue(undefined);
+      (service.updateAvatar as jest.Mock).mockResolvedValue(expectedResult);
 
-      const result = await controller.uploadAvatar(1, file);
+      const result = await controller.uploadAvatar(1, mockFile);
 
       expect(result).toEqual({ avatarUrl: expectedResult.avatar });
-      expect(service.updateAvatar).toHaveBeenCalledWith(1, '/uploads/avatars/avatar.jpg');
+      expect(fileUploadService.validateFile).toHaveBeenCalledWith(mockFile);
+      expect(fileUploadService.generateFilename).toHaveBeenCalledWith(mockFile);
+      expect(fileUploadService.saveFile).toHaveBeenCalledWith(mockFile, expectedFilename);
+      expect(service.updateAvatar).toHaveBeenCalledWith(1, expectedAvatarUrl);
     });
 
     it('should throw BadRequestException when no file is provided', async () => {
       await expect(controller.uploadAvatar(1, undefined)).rejects.toThrow(BadRequestException);
+    });
+
+    it('should throw BadRequestException when file is not an image', async () => {
+      const mockFile = { 
+        buffer: Buffer.from('test'),
+        originalname: 'test.txt',
+        mimetype: 'text/plain'
+      } as Express.Multer.File;
+
+      (fileUploadService.validateFile as jest.Mock).mockReturnValue(false);
+
+      await expect(controller.uploadAvatar(1, mockFile)).rejects.toThrow(BadRequestException);
+      expect(fileUploadService.validateFile).toHaveBeenCalledWith(mockFile);
     });
   });
 });
