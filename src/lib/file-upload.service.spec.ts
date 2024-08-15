@@ -1,4 +1,4 @@
-import { FileUploadService } from './file-upload.service';
+import { FileUploadService } from '@/lib/file-upload.service';
 import * as crypto from 'crypto';
 
 jest.mock('fs/promises');
