@@ -50,11 +50,15 @@ describe('UsersService', () => {
         updatedAt: new Date(),
       };
 
-      (prismaClientService.user.create as jest.Mock).mockResolvedValue(createdUser);
+      (prismaClientService.user.create as jest.Mock).mockResolvedValue(
+        createdUser,
+      );
 
       const result = await service.createUser(userData);
       expect(result).toEqual(createdUser);
-      expect(prismaClientService.user.create).toHaveBeenCalledWith({ data: userData });
+      expect(prismaClientService.user.create).toHaveBeenCalledWith({
+        data: userData,
+      });
     });
   });
 
@@ -112,7 +116,9 @@ describe('UsersService', () => {
         updatedAt: new Date(),
       };
 
-      (prismaClientService.user.update as jest.Mock).mockResolvedValue(updatedUser);
+      (prismaClientService.user.update as jest.Mock).mockResolvedValue(
+        updatedUser,
+      );
 
       const result = await service.updateAvatar(userId, avatarUrl);
       expect(result).toEqual(updatedUser);

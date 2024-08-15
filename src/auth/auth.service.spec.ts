@@ -60,7 +60,9 @@ describe('AuthService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      const createUserSpy = jest.spyOn(usersService, 'createUser').mockResolvedValue(mockUser);
+      const createUserSpy = jest
+        .spyOn(usersService, 'createUser')
+        .mockResolvedValue(mockUser);
       await authService.register({
         name: 'Test User',
         email: 'test@example.com',
@@ -78,7 +80,9 @@ describe('AuthService', () => {
   describe('login', () => {
     it('should throw UnauthorizedException if user not found', async () => {
       jest.spyOn(usersService, 'findByEmail').mockResolvedValue(null);
-      await expect(authService.login('test@example.com', 'password123')).rejects.toThrow(UnauthorizedException);
+      await expect(
+        authService.login('test@example.com', 'password123'),
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should return user and token if credentials are valid', async () => {
@@ -93,7 +97,10 @@ describe('AuthService', () => {
         updatedAt: new Date(),
       };
       jest.spyOn(usersService, 'findByEmail').mockResolvedValue(mockUser);
-      const loginResult = await authService.login('test@example.com', 'password123');
+      const loginResult = await authService.login(
+        'test@example.com',
+        'password123',
+      );
       expect(loginResult).toEqual({ user: mockUser, token: 'token' });
     });
   });
@@ -101,7 +108,11 @@ describe('AuthService', () => {
   describe('getCurrentUser', () => {
     it('should throw UnauthorizedException if user not found', async () => {
       jest.spyOn(usersService, 'find').mockResolvedValue(null);
-      await expect(authService.getCurrentUser({ headers: { authorization: 'Bearer token' } } as any)).rejects.toThrow(UnauthorizedException);
+      await expect(
+        authService.getCurrentUser({
+          headers: { authorization: 'Bearer token' },
+        } as any),
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should return user without password', async () => {
@@ -116,7 +127,9 @@ describe('AuthService', () => {
         updatedAt: new Date(),
       };
       jest.spyOn(usersService, 'find').mockResolvedValue(mockUser);
-      const user = await authService.getCurrentUser({ headers: { authorization: 'Bearer token' } } as any);
+      const user = await authService.getCurrentUser({
+        headers: { authorization: 'Bearer token' },
+      } as any);
       // expect(user).toEqual({
       //   id: 1,
       //   name: 'Test User',
@@ -129,7 +142,7 @@ describe('AuthService', () => {
     it('should clear the jwt cookie from the response', () => {
       const mockResponse = {
         clearCookie: jest.fn(),
-      } as any;  // Typing this as 'any' to avoid detailed mock typing for Response
+      } as any; // Typing this as 'any' to avoid detailed mock typing for Response
 
       authService.logout(mockResponse);
       expect(mockResponse.clearCookie).toHaveBeenCalledWith('jwt');
