@@ -21,7 +21,9 @@ describe('AuthController', () => {
             register: jest.fn(),
             login: jest.fn(),
             getCurrentUser: jest.fn(),
-            logout: jest.fn((response: Response) => response.clearCookie('jwt')), // Ensure logout is performing action
+            logout: jest.fn((response: Response) =>
+              response.clearCookie('jwt'),
+            ), // Ensure logout is performing action
           },
         },
         {
@@ -74,15 +76,27 @@ describe('AuthController', () => {
       const loginResult = { user: { id: 1, name: 'John Doe' }, token: 'token' };
 
       jest.spyOn(authService, 'login').mockResolvedValue(loginResult);
-      expect(await controller.login('email@example.com', 'password', mockResponse)).toEqual(loginResult.user);
-      expect(authService.login).toHaveBeenCalledWith('email@example.com', 'password');
-      expect(mockResponse.cookie).toHaveBeenCalledWith('jwt', 'token', { httpOnly: true });
+      expect(
+        await controller.login('email@example.com', 'password', mockResponse),
+      ).toEqual(loginResult.user);
+      expect(authService.login).toHaveBeenCalledWith(
+        'email@example.com',
+        'password',
+      );
+      expect(mockResponse.cookie).toHaveBeenCalledWith('jwt', 'token', {
+        httpOnly: true,
+      });
     });
   });
 
   describe('user', () => {
     it('should call AuthService.getCurrentUser and return result', async () => {
-      const req = { user: { id: 1 }, headers: {}, params: {}, query: {} } as unknown as Request;
+      const req = {
+        user: { id: 1 },
+        headers: {},
+        params: {},
+        query: {},
+      } as unknown as Request;
       const expectedUser = { id: 1, name: 'John Doe' };
       jest.spyOn(authService, 'getCurrentUser').mockResolvedValue(expectedUser);
 
@@ -94,7 +108,7 @@ describe('AuthController', () => {
   describe('logout', () => {
     it('should call AuthService.logout and return success message', async () => {
       const mockResponse = { clearCookie: jest.fn() } as unknown as Response;
-      
+
       // Ensure no clearCookie has been called before the actual test action
       expect(mockResponse.clearCookie).not.toHaveBeenCalled();
 
