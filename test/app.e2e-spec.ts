@@ -1,5 +1,3 @@
-// test/users.e2e-spec.ts
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
@@ -7,7 +5,6 @@ import * as request from 'supertest';
 // Internal modules
 import { AppModule } from '@/app.module';
 import { PrismaClientService } from '@/prisma/prisma-client.service';
-import { CreateUser } from '@/users/user.model';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
@@ -20,7 +17,7 @@ describe('UsersController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-    prismaClientService = app.get<PrismaClientService>(PrismaClientService); // 修正
+    prismaClientService = app.get<PrismaClientService>(PrismaClientService);
   });
 
   afterAll(async () => {
@@ -37,11 +34,12 @@ describe('UsersController (e2e)', () => {
   it('/ (GET)', async () => {
     const response = await request(app.getHttpServer()).get('/').expect(200);
 
-    // expect(Array.isArray(response.body)).toBe(true);
-    // expect(response.body.length).toBeGreaterThan(0);
-    // expect(response.body[0]).toHaveProperty('id');
-    // expect(response.body[0]).toHaveProperty('name');
-    // expect(response.body[0]).toHaveProperty('email');
-    // expect(response.body[0]).not.toHaveProperty('password');
+    // Check if the response is a string
+    expect(typeof response.text).toBe('string');
+
+    // Check if the response contains the expected message
+    expect(response.text).toContain('データベース接続に成功しました！');
   });
+
+  // You can add more test cases for other endpoints here
 });
