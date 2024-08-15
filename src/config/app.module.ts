@@ -4,8 +4,6 @@ import { PrismaModule } from '@/orm/prisma.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth.module';
-import { AppController } from '@/app/controllers/app.controller';
-import { AppService } from '@/app/services/app.service'; // 追加
 import { TodosModule } from '@/config/todos.module';
 
 @Module({
@@ -19,7 +17,5 @@ import { TodosModule } from '@/config/todos.module';
       serveRoot: '/uploads',
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService], // 追加
 })
 export class AppModule {}
