@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { TodosController } from '@/todos/todos.controller';
-import { TodosService } from '@/todos/todos.service';
+import { TodosController } from '@/app/controllers/todos.controller';
+import { TodosService } from '@/app/services/todos.service';
 import { PrismaClientService } from '@/prisma/prisma-client.service';
 
 @Module({

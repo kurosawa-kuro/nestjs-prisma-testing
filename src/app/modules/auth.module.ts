@@ -1,9 +1,9 @@
 // src/auth/auth.module.ts
 
 import { Module } from '@nestjs/common';
-import { AuthController } from '@/auth/auth.controller';
-import { UsersModule } from '@/users/users.module';
-import { AuthService } from '@/auth/auth.service';
+import { AuthController } from '@/app/controllers/auth.controller';
+import { UsersModule } from '@/app/modules/users.module';
+import { AuthService } from '@/app/services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 

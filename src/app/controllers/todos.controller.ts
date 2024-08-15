@@ -17,8 +17,8 @@ import {
   ApiBody,
   ApiParam,
 } from '@nestjs/swagger';
-import { TodosService } from '@/todos/todos.service';
-import { CreateTodo, UpdateTodo } from '@/todos/todo.model';
+import { TodosService } from '@/app/services/todos.service';
+import { CreateTodo, UpdateTodo } from '@/app/models/todo.model';
 
 @ApiTags('todos')
 @Controller('todos')

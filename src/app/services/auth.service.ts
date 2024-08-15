@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
-import { UsersService } from '@/users/users.service';
+import { UsersService } from '@/app/services/users.service';
 import * as bcrypt from 'bcryptjs';
 import { TokenUtility } from '@/helpers/token.util';
-import { CreateUser } from '@/auth/auth.model';
+import { CreateUser } from '@/app/models/auth.model';
 
 @Injectable()
 export class AuthService {

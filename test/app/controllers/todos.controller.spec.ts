@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TodosController } from '@/todos/todos.controller';
-import { TodosService } from '@/todos/todos.service';
-import { CreateTodo, UpdateTodo } from '@/todos/todo.model';
+import { TodosController } from '@/app/controllers/todos.controller';
+import { TodosService } from '@/app/services/todos.service';
+import { CreateTodo, UpdateTodo } from '@/app/models/todo.model';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 
 describe('TodosController', () => {

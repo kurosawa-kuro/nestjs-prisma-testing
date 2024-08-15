@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AuthController } from '@/app/controllers/auth.controller';
+import { AuthService } from '@/app/services/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
-import { CreateUser } from './auth.model';
-import { AuthGuard } from './auth.guard';
+import { CreateUser } from '@/app/models/auth.model';
+import { AuthGuard } from '@/auth/auth.guard';
 
 describe('AuthController', () => {
   let controller: AuthController;

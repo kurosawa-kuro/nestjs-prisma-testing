@@ -4,8 +4,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 // Internal modules
-import { AppController } from '@/app.controller';
-import { AppService } from '@/app.service';
+import { AppController } from '@/app/controllers/app.controller';
+import { AppService } from '@/app/services/app.service';
 import { PrismaClientService } from '@/prisma/prisma-client.service';
 
 describe('AppController', () => {

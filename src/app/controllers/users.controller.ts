@@ -22,8 +22,8 @@ import {
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { UsersService } from './users.service';
-import { CreateUser, UpdateUser } from './user.model';
+import { UsersService } from '@/app/services/users.service';
+import { CreateUser, UpdateUser } from '@/app/models/user.model';
 import { FileUploadService } from '@/lib/file-upload.service';
 
 @ApiTags('users')

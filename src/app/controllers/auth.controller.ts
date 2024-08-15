@@ -14,8 +14,8 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@/auth/auth.guard';
-import { AuthService } from '@/auth/auth.service';
-import { CreateUser } from '@/auth/auth.model';
+import { AuthService } from '@/app/services/auth.service';
+import { CreateUser } from '@/app/models/auth.model';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 
 @ApiTags('auth')
