@@ -3,6 +3,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+import {cleanDatabase} from '../util/prisma-cleanup';
 
 // Internal modules
 import { AppModule } from '@/app.module';
@@ -29,9 +30,7 @@ describe('UsersController (e2e)', () => {
   });
 
   beforeEach(async () => {
-    // Clean the database before each test
-    await prismaClientService.user.deleteMany({});
-    await prismaClientService.todo.deleteMany({});
+    await cleanDatabase(prismaClientService);
   });
 
   it('/users (POST)', async () => {
