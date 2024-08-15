@@ -1,22 +1,16 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
-  UseInterceptors,
-  UploadedFile,
-  BadRequestException,
+import { 
+  Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, 
+  UseInterceptors, UploadedFile, BadRequestException
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
-import { UsersService } from './users.service';
-import { CreateUser, UpdateUser } from './user.model';
+import { 
+  ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiConsumes
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+
+import { UsersService } from './users.service';
+import { CreateUser, UpdateUser } from './user.model';
 
 @ApiTags('users')
 @Controller('users')
@@ -108,6 +102,18 @@ export class UsersController {
     }),
   )
   @ApiOperation({ summary: 'Upload avatar for a user' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        avatar: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   @ApiResponse({ status: 200, description: 'The avatar has been successfully uploaded.', type: Object })
   @ApiResponse({ status: 400, description: 'Bad request.' })

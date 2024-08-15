@@ -7,7 +7,7 @@ Content-Type: {{contentType}}
 
 {
   "name": "John Doe",
-  "email": "john@example.com",
+  "email": "john8@example.com",
   "password": "Password123!"
 }
 
@@ -40,7 +40,7 @@ Content-Type: {{contentType}}
 }
 
 ### アバターアップロード（IDを適切な値に変更してください）
-POST {{baseUrl}}/users/2/avatar
+POST {{baseUrl}}/users/5/avatar
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -51,4 +51,4 @@ Content-Type: image/jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ### アバターがアップロードされたユーザーの取得（IDを適切な値に変更してください）
-GET {{baseUrl}}/users/2
+GET {{baseUrl}}/users/5
