@@ -63,7 +63,8 @@ describe('UsersController', () => {
 
     jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
 
-    expect(await controller.create(createUser)).toBe(expectedResult);
+    const result = await controller.create(createUser);
+    expect(result).toEqual(expectedResult);
     expect(service.create).toHaveBeenCalledWith(createUser);
   });
 
@@ -83,7 +84,8 @@ describe('UsersController', () => {
 
     jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
 
-    expect(await controller.index()).toBe(expectedResult);
+    const result = await controller.findAll();
+    expect(result).toEqual(expectedResult);
     expect(service.all).toHaveBeenCalled();
   });
 
@@ -101,7 +103,8 @@ describe('UsersController', () => {
 
     jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
 
-    expect(await controller.show(1)).toBe(expectedResult);
+    const result = await controller.findOne(1);
+    expect(result).toEqual(expectedResult);
     expect(service.find).toHaveBeenCalledWith(1);
   });
 
@@ -125,12 +128,13 @@ describe('UsersController', () => {
 
     jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
 
-    expect(await controller.update(1, updateUser)).toBe(expectedResult);
+    const result = await controller.update(1, updateUser);
+    expect(result).toEqual(expectedResult);
     expect(service.update).toHaveBeenCalledWith(1, updateUser);
   });
 
   it('should delete a user', async () => {
-    const expectedResult: User = {
+    const deletedUser: User = {
       id: 1,
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -141,9 +145,10 @@ describe('UsersController', () => {
       updatedAt: new Date(),
     };
 
-    jest.spyOn(service, 'destroy').mockResolvedValue(expectedResult);
+    jest.spyOn(service, 'destroy').mockResolvedValue(deletedUser);
 
-    expect(await controller.remove(1)).toBe(expectedResult);
+    const result = await controller.remove(1);
+    expect(result).toEqual({ message: 'User successfully deleted' });
     expect(service.destroy).toHaveBeenCalledWith(1);
   });
 

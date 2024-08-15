@@ -1,16 +1,13 @@
 import {
   Controller,
-  Get,
   Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
   UseInterceptors,
   UploadedFile,
   BadRequestException,
   Inject,
+  Param,
+  ParseIntPipe,
+  Body,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -25,18 +22,19 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UsersService } from '@/app/services/users.service';
 import { CreateUser, UpdateUser } from '@/app/models/user.model';
 import { FileUploadService } from '@/lib/file-upload.service';
+import { BaseController } from '@/lib/base.controller';
 
 @ApiTags('users')
 @Controller('users')
-export class UsersController {
+export class UsersController extends BaseController<CreateUser> {
   constructor(
     private readonly usersService: UsersService,
     @Inject('FileUploadService')
     private readonly fileUploadService: FileUploadService,
-  ) {}
+  ) {
+    super(usersService, 'User');
+  }
 
-  @Post()
-  @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({
     description: 'The user to be created',
     schema: {
@@ -53,61 +51,46 @@ export class UsersController {
   })
   @ApiResponse({ status: 400, description: 'Bad request.' })
   create(@Body() createUser: CreateUser) {
-    return this.usersService.create(createUser);
+    return super.create(createUser);
   }
 
-  @Get()
-  @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
     status: 200,
     description: 'Return all users.',
     type: [CreateUser],
   })
-  @ApiResponse({ status: 400, description: 'Bad request.' })
-  index() {
-    return this.usersService.all();
+  findAll() {
+    return super.findAll();
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Get a user by ID' })
-  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   @ApiResponse({
     status: 200,
     description: 'The user has been successfully retrieved.',
     type: CreateUser,
   })
-  @ApiResponse({ status: 404, description: 'User not found.' })
-  show(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.find(id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return super.findOne(id);
   }
 
-  @Patch(':id')
-  @ApiOperation({ summary: 'Update a user by ID' })
-  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   @ApiBody({ type: UpdateUser })
   @ApiResponse({
     status: 200,
     description: 'The user has been successfully updated.',
     type: CreateUser,
   })
-  @ApiResponse({ status: 404, description: 'User not found.' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUser: UpdateUser,
   ) {
-    return this.usersService.update(id, updateUser);
+    return super.update(id, updateUser as CreateUser);
   }
 
-  @Delete(':id')
-  @ApiOperation({ summary: 'Delete a user by ID' })
-  @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   @ApiResponse({
     status: 200,
     description: 'The user has been successfully deleted.',
   })
-  @ApiResponse({ status: 404, description: 'User not found.' })
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.destroy(id);
+    return super.remove(id);
   }
 
   @Post(':id/avatar')
