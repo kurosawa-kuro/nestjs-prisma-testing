@@ -33,6 +33,31 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('createUser', () => {
+    it('should create a new user', async () => {
+      const userData: Prisma.UserCreateInput = {
+        email: 'newuser@example.com',
+        name: 'New User',
+        password: 'password123',
+      };
+
+      const createdUser: User = {
+        id: 1,
+        ...userData,
+        avatar: null,
+        role: 'USER',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      (prismaClientService.user.create as jest.Mock).mockResolvedValue(createdUser);
+
+      const result = await service.createUser(userData);
+      expect(result).toEqual(createdUser);
+      expect(prismaClientService.user.create).toHaveBeenCalledWith({ data: userData });
+    });
+  });
+
   describe('findAll', () => {
     it('should return a list of users', async () => {
       const users: User[] = [
@@ -62,12 +87,75 @@ describe('UsersService', () => {
 
       const params: Prisma.UserFindManyArgs = {
         where: { name: 'User' },
-        orderBy: [{ name: 'asc' }], // 配列として指定
+        orderBy: [{ name: 'asc' }],
       };
 
       const result = await service.findAll(params);
       expect(result).toEqual(users);
       expect(prismaClientService.user.findMany).toHaveBeenCalledWith(params);
+    });
+  });
+
+  describe('updateAvatar', () => {
+    it('should update user avatar', async () => {
+      const userId = 1;
+      const avatarUrl = 'http://example.com/avatar.jpg';
+
+      const updatedUser: User = {
+        id: userId,
+        email: 'user@example.com',
+        name: 'User',
+        avatar: avatarUrl,
+        password: 'password123',
+        role: 'USER',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      (prismaClientService.user.update as jest.Mock).mockResolvedValue(updatedUser);
+
+      const result = await service.updateAvatar(userId, avatarUrl);
+      expect(result).toEqual(updatedUser);
+      expect(prismaClientService.user.update).toHaveBeenCalledWith({
+        where: { id: userId },
+        data: { avatar: avatarUrl },
+      });
+    });
+  });
+
+  describe('findByEmail', () => {
+    it('should find a user by email', async () => {
+      const email = 'user@example.com';
+      const user: User = {
+        id: 1,
+        email: email,
+        name: 'User',
+        avatar: null,
+        password: 'password123',
+        role: 'USER',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      (prismaClientService.user.findFirst as jest.Mock).mockResolvedValue(user);
+
+      const result = await service.findByEmail(email);
+      expect(result).toEqual(user);
+      expect(prismaClientService.user.findFirst).toHaveBeenCalledWith({
+        where: { email },
+      });
+    });
+
+    it('should return null if user not found', async () => {
+      const email = 'nonexistent@example.com';
+
+      (prismaClientService.user.findFirst as jest.Mock).mockResolvedValue(null);
+
+      const result = await service.findByEmail(email);
+      expect(result).toBeNull();
+      expect(prismaClientService.user.findFirst).toHaveBeenCalledWith({
+        where: { email },
+      });
     });
   });
 });
