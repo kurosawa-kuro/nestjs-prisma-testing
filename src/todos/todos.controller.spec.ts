@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TodosController } from './todos.controller';
 import { TodosService } from './todos.service';
 import { CreateTodo, UpdateTodo } from './todo.model';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, BadRequestException } from '@nestjs/common';
 
 describe('TodosController', () => {
   let controller: TodosController;
@@ -41,6 +41,17 @@ describe('TodosController', () => {
       jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
 
       expect(await controller.create(createTodo)).toBe(expectedResult);
+      expect(service.create).toHaveBeenCalledWith(createTodo);
+    });
+
+    it('should throw BadRequestException if creation fails', async () => {
+      const createTodo: CreateTodo = { title: 'New Todo', userId: 1 };
+
+      jest.spyOn(service, 'create').mockImplementation(() => {
+        throw new Error('Database error');
+      });
+
+      await expect(controller.create(createTodo)).rejects.toThrow(BadRequestException);
       expect(service.create).toHaveBeenCalledWith(createTodo);
     });
   });
