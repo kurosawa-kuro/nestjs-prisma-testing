@@ -62,7 +62,7 @@ describe('UsersService', () => {
     });
   });
 
-  describe('findAll', () => {
+  describe('index', () => {
     it('should return a list of users', async () => {
       const users: User[] = [
         {
@@ -94,7 +94,7 @@ describe('UsersService', () => {
         orderBy: [{ name: 'asc' }],
       };
 
-      const result = await service.findAll(params);
+      const result = await service.index(params);
       expect(result).toEqual(users);
       expect(prismaClientService.user.findMany).toHaveBeenCalledWith(params);
     });

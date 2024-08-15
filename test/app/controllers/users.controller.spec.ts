@@ -84,7 +84,7 @@ describe('UsersController', () => {
 
     jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
 
-    const result = await controller.findAll();
+    const result = await controller.index();
     expect(result).toEqual(expectedResult);
     expect(service.all).toHaveBeenCalled();
   });
@@ -103,7 +103,7 @@ describe('UsersController', () => {
 
     jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
 
-    const result = await controller.findOne(1);
+    const result = await controller.show(1);
     expect(result).toEqual(expectedResult);
     expect(service.find).toHaveBeenCalledWith(1);
   });
@@ -147,7 +147,7 @@ describe('UsersController', () => {
 
     jest.spyOn(service, 'destroy').mockResolvedValue(deletedUser);
 
-    const result = await controller.remove(1);
+    const result = await controller.destroy(1);
     expect(result).toEqual({ message: 'User successfully deleted' });
     expect(service.destroy).toHaveBeenCalledWith(1);
   });

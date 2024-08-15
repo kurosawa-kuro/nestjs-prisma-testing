@@ -60,15 +60,15 @@ export class UsersController extends BaseController<CreateUser> {
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
-  findAll() {
-    return super.findAll();
+  index() {
+    return super.index();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a user by ID' })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return super.findOne(id);
+  show(@Param('id', ParseIntPipe) id: number) {
+    return super.show(id);
   }
 
   @Put(':id')
@@ -97,8 +97,8 @@ export class UsersController extends BaseController<CreateUser> {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return super.remove(id);
+  destroy(@Param('id', ParseIntPipe) id: number) {
+    return super.destroy(id);
   }
 
   @Post(':id/avatar')

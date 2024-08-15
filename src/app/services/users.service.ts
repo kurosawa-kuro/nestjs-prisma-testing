@@ -14,7 +14,7 @@ export class UsersService extends PrismaBaseService<User> {
     return this.create(data);
   }
 
-  async findAll(params: {
+  async index(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;

@@ -49,7 +49,7 @@ export class TodosController {
     description: 'Return all todos.',
     type: [CreateTodo],
   })
-  async findAll() {
+  async index() {
     return await this.todosService.all();
   }
 
@@ -62,7 +62,7 @@ export class TodosController {
     type: CreateTodo,
   })
   @ApiResponse({ status: 404, description: 'Todo not found.' })
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async show(@Param('id', ParseIntPipe) id: number) {
     const todo = await this.todosService.find(id);
     if (!todo) {
       throw new NotFoundException('Todo not found');
@@ -96,7 +96,7 @@ export class TodosController {
   @ApiParam({ name: 'id', type: Number, description: 'Todo ID' })
   @ApiResponse({ status: 200, description: 'Todo successfully deleted.' })
   @ApiResponse({ status: 404, description: 'Todo not found.' })
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async destroy(@Param('id', ParseIntPipe) id: number) {
     const todo = await this.todosService.destroy(id);
     if (!todo) {
       throw new NotFoundException('Todo not found');

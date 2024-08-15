@@ -75,23 +75,23 @@ describe('BaseController', () => {
     });
   });
 
-  describe('findAll', () => {
+  describe('index', () => {
     it('should return all entities', async () => {
       const entities = [{ id: 1 }, { id: 2 }];
       mockService.all.mockResolvedValue(entities);
 
-      const result = await controller.findAll();
+      const result = await controller.index();
       expect(result).toEqual(entities);
       expect(mockService.all).toHaveBeenCalled();
     });
   });
 
-  describe('findOne', () => {
+  describe('show', () => {
     it('should return an entity by id', async () => {
       const entity = { id: 1 };
       mockService.find.mockResolvedValue(entity);
 
-      const result = await controller.findOne(1);
+      const result = await controller.show(1);
       expect(result).toEqual(entity);
       expect(mockService.find).toHaveBeenCalledWith(1);
     });
@@ -99,7 +99,7 @@ describe('BaseController', () => {
     it('should throw NotFoundException if entity not found', async () => {
       mockService.find.mockResolvedValue(null);
 
-      await expect(controller.findOne(1)).rejects.toThrow(NotFoundException);
+      await expect(controller.show(1)).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -121,11 +121,11 @@ describe('BaseController', () => {
     });
   });
 
-  describe('remove', () => {
-    it('should remove an entity', async () => {
+  describe('destroy', () => {
+    it('should destroy an entity', async () => {
       mockService.destroy.mockResolvedValue({ id: 1 });
 
-      const result = await controller.remove(1);
+      const result = await controller.destroy(1);
       expect(result).toEqual({ message: 'TestModel successfully deleted' });
       expect(mockService.destroy).toHaveBeenCalledWith(1);
     });
@@ -133,7 +133,7 @@ describe('BaseController', () => {
     it('should throw NotFoundException if entity not found', async () => {
       mockService.destroy.mockResolvedValue(null);
 
-      await expect(controller.remove(1)).rejects.toThrow(NotFoundException);
+      await expect(controller.destroy(1)).rejects.toThrow(NotFoundException);
     });
   });
 });

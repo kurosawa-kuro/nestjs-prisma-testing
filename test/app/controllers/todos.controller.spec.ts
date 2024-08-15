@@ -58,30 +58,30 @@ describe('TodosController', () => {
     });
   });
 
-  describe('findAll', () => {
+  describe('index', () => {
     it('should return an array of todos', async () => {
       const expectedResult = [{ id: 1, title: 'Todo 1', userId: 1 }];
 
       jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
 
-      expect(await controller.findAll()).toBe(expectedResult);
+      expect(await controller.index()).toBe(expectedResult);
     });
   });
 
-  describe('findOne', () => {
+  describe('show', () => {
     it('should return a todo', async () => {
       const expectedResult = { id: 1, title: 'Todo 1', userId: 1 };
 
       jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
 
-      expect(await controller.findOne(1)).toBe(expectedResult);
+      expect(await controller.show(1)).toBe(expectedResult);
       expect(service.find).toHaveBeenCalledWith(1);
     });
 
     it('should throw NotFoundException if todo is not found', async () => {
       jest.spyOn(service, 'find').mockResolvedValue(null);
 
-      await expect(controller.findOne(1)).rejects.toThrow(NotFoundException);
+      await expect(controller.show(1)).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -103,21 +103,21 @@ describe('TodosController', () => {
     });
   });
 
-  describe('remove', () => {
-    it('should remove a todo', async () => {
+  describe('destroy', () => {
+    it('should destroy a todo', async () => {
       const deletedTodo = { id: 1, title: 'Todo 1', userId: 1 };
       const expectedResult = { message: 'Todo successfully deleted' };
 
       jest.spyOn(service, 'destroy').mockResolvedValue(deletedTodo);
 
-      expect(await controller.remove(1)).toEqual(expectedResult);
+      expect(await controller.destroy(1)).toEqual(expectedResult);
       expect(service.destroy).toHaveBeenCalledWith(1);
     });
 
     it('should throw NotFoundException if todo is not found', async () => {
       jest.spyOn(service, 'destroy').mockResolvedValue(null);
 
-      await expect(controller.remove(1)).rejects.toThrow(NotFoundException);
+      await expect(controller.destroy(1)).rejects.toThrow(NotFoundException);
     });
   });
 });

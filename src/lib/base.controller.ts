@@ -56,7 +56,7 @@ export class BaseController<T> {
     description: 'Return all entities.',
     type: [Object],
   })
-  async findAll() {
+  async index() {
     return await this.service.all();
   }
 
@@ -69,7 +69,7 @@ export class BaseController<T> {
     type: Object,
   })
   @ApiResponse({ status: 404, description: 'Entity not found.' })
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async show(@Param('id', ParseIntPipe) id: number) {
     const result = await this.service.find(id);
     if (!result) {
       throw new NotFoundException(`${this.modelName} not found`);
@@ -100,7 +100,7 @@ export class BaseController<T> {
   @ApiParam({ name: 'id', type: Number, description: 'Entity ID' })
   @ApiResponse({ status: 200, description: 'Entity successfully deleted.' })
   @ApiResponse({ status: 404, description: 'Entity not found.' })
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async destroy(@Param('id', ParseIntPipe) id: number) {
     const result = await this.service.destroy(id);
     if (!result) {
       throw new NotFoundException(`${this.modelName} not found`);
