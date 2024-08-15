@@ -63,7 +63,10 @@ describe('PrismaBaseService', () => {
   });
 
   it('should retrieve all records', async () => {
-    const records = [{ id: 1, name: 'test1' }, { id: 2, name: 'test2' }];
+    const records = [
+      { id: 1, name: 'test1' },
+      { id: 2, name: 'test2' },
+    ];
     mockPrismaClientService.modelName.findMany.mockResolvedValue(records);
 
     const result = await service.all();
@@ -97,7 +100,10 @@ describe('PrismaBaseService', () => {
   });
 
   it('should find multiple records by attributes', async () => {
-    const records = [{ id: 1, name: 'test' }, { id: 2, name: 'test' }];
+    const records = [
+      { id: 1, name: 'test' },
+      { id: 2, name: 'test' },
+    ];
     mockPrismaClientService.modelName.findMany.mockResolvedValue(records);
 
     const result = await service.where({ name: 'test' });

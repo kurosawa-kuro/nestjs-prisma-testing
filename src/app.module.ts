@@ -13,7 +13,7 @@ import { TodosModule } from './todos/todos.module';
     PrismaModule,
     AuthModule,
     UsersModule,
-    TodosModule, 
+    TodosModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',

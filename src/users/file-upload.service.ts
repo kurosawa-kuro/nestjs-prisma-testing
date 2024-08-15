@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { extname } from 'path';
 import { promises as fs } from 'fs';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class FileUploadService {
   generateFilename(file: Express.Multer.File): string {
-    const randomName = Array(32)
-      .fill(null)
-      .map(() => Math.round(Math.random() * 16).toString(16))
-      .join('');
+    const randomName = crypto.randomBytes(16).toString('hex');
     return `${randomName}${extname(file.originalname)}`;
   }
 

@@ -149,15 +149,15 @@ describe('UsersController', () => {
 
   describe('uploadAvatar', () => {
     it('should upload an avatar for a user', async () => {
-      const mockFile = { 
+      const mockFile = {
         buffer: Buffer.from('test'),
         originalname: 'test.jpg',
-        mimetype: 'image/jpeg'
+        mimetype: 'image/jpeg',
       } as Express.Multer.File;
-      
+
       const expectedFilename = 'generated-filename.jpg';
       const expectedAvatarUrl = `/uploads/avatars/${expectedFilename}`;
-      
+
       const expectedResult: User = {
         id: 1,
         name: 'John Doe',
@@ -170,7 +170,9 @@ describe('UsersController', () => {
       };
 
       (fileUploadService.validateFile as jest.Mock).mockReturnValue(true);
-      (fileUploadService.generateFilename as jest.Mock).mockReturnValue(expectedFilename);
+      (fileUploadService.generateFilename as jest.Mock).mockReturnValue(
+        expectedFilename,
+      );
       (fileUploadService.saveFile as jest.Mock).mockResolvedValue(undefined);
       (service.updateAvatar as jest.Mock).mockResolvedValue(expectedResult);
 
@@ -179,24 +181,31 @@ describe('UsersController', () => {
       expect(result).toEqual({ avatarUrl: expectedResult.avatar });
       expect(fileUploadService.validateFile).toHaveBeenCalledWith(mockFile);
       expect(fileUploadService.generateFilename).toHaveBeenCalledWith(mockFile);
-      expect(fileUploadService.saveFile).toHaveBeenCalledWith(mockFile, expectedFilename);
+      expect(fileUploadService.saveFile).toHaveBeenCalledWith(
+        mockFile,
+        expectedFilename,
+      );
       expect(service.updateAvatar).toHaveBeenCalledWith(1, expectedAvatarUrl);
     });
 
     it('should throw BadRequestException when no file is provided', async () => {
-      await expect(controller.uploadAvatar(1, undefined)).rejects.toThrow(BadRequestException);
+      await expect(controller.uploadAvatar(1, undefined)).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('should throw BadRequestException when file is not an image', async () => {
-      const mockFile = { 
+      const mockFile = {
         buffer: Buffer.from('test'),
         originalname: 'test.txt',
-        mimetype: 'text/plain'
+        mimetype: 'text/plain',
       } as Express.Multer.File;
 
       (fileUploadService.validateFile as jest.Mock).mockReturnValue(false);
 
-      await expect(controller.uploadAvatar(1, mockFile)).rejects.toThrow(BadRequestException);
+      await expect(controller.uploadAvatar(1, mockFile)).rejects.toThrow(
+        BadRequestException,
+      );
       expect(fileUploadService.validateFile).toHaveBeenCalledWith(mockFile);
     });
   });
