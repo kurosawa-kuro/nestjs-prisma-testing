@@ -29,9 +29,15 @@ describe('BaseController', () => {
 
   describe('constructor', () => {
     it('should throw an error if modelName is not provided', () => {
-      expect(() => new BaseController(mockService, '')).toThrow('modelName must be provided');
-      expect(() => new BaseController(mockService, null)).toThrow('modelName must be provided');
-      expect(() => new BaseController(mockService, undefined)).toThrow('modelName must be provided');
+      expect(() => new BaseController(mockService, '')).toThrow(
+        'modelName must be provided',
+      );
+      expect(() => new BaseController(mockService, null)).toThrow(
+        'modelName must be provided',
+      );
+      expect(() => new BaseController(mockService, undefined)).toThrow(
+        'modelName must be provided',
+      );
     });
 
     it('should create instance when valid modelName is provided', () => {
@@ -53,7 +59,9 @@ describe('BaseController', () => {
       const createDto = { name: 'Test' };
       mockService.create.mockResolvedValue(null);
 
-      await expect(controller.create(createDto)).rejects.toThrow(BadRequestException);
+      await expect(controller.create(createDto)).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('should throw BadRequestException with error message if service throws an error', async () => {
@@ -61,7 +69,9 @@ describe('BaseController', () => {
       const errorMessage = 'Database error';
       mockService.create.mockRejectedValue(new Error(errorMessage));
 
-      await expect(controller.create(createDto)).rejects.toThrow(`Failed to create TestModel: ${errorMessage}`);
+      await expect(controller.create(createDto)).rejects.toThrow(
+        `Failed to create TestModel: ${errorMessage}`,
+      );
     });
   });
 

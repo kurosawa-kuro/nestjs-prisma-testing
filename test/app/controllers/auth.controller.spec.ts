@@ -102,11 +102,11 @@ describe('AuthController', () => {
       authService.login.mockRejectedValue(new Error('Login error'));
 
       await expect(
-        controller.login('email@example.com', 'password', mockResponse)
+        controller.login('email@example.com', 'password', mockResponse),
       ).rejects.toThrow(BadRequestException);
       expect(authService.login).toHaveBeenCalledWith(
         'email@example.com',
-        'password'
+        'password',
       );
     });
   });
@@ -148,7 +148,9 @@ describe('AuthController', () => {
         throw new Error('Logout error');
       });
 
-      await expect(controller.logout(mockResponse)).rejects.toThrow(BadRequestException);
+      await expect(controller.logout(mockResponse)).rejects.toThrow(
+        BadRequestException,
+      );
       expect(authService.logout).toHaveBeenCalledWith(mockResponse);
     });
   });

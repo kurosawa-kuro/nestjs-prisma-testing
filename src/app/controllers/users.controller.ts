@@ -117,12 +117,6 @@ export class UsersController extends BaseController<CreateUser> {
     },
   })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
-  @ApiResponse({
-    status: 200,
-    description: 'The avatar has been successfully uploaded.',
-    type: Object,
-  })
-  @ApiResponse({ status: 400, description: 'Bad request.' })
   async uploadAvatar(
     @Param('id', ParseIntPipe) id: number,
     @UploadedFile() file: Express.Multer.File,
