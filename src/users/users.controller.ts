@@ -6,7 +6,6 @@ import {
   ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiConsumes
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
 
 import { UsersService } from './users.service';
 import { CreateUser, UpdateUser } from './user.model';

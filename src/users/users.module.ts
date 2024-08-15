@@ -1,30 +1,26 @@
-// src/users/users.module.ts
-
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { PrismaClientService } from '../prisma/prisma-client.service';
 import { MulterModule } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { memoryStorage } from 'multer';
+import { FileUploadService } from './file-upload.service';
 
 @Module({
   imports: [
     MulterModule.register({
-      storage: diskStorage({
-        destination: './uploads/avatars',
-        filename: (req, file, callback) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          callback(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
+      storage: memoryStorage(),
     }),
   ],
   controllers: [UsersController],
-  providers: [UsersService, PrismaClientService],
+  providers: [
+    UsersService,
+    PrismaClientService,
+    {
+      provide: 'FileUploadService',
+      useClass: FileUploadService,
+    },
+  ],
   exports: [UsersService],
 })
 export class UsersModule {}

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { extname } from 'path';
 import { promises as fs } from 'fs';
-import { Express } from 'express';
 
 @Injectable()
 export class FileUploadService {
