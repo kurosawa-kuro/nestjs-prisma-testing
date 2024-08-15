@@ -54,7 +54,7 @@ describe('UsersService', () => {
         createdUser,
       );
 
-      const result = await service.createUser(userData);
+      const result = await service.register(userData);
       expect(result).toEqual(createdUser);
       expect(prismaClientService.user.create).toHaveBeenCalledWith({
         data: userData,

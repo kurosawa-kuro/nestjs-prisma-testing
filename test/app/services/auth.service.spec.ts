@@ -24,7 +24,7 @@ describe('AuthService', () => {
         {
           provide: UsersService,
           useValue: {
-            createUser: jest.fn(),
+            register: jest.fn(),
             findByEmail: jest.fn(),
             find: jest.fn(),
           },
@@ -61,7 +61,7 @@ describe('AuthService', () => {
         updatedAt: new Date(),
       };
       const createUserSpy = jest
-        .spyOn(usersService, 'createUser')
+        .spyOn(usersService, 'register')
         .mockResolvedValue(mockUser);
       await authService.register({
         name: 'Test User',

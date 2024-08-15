@@ -10,7 +10,7 @@ export class UsersService extends PrismaBaseService<User> {
     super(prisma, 'user');
   }
 
-  async createUser(data: Prisma.UserCreateInput): Promise<UserWithoutPassword> {
+  async register(data: Prisma.UserCreateInput): Promise<UserWithoutPassword> {
     return this.create(data);
   }
 
