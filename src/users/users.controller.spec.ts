@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { FileUploadService } from './file-upload.service';
+import { FileUploadService } from '@/lib/file-upload.service';
 import { User } from '@prisma/client';
 import { CreateUser, UpdateUser } from './user.model';
 import { BadRequestException } from '@nestjs/common';
