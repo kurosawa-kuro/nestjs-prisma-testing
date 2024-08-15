@@ -130,11 +130,15 @@ describe('AuthService', () => {
       const user = await authService.getCurrentUser({
         headers: { authorization: 'Bearer token' },
       } as any);
-      // expect(user).toEqual({
-      //   id: 1,
-      //   name: 'Test User',
-      //   email: 'test@example.com',
-      // });
+      expect(user).toEqual(
+        expect.objectContaining({
+          id: 1,
+          name: 'Test User',
+          email: 'test@example.com',
+          avatar: '', // 空の文字列が期待されている場合
+          role: '', // 空の文字列が期待されている場合
+        }),
+      );
     });
   });
 
