@@ -10,7 +10,7 @@ import {
   UseInterceptors,
   HttpCode,
   HttpStatus,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthGuard } from './auth.guard';
@@ -44,16 +44,16 @@ export class AuthController {
       type: 'object',
       properties: {
         email: { type: 'string', format: 'email' },
-        password: { type: 'string', format: 'password' }
-      }
-    }
+        password: { type: 'string', format: 'password' },
+      },
+    },
   })
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async login(
     @Body('email') email: string,
     @Body('password') password: string,
-    @Res({ passthrough: true }) response: Response
+    @Res({ passthrough: true }) response: Response,
   ) {
     try {
       const { user, token } = await this.authService.login(email, password);

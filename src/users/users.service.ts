@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaBaseService } from '@/lib/prisma-base.service';
 import { PrismaClientService } from '@/prisma/prisma-client.service';
 import { User, Prisma } from '@prisma/client';
-import { UserWithoutPassword } from '@/types'; 
-
+import { UserWithoutPassword } from '@/types';
 
 @Injectable()
 export class UsersService extends PrismaBaseService<User> {
@@ -27,7 +26,10 @@ export class UsersService extends PrismaBaseService<User> {
     return this.all(params);
   }
 
-  async updateAvatar(id: number, avatarUrl: string): Promise<UserWithoutPassword> {
+  async updateAvatar(
+    id: number,
+    avatarUrl: string,
+  ): Promise<UserWithoutPassword> {
     return this.update(id, { avatar: avatarUrl });
   }
 

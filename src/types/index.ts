@@ -1,17 +1,5 @@
 // src\types\index.ts
 
-export type PaginatedResult<T = any> = {
-  data: T[];
-  meta: {
-    total: number;
-    page: number;
-    per_page: number;
-    last_page: number;
-  };
-};
-
-export type UserPaginatedResult = PaginatedResult<Partial<UserWithoutPassword>>;
-
 export type UserWithoutPassword = {
   id: number;
   name: string;
@@ -25,3 +13,15 @@ export type UserWithoutPassword = {
 export type UserWithPassword = UserWithoutPassword & {
   password: string;
 };
+
+export type PaginatedResult<T = any> = {
+  data: T[];
+  meta: {
+    total: number;
+    page: number;
+    per_page: number;
+    last_page: number;
+  };
+};
+
+export type UserPaginatedResult = PaginatedResult<Partial<UserWithoutPassword>>;

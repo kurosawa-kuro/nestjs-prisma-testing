@@ -21,7 +21,10 @@ import {
 
 @ApiTags('base')
 export class BaseController<T> {
-  constructor(private readonly service: any, private readonly modelName: string) {
+  constructor(
+    private readonly service: any,
+    private readonly modelName: string,
+  ) {
     if (!modelName) {
       throw new Error('modelName must be provided');
     }
@@ -40,13 +43,19 @@ export class BaseController<T> {
       }
       return created;
     } catch (error) {
-      throw new BadRequestException(`Failed to create ${this.modelName}: ${error.message}`);
+      throw new BadRequestException(
+        `Failed to create ${this.modelName}: ${error.message}`,
+      );
     }
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all entities' })
-  @ApiResponse({ status: 200, description: 'Return all entities.', type: [Object] })
+  @ApiResponse({
+    status: 200,
+    description: 'Return all entities.',
+    type: [Object],
+  })
   async findAll() {
     return await this.service.all();
   }
@@ -54,7 +63,11 @@ export class BaseController<T> {
   @Get(':id')
   @ApiOperation({ summary: 'Get an entity by ID' })
   @ApiParam({ name: 'id', type: Number, description: 'Entity ID' })
-  @ApiResponse({ status: 200, description: 'Entity successfully retrieved.', type: Object })
+  @ApiResponse({
+    status: 200,
+    description: 'Entity successfully retrieved.',
+    type: Object,
+  })
   @ApiResponse({ status: 404, description: 'Entity not found.' })
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const result = await this.service.find(id);
@@ -68,7 +81,11 @@ export class BaseController<T> {
   @ApiOperation({ summary: 'Update an entity by ID' })
   @ApiParam({ name: 'id', type: Number, description: 'Entity ID' })
   @ApiBody({ type: Object })
-  @ApiResponse({ status: 200, description: 'Entity successfully updated.', type: Object })
+  @ApiResponse({
+    status: 200,
+    description: 'Entity successfully updated.',
+    type: Object,
+  })
   @ApiResponse({ status: 404, description: 'Entity not found.' })
   async update(@Param('id', ParseIntPipe) id: number, @Body() updateDto: T) {
     const result = await this.service.update(id, updateDto);

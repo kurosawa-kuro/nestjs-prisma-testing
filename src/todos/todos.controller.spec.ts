@@ -51,7 +51,9 @@ describe('TodosController', () => {
         throw new Error('Database error');
       });
 
-      await expect(controller.create(createTodo)).rejects.toThrow(BadRequestException);
+      await expect(controller.create(createTodo)).rejects.toThrow(
+        BadRequestException,
+      );
       expect(service.create).toHaveBeenCalledWith(createTodo);
     });
   });
