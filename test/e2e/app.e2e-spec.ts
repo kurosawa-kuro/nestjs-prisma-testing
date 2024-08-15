@@ -4,7 +4,7 @@ import * as request from 'supertest';
 
 // Internal modules
 import { AppModule } from '@/app/modules/app.module';
-import { PrismaClientService } from '@/prisma/prisma-client.service';
+import { PrismaClientService } from '@/orm/prisma-client.service';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;

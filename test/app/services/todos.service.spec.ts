@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TodosService } from '@/app/services/todos.service';
-import { PrismaClientService } from '@/prisma/prisma-client.service';
+import { PrismaClientService } from '@/orm/prisma-client.service';
 
 describe('TodosService', () => {
   let service: TodosService;

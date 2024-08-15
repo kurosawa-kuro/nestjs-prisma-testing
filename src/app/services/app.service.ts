@@ -4,7 +4,7 @@
 import { Injectable } from '@nestjs/common';
 
 // Internal modules
-import { PrismaClientService } from '@/prisma/prisma-client.service';
+import { PrismaClientService } from '@/orm/prisma-client.service';
 
 @Injectable()
 export class AppService {

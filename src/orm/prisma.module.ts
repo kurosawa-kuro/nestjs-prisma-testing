@@ -4,7 +4,7 @@
 import { Module } from '@nestjs/common';
 
 // Internal modules
-import { PrismaClientService } from '@/prisma/prisma-client.service';
+import { PrismaClientService } from '@/orm/prisma-client.service';
 
 @Module({
   providers: [PrismaClientService],

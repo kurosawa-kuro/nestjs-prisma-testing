@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 // Internal modules
 import { AppService } from '@/app/services/app.service'; // 相対パスに変更が必要かもしれません
-import { PrismaClientService } from '@/prisma/prisma-client.service'; // 相対パスに変更が必要かもしれません
+import { PrismaClientService } from '@/orm/prisma-client.service';
 
 describe('AppService', () => {
   let appService: AppService;

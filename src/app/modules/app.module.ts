@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users.module';
-import { PrismaModule } from '../../prisma/prisma.module';
+import { PrismaModule } from '@/orm/prisma.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth.module';

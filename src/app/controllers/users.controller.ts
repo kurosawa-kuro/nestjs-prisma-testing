@@ -1,6 +1,9 @@
 import {
   Controller,
   Post,
+  Get,
+  Put,
+  Delete,
   UseInterceptors,
   UploadedFile,
   BadRequestException,
@@ -55,17 +58,20 @@ export class UsersController extends BaseController<CreateUser> {
     return super.create(createUser);
   }
 
+  @Get()
   @ApiOperation({ summary: 'Get all users' })
   findAll() {
     return super.findAll();
   }
 
+  @Get(':id')
   @ApiOperation({ summary: 'Get a user by ID' })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return super.findOne(id);
   }
 
+  @Put(':id')
   @ApiOperation({ summary: 'Update a user by ID' })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   @ApiBody({
@@ -88,6 +94,7 @@ export class UsersController extends BaseController<CreateUser> {
     return super.update(id, updateUser as CreateUser);
   }
 
+  @Delete(':id')
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiParam({ name: 'id', type: Number, description: 'User ID' })
   remove(@Param('id', ParseIntPipe) id: number) {
