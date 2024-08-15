@@ -8,8 +8,6 @@ import {
   Res,
   UseGuards,
   UseInterceptors,
-  HttpCode,
-  HttpStatus,
   BadRequestException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
@@ -17,12 +15,15 @@ import { AuthGuard } from '@/app/guards/auth.guard';
 import { AuthService } from '@/app/services/auth.service';
 import { CreateUser } from '@/app/models/auth.model';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { BaseController } from '@/lib/base.controller';
 
 @ApiTags('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
-export class AuthController {
-  constructor(private authService: AuthService) {}
+export class AuthController extends BaseController<CreateUser> {
+  constructor(private authService: AuthService) {
+    super(authService, 'Auth');
+  }
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new account' })
@@ -30,11 +31,7 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Registration successful' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   async register(@Body() body: CreateUser) {
-    try {
-      return await this.authService.register(body);
-    } catch (error) {
-      throw new BadRequestException('Failed to create account');
-    }
+    return super.create(body);
   }
 
   @Post('login')

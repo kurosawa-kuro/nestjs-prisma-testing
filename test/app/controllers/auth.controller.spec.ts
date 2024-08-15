@@ -6,9 +6,18 @@ import { Response, Request } from 'express';
 import { CreateUser } from '@/app/models/auth.model';
 import { AuthGuard } from '@/app/guards/auth.guard';
 
+// Update MockAuthService interface
+interface MockAuthService {
+  create: jest.Mock;
+  register: jest.Mock;
+  login: jest.Mock;
+  getCurrentUser: jest.Mock;
+  logout: jest.Mock;
+}
+
 describe('AuthController', () => {
   let controller: AuthController;
-  let authService: AuthService;
+  let authService: MockAuthService;
   let jwtService: JwtService;
 
   beforeEach(async () => {
@@ -18,13 +27,12 @@ describe('AuthController', () => {
         {
           provide: AuthService,
           useValue: {
+            create: jest.fn(),
             register: jest.fn(),
             login: jest.fn(),
             getCurrentUser: jest.fn(),
-            logout: jest.fn((response: Response) =>
-              response.clearCookie('jwt'),
-            ), // Ensure logout is performing action
-          },
+            logout: jest.fn(),
+          } as MockAuthService,
         },
         {
           provide: JwtService,
@@ -42,12 +50,12 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
-    authService = module.get<AuthService>(AuthService);
+    authService = module.get(AuthService);
     jwtService = module.get<JwtService>(JwtService);
   });
 
   describe('register', () => {
-    it('should call AuthService.register with RegisterDto', async () => {
+    it('should call AuthService.create with CreateUser', async () => {
       const dto = new CreateUser();
       dto.name = 'John Doe';
       dto.email = 'john@example.com';
@@ -64,9 +72,9 @@ describe('AuthController', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      jest.spyOn(authService, 'register').mockResolvedValue(expectedUser);
+      authService.create.mockResolvedValue(expectedUser);
       expect(await controller.register(dto)).toEqual(expectedUser);
-      expect(authService.register).toHaveBeenCalledWith(dto);
+      expect(authService.create).toHaveBeenCalledWith(dto);
     });
   });
 
@@ -75,7 +83,7 @@ describe('AuthController', () => {
       const mockResponse = { cookie: jest.fn() } as unknown as Response;
       const loginResult = { user: { id: 1, name: 'John Doe' }, token: 'token' };
 
-      jest.spyOn(authService, 'login').mockResolvedValue(loginResult);
+      authService.login.mockResolvedValue(loginResult);
       expect(
         await controller.login('email@example.com', 'password', mockResponse),
       ).toEqual(loginResult.user);
@@ -98,7 +106,7 @@ describe('AuthController', () => {
         query: {},
       } as unknown as Request;
       const expectedUser = { id: 1, name: 'John Doe' };
-      jest.spyOn(authService, 'getCurrentUser').mockResolvedValue(expectedUser);
+      authService.getCurrentUser.mockResolvedValue(expectedUser);
 
       expect(await controller.user(req)).toEqual(expectedUser);
       expect(authService.getCurrentUser).toHaveBeenCalledWith(req);
@@ -109,21 +117,14 @@ describe('AuthController', () => {
     it('should call AuthService.logout and return success message', async () => {
       const mockResponse = { clearCookie: jest.fn() } as unknown as Response;
 
-      // Ensure no clearCookie has been called before the actual test action
-      expect(mockResponse.clearCookie).not.toHaveBeenCalled();
+      authService.logout.mockImplementation((response: Response) => {
+        response.clearCookie('jwt');
+      });
 
-      // Directly testing the AuthService to ensure it's behaving as expected
-      authService.logout(mockResponse);
-      expect(mockResponse.clearCookie).toHaveBeenCalledWith('jwt');
+      const result = await controller.logout(mockResponse);
 
-      // Now testing through the controller
-      await controller.logout(mockResponse);
-
-      // Ensuring that the AuthService's logout function is being invoked correctly from the controller
       expect(authService.logout).toHaveBeenCalledWith(mockResponse);
-
-      // This check is redundant but serves as a double confirmation
-      expect(mockResponse.clearCookie).toHaveBeenCalledTimes(2);
+      expect(result).toEqual({ message: 'Success' });
       expect(mockResponse.clearCookie).toHaveBeenCalledWith('jwt');
     });
   });
