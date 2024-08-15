@@ -7,7 +7,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 
 // Internal modules
-import { AppModule } from '@/app.module';
+import { AppModule } from '@/app/modules/app.module';
 import { corsConfig } from '@/config/cors.config';
 import { setupSwagger } from '@/config/swagger.config';
 
