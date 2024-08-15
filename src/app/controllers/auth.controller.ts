@@ -13,7 +13,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AuthGuard } from '@/auth/auth.guard';
+import { AuthGuard } from '@/app/guards/auth.guard';
 import { AuthService } from '@/app/services/auth.service';
 import { CreateUser } from '@/app/models/auth.model';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';

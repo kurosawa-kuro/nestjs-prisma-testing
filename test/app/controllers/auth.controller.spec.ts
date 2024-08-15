@@ -4,7 +4,7 @@ import { AuthService } from '@/app/services/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { CreateUser } from '@/app/models/auth.model';
-import { AuthGuard } from '@/auth/auth.guard';
+import { AuthGuard } from '@/app/guards/auth.guard';
 
 describe('AuthController', () => {
   let controller: AuthController;
