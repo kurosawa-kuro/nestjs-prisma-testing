@@ -6,7 +6,7 @@ import {
   CategoryTodoWithRelations,
   TodoWithCategories,
   CategoryWithTodos,
-} from '@/app/models/category-todo.model';
+} from '@/app/models/categoryTodo.model';
 
 describe('CategoryTodoController', () => {
   let controller: CategoryTodosController;

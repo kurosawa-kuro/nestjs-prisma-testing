@@ -5,7 +5,7 @@ import {
   CategoryTodoWithRelations,
   TodoWithCategories,
   CategoryWithTodos,
-} from '@/app/models/category-todo.model';
+} from '@/app/models/categoryTodo.model';
 
 @Controller('category-todo')
 export class CategoryTodosController {
