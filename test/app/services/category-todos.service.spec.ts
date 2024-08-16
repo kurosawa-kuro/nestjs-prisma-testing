@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryTodosService } from '@/app/services/categoryTodos.service';
+import { CategoryTodosService } from '@/app/services/category-todos.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 import {
   CategoryTodoWithRelations,
