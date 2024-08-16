@@ -83,7 +83,4 @@ npm run test:cov
 Zod
 Mail
 
-Rails化
-
-コントロール アクション
 初期化のドキュメント
