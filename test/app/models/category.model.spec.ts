@@ -4,7 +4,7 @@ import {
   UpdateCategory,
   CategoryWithTodos,
   Category,
-} from '@/app/models/category.model';
+} from '@/models/category.model';
 
 describe('Category Model', () => {
   describe('CreateCategory', () => {

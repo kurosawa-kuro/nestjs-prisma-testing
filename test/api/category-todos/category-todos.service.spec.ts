@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryTodosService } from '@/app/services/category-todos.service';
+import { CategoryTodosService } from '@/api/category-todos/category-todos.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 import {
   CategoryTodoWithRelations,
   TodoWithCategories,
   CategoryWithTodos,
-} from '@/app/models/categoryTodo.model';
+} from '@/models/categoryTodo.model';
 
 describe('CategoryTodoService', () => {
   let service: CategoryTodosService;

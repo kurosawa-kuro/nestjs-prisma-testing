@@ -1,6 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
-import { TokenUtility } from '@/app/helpers/token.util';
+import { TokenUtility } from '@/helpers/token.util';
 
 describe('TokenUtility', () => {
   describe('extractTokenFromRequest', () => {

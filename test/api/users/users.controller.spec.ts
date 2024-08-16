@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from '@/app/controllers/users.controller';
-import { UsersService } from '@/app/services/users.service';
+import { UsersController } from '@/api/users/users.controller';
+import { UsersService } from '@/api/users/users.service';
 import { FileUploadService } from '@/lib/file-upload.service';
 import { User } from '@prisma/client';
-import { CreateUser, UpdateUser } from '@/app/models/user.model';
+import { CreateUser, UpdateUser } from '@/models/user.model';
 import { BadRequestException } from '@nestjs/common';
 
 describe('UsersController', () => {

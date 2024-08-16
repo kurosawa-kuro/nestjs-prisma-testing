@@ -4,9 +4,9 @@ import {
   CategoryTodoWithRelations,
   TodoWithCategories,
   CategoryWithTodos,
-} from '@/app/models/categoryTodo.model';
-import { Todo } from '@/app/models/todo.model';
-import { Category } from '@/app/models/category.model';
+} from '@/models/categoryTodo.model';
+import { Todo } from '@/models/todo.model';
+import { Category } from '@/models/category.model';
 
 describe('CategoryTodo Model', () => {
   describe('CreateCategoryTodo', () => {

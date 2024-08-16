@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriesController } from '@/app/controllers/categories.controller';
-import { CategoriesService } from '@/app/services/categories.service';
+import { CategoriesController } from '@/api/categories/categories.controller';
+import { CategoriesService } from '@/api/categories/categories.service';
 import {
   CreateCategory,
   UpdateCategory,
   CategoryWithTodos,
-} from '@/app/models/category.model';
+} from '@/models/category.model';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 import { Category } from '@prisma/client';
 

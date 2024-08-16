@@ -1,7 +1,7 @@
 import { IsNumber } from 'class-validator';
 import { CategoryTodo } from '@prisma/client';
-import { Todo } from '@/app/models/todo.model';
-import { Category } from '@/app/models/category.model';
+import { Todo } from '@/models/todo.model';
+import { Category } from '@/models/category.model';
 
 export class CreateCategoryTodo {
   @IsNumber()

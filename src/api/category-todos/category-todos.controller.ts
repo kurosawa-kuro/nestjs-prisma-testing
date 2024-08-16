@@ -1,11 +1,11 @@
 import { Controller, Post, Delete, Body, Param, Get } from '@nestjs/common';
-import { CategoryTodosService } from '@/app/services/category-todos.service';
+import { CategoryTodosService } from '@/api/category-todos/category-todos.service';
 import {
   CreateCategoryTodo,
   CategoryTodoWithRelations,
   TodoWithCategories,
   CategoryWithTodos,
-} from '@/app/models/categoryTodo.model';
+} from '@/models/categoryTodo.model';
 
 @Controller('category-todo')
 export class CategoryTodosController {

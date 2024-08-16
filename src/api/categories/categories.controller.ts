@@ -9,13 +9,13 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { CategoriesService } from '@/app/services/categories.service';
+import { CategoriesService } from '@/api/categories/categories.service';
 import { Category } from '@prisma/client';
 import {
   CreateCategory,
   UpdateCategory,
   CategoryWithTodos,
-} from '@/app/models/category.model';
+} from '@/models/category.model';
 
 @Controller('categories')
 export class CategoriesController {

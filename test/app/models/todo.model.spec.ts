@@ -4,7 +4,7 @@
 import { validate } from 'class-validator';
 
 // Internal modules
-import { CreateTodo, UpdateTodo } from '@/app/models/todo.model';
+import { CreateTodo, UpdateTodo } from '@/models/todo.model';
 
 describe('Todo Model', () => {
   describe('CreateTodo', () => {

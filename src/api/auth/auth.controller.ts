@@ -11,9 +11,9 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AuthGuard } from '@/app/guards/auth.guard';
-import { AuthService } from '@/app/services/auth.service';
-import { CreateUser } from '@/app/models/auth.model';
+import { AuthGuard } from '@/guards/auth.guard';
+import { AuthService } from '@/api/auth/auth.service';
+import { CreateUser } from '@/models/auth.model';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { BaseController } from '@/lib/base.controller';
 

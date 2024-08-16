@@ -5,7 +5,7 @@ import {
   CategoryTodoWithRelations,
   TodoWithCategories,
   CategoryWithTodos,
-} from '@/app/models/categoryTodo.model';
+} from '@/models/categoryTodo.model';
 
 @Injectable()
 export class CategoryTodosService extends PrismaBaseService<CategoryTodoWithRelations> {

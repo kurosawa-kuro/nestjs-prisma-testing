@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from '@/app/services/users.service';
-import { UsersController } from '@/app/controllers/users.controller';
+import { UsersService } from '@/api/users/users.service';
+import { UsersController } from '@/api/users/users.controller';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';

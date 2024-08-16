@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from '@/app/controllers/auth.controller';
-import { AuthService } from '@/app/services/auth.service';
+import { AuthController } from '@/api/auth/auth.controller';
+import { AuthService } from '@/api/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
-import { CreateUser } from '@/app/models/auth.model';
-import { AuthGuard } from '@/app/guards/auth.guard';
+import { CreateUser } from '@/models/auth.model';
+import { AuthGuard } from '@/guards/auth.guard';
 import { BadRequestException } from '@nestjs/common';
 
 // Update MockAuthService interface

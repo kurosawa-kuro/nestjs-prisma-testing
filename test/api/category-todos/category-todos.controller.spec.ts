@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryTodosController } from '@/app/controllers/category-todos.controller';
-import { CategoryTodosService } from '@/app/services/category-todos.service';
+import { CategoryTodosController } from '@/api/category-todos/category-todos.controller';
+import { CategoryTodosService } from '@/api/category-todos/category-todos.service';
 import {
   CreateCategoryTodo,
   CategoryTodoWithRelations,
   TodoWithCategories,
   CategoryWithTodos,
-} from '@/app/models/categoryTodo.model';
+} from '@/models/categoryTodo.model';
 
 describe('CategoryTodoController', () => {
   let controller: CategoryTodosController;

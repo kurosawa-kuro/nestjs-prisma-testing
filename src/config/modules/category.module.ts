@@ -1,7 +1,7 @@
 // src/category/category.module.ts
 import { Module } from '@nestjs/common';
-import { CategoriesController } from '@/app/controllers/categories.controller';
-import { CategoriesService } from '@/app/services/categories.service';
+import { CategoriesController } from '@/api/categories/categories.controller';
+import { CategoriesService } from '@/api/categories/categories.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 
 @Module({

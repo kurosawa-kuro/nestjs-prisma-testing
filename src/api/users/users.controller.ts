@@ -22,8 +22,8 @@ import {
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { UsersService } from '@/app/services/users.service';
-import { CreateUser, UpdateUser } from '@/app/models/user.model';
+import { UsersService } from '@/api/users/users.service';
+import { CreateUser, UpdateUser } from '@/models/user.model';
 import { FileUploadService } from '@/lib/file-upload.service';
 import { BaseController } from '@/lib/base.controller';
 
