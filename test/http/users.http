@@ -7,7 +7,7 @@ Content-Type: {{contentType}}
 
 {
   "name": "John Doe",
-  "email": "john12@example.com",
+  "email": "john13@example.com",
   "password": "Password123!"
 }
 
