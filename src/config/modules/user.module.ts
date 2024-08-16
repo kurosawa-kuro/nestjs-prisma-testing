@@ -23,4 +23,4 @@ import { FileUploadService } from '@/lib/file-upload.service';
   ],
   exports: [UsersService],
 })
-export class UsersModule {}
+export class UserModule {}

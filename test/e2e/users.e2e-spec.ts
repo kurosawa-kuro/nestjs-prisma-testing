@@ -8,7 +8,7 @@ import { cleanDatabase } from '../util/prisma-cleanup';
 // Internal modules
 import { PrismaClientService } from '@/orm/prisma-client.service';
 import { CreateUser } from '@/app/models/user.model';
-import { AppModule } from '@/config/app.module';
+import { AppModule } from '@/config/modules/app.module';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;

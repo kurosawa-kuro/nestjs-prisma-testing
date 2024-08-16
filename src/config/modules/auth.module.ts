@@ -2,14 +2,14 @@
 
 import { Module } from '@nestjs/common';
 import { AuthController } from '@/app/controllers/auth.controller';
-import { UsersModule } from '@/config/users.module';
+import { UserModule } from '@/config/modules/user.module';
 import { AuthService } from '@/app/services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    UsersModule,
+    UserModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

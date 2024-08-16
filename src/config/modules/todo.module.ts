@@ -7,4 +7,4 @@ import { PrismaClientService } from '@/orm/prisma-client.service';
   controllers: [TodosController],
   providers: [TodosService, PrismaClientService],
 })
-export class TodosModule {}
+export class TodoModule {}
