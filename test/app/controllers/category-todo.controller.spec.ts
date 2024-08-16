@@ -1,154 +1,103 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TodosController } from '@/app/controllers/todos.controller';
-import { TodosService } from '@/app/services/todos.service';
-import { CreateTodo, UpdateTodo } from '@/app/models/todo.model';
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { CategoryTodoController } from '@/app/controllers/category-todo.controller';
+import { CategoryTodoService } from '@/app/services/category-todo.service';
+import { CreateCategoryTodo, CategoryTodoWithRelations, TodoWithCategories, CategoryWithTodos } from '@/app/models/category-todo.model';
 
-describe('TodosController', () => {
-  let controller: TodosController;
-  let service: TodosService;
+describe('CategoryTodoController', () => {
+  let controller: CategoryTodoController;
+  let service: CategoryTodoService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [TodosController],
+      controllers: [CategoryTodoController],
       providers: [
         {
-          provide: TodosService,
+          provide: CategoryTodoService,
           useValue: {
-            create: jest.fn(),
-            all: jest.fn(),
-            find: jest.fn(),
-            update: jest.fn(),
-            destroy: jest.fn(),
+            addTodoToCategory: jest.fn(),
+            removeTodoFromCategory: jest.fn(),
+            getTodosForCategory: jest.fn(),
+            getCategoriesForTodo: jest.fn(),
           },
         },
       ],
     }).compile();
 
-    controller = module.get<TodosController>(TodosController);
-    service = module.get<TodosService>(TodosService);
+    controller = module.get<CategoryTodoController>(CategoryTodoController);
+    service = module.get<CategoryTodoService>(CategoryTodoService);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('create', () => {
-    it('should create a todo', async () => {
-      const createTodo: CreateTodo = { title: 'New Todo', userId: 1 };
-      const expectedResult = { 
-        id: 1, 
-        ...createTodo, 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
-      };
+  describe('addTodoToCategory', () => {
+    it('should call addTodoToCategory service method', async () => {
+      const createCategoryTodo: CreateCategoryTodo = { todoId: 1, categoryId: 1 };
+      const expectedResult: CategoryTodoWithRelations = { todoId: 1, categoryId: 1 };
 
-      jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
+      jest.spyOn(service, 'addTodoToCategory').mockResolvedValue(expectedResult);
 
-      expect(await controller.create(createTodo)).toBe(expectedResult);
-      expect(service.create).toHaveBeenCalledWith(createTodo);
-    });
+      const result = await controller.addTodoToCategory(createCategoryTodo);
 
-    it('should throw BadRequestException if creation fails', async () => {
-      const createTodo: CreateTodo = { title: 'New Todo', userId: 1 };
-
-      jest.spyOn(service, 'create').mockImplementation(() => {
-        throw new Error('Database error');
-      });
-
-      await expect(controller.create(createTodo)).rejects.toThrow(
-        BadRequestException,
-      );
-      expect(service.create).toHaveBeenCalledWith(createTodo);
+      expect(service.addTodoToCategory).toHaveBeenCalledWith(createCategoryTodo.todoId, createCategoryTodo.categoryId);
+      expect(result).toEqual(expectedResult);
     });
   });
 
-  describe('index', () => {
-    it('should return an array of todos', async () => {
-      const expectedResult = [
-        { 
-          id: 1, 
-          title: 'Todo 1', 
-          userId: 1, 
-          createdAt: new Date(), 
-          updatedAt: new Date() 
-        }
-      ];
+  describe('removeTodoFromCategory', () => {
+    it('should call removeTodoFromCategory service method', async () => {
+      const todoId = '1';
+      const categoryId = '1';
+      const expectedResult: CategoryTodoWithRelations = { todoId: 1, categoryId: 1 };
 
-      jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
+      jest.spyOn(service, 'removeTodoFromCategory').mockResolvedValue(expectedResult);
 
-      expect(await controller.index()).toBe(expectedResult);
+      const result = await controller.removeTodoFromCategory(todoId, categoryId);
+
+      expect(service.removeTodoFromCategory).toHaveBeenCalledWith(+todoId, +categoryId);
+      expect(result).toEqual(expectedResult);
     });
   });
 
-  describe('show', () => {
-    it('should return a todo', async () => {
-      const expectedResult = { 
-        id: 1, 
-        title: 'Todo 1', 
-        userId: 1, 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+  describe('getTodosForCategory', () => {
+    it('should call getTodosForCategory service method', async () => {
+      const categoryId = '1';
+      const expectedResult: CategoryWithTodos = {
+        id: 1,
+        title: 'Category',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        todos: []
       };
 
-      jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
+      jest.spyOn(service, 'getTodosForCategory').mockResolvedValue(expectedResult);
 
-      expect(await controller.show(1)).toBe(expectedResult);
-      expect(service.find).toHaveBeenCalledWith(1);
-    });
+      const result = await controller.getTodosForCategory(categoryId);
 
-    it('should throw NotFoundException if todo is not found', async () => {
-      jest.spyOn(service, 'find').mockResolvedValue(null);
-
-      await expect(controller.show(1)).rejects.toThrow(NotFoundException);
+      expect(service.getTodosForCategory).toHaveBeenCalledWith(+categoryId);
+      expect(result).toEqual(expectedResult);
     });
   });
 
-  describe('update', () => {
-    it('should update a todo', async () => {
-      const updateTodo: UpdateTodo = { title: 'Updated Todo' };
-      const expectedResult = { 
-        id: 1, 
-        title: 'Updated Todo', 
-        userId: 1, 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+  describe('getCategoriesForTodo', () => {
+    it('should call getCategoriesForTodo service method', async () => {
+      const todoId = '1';
+      const expectedResult: TodoWithCategories = {
+        id: 1,
+        title: 'Todo',
+        userId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        categories: []
       };
 
-      jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
+      jest.spyOn(service, 'getCategoriesForTodo').mockResolvedValue(expectedResult);
 
-      expect(await controller.update(1, updateTodo)).toBe(expectedResult);
-      expect(service.update).toHaveBeenCalledWith(1, updateTodo);
-    });
+      const result = await controller.getCategoriesForTodo(todoId);
 
-    it('should throw NotFoundException if todo is not found', async () => {
-      jest.spyOn(service, 'update').mockResolvedValue(null);
-
-      await expect(controller.update(1, {})).rejects.toThrow(NotFoundException);
-    });
-  });
-
-  describe('destroy', () => {
-    it('should destroy a todo', async () => {
-      const deletedTodo = { 
-        id: 1, 
-        title: 'Todo 1', 
-        userId: 1, 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
-      };
-      const expectedResult = { message: 'Todo successfully deleted' };
-
-      jest.spyOn(service, 'destroy').mockResolvedValue(deletedTodo);
-
-      expect(await controller.destroy(1)).toEqual(expectedResult);
-      expect(service.destroy).toHaveBeenCalledWith(1);
-    });
-
-    it('should throw NotFoundException if todo is not found', async () => {
-      jest.spyOn(service, 'destroy').mockResolvedValue(null);
-
-      await expect(controller.destroy(1)).rejects.toThrow(NotFoundException);
+      expect(service.getCategoriesForTodo).toHaveBeenCalledWith(+todoId);
+      expect(result).toEqual(expectedResult);
     });
   });
 });
