@@ -6,6 +6,7 @@ import { UsersModule } from '@/config/users.module';
 import { AuthModule } from '@/config/auth.module';
 import { TodosModule } from '@/config/todos.module';
 import { CategoryModule } from '@/config/category.module';
+import { CategoryTodoModule } from './category-todo.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CategoryModule } from '@/config/category.module';
     UsersModule,
     TodosModule,
     CategoryModule,
+    CategoryTodoModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
