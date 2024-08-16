@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryTodosController } from '@/api/category-todos/category-todos.controller';
-import { CategoryTodosService } from '@/api/category-todos/category-todos.service';
+import { CategoryTodosController } from '@/app/api/category-todos/category-todos.controller';
+import { CategoryTodosService } from '@/app/api/category-todos/category-todos.service';
 import {
   CreateCategoryTodo,
   CategoryTodoWithRelations,

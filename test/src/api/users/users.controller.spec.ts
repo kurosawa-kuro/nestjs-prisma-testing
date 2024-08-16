@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from '@/api/users/users.controller';
-import { UsersService } from '@/api/users/users.service';
+import { UsersController } from '@/app/api/users/users.controller';
+import { UsersService } from '@/app/api/users/users.service';
 import { FileUploadService } from '@/lib/file-upload.service';
 import { User } from '@prisma/client';
 import { CreateUser, UpdateUser } from '@/models/user.model';

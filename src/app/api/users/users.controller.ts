@@ -22,7 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { UsersService } from '@/api/users/users.service';
+import { UsersService } from '@/app/api/users/users.service';
 import { CreateUser, UpdateUser } from '@/models/user.model';
 import { FileUploadService } from '@/lib/file-upload.service';
 import { BaseController } from '@/lib/base.controller';

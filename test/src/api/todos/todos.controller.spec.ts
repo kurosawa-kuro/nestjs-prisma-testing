@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TodosController } from '@/api/todos/todos.controller';
-import { TodosService } from '@/api/todos/todos.service';
+import { TodosController } from '@/app/api/todos/todos.controller';
+import { TodosService } from '@/app/api/todos/todos.service';
 import { CreateTodo, UpdateTodo } from '@/models/todo.model';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 

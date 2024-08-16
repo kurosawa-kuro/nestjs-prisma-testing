@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
-import { UsersService } from '@/api/users/users.service';
+import { UsersService } from '@/app/api/users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { TokenUtility } from '@/helpers/token.util';
 import { CreateUser } from '@/models/auth.model';

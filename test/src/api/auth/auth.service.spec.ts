@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from '@/api/auth/auth.service';
+import { AuthService } from '@/app/api/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '@/api/users/users.service';
+import { UsersService } from '@/app/api/users/users.service';
 import { UnauthorizedException, BadRequestException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 

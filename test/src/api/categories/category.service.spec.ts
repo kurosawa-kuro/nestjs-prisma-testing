@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriesService } from '@/api/categories/categories.service';
+import { CategoriesService } from '@/app/api/categories/categories.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 
 describe('CategoryService', () => {

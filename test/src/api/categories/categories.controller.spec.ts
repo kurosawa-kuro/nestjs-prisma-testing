@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriesController } from '@/api/categories/categories.controller';
-import { CategoriesService } from '@/api/categories/categories.service';
+import { CategoriesController } from '@/app/api/categories/categories.controller';
+import { CategoriesService } from '@/app/api/categories/categories.service';
 import {
   CreateCategory,
   UpdateCategory,

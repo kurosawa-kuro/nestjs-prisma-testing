@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from '@/api/auth/auth.controller';
-import { AuthService } from '@/api/auth/auth.service';
+import { AuthController } from '@/app/api/auth/auth.controller';
+import { AuthService } from '@/app/api/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { CreateUser } from '@/models/auth.model';

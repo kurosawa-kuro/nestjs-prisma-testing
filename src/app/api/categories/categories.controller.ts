@@ -9,7 +9,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { CategoriesService } from '@/api/categories/categories.service';
+import { CategoriesService } from '@/app/api/categories/categories.service';
 import { Category } from '@prisma/client';
 import {
   CreateCategory,

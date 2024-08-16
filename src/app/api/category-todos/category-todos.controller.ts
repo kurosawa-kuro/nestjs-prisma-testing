@@ -1,5 +1,5 @@
 import { Controller, Post, Delete, Body, Param, Get } from '@nestjs/common';
-import { CategoryTodosService } from '@/api/category-todos/category-todos.service';
+import { CategoryTodosService } from '@/app/api/category-todos/category-todos.service';
 import {
   CreateCategoryTodo,
   CategoryTodoWithRelations,
