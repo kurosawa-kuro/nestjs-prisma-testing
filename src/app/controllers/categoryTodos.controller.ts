@@ -1,5 +1,5 @@
 import { Controller, Post, Delete, Body, Param, Get } from '@nestjs/common';
-import { CategoryTodoService } from '@/app/services/category-todo.service';
+import { CategoryTodosService } from '@/app/services/categoryTodos.service';
 import {
   CreateCategoryTodo,
   CategoryTodoWithRelations,
@@ -8,8 +8,8 @@ import {
 } from '@/app/models/category-todo.model';
 
 @Controller('category-todo')
-export class CategoryTodoController {
-  constructor(private readonly categoryTodoService: CategoryTodoService) {}
+export class CategoryTodosController {
+  constructor(private readonly categoryTodoService: CategoryTodosService) {}
 
   @Post()
   async addTodoToCategory(

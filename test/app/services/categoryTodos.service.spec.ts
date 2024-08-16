@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryTodoService } from '@/app/services/category-todo.service';
+import { CategoryTodosService } from '@/app/services/categoryTodos.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 import {
   CategoryTodoWithRelations,
@@ -8,13 +8,13 @@ import {
 } from '@/app/models/category-todo.model';
 
 describe('CategoryTodoService', () => {
-  let service: CategoryTodoService;
+  let service: CategoryTodosService;
   let prismaClientService: PrismaClientService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        CategoryTodoService,
+        CategoryTodosService,
         {
           provide: PrismaClientService,
           useValue: {
@@ -33,7 +33,7 @@ describe('CategoryTodoService', () => {
       ],
     }).compile();
 
-    service = module.get<CategoryTodoService>(CategoryTodoService);
+    service = module.get<CategoryTodosService>(CategoryTodosService);
     prismaClientService = module.get<PrismaClientService>(PrismaClientService);
   });
 

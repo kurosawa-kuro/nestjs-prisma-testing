@@ -8,7 +8,7 @@ import {
 } from '@/app/models/category-todo.model';
 
 @Injectable()
-export class CategoryTodoService extends PrismaBaseService<CategoryTodoWithRelations> {
+export class CategoryTodosService extends PrismaBaseService<CategoryTodoWithRelations> {
   constructor(prisma: PrismaClientService) {
     super(prisma, 'categoryTodo');
   }

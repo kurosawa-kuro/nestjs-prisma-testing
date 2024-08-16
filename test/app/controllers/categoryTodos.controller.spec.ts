@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryTodoController } from '@/app/controllers/category-todo.controller';
-import { CategoryTodoService } from '@/app/services/category-todo.service';
+import { CategoryTodosController } from '@/app/controllers/categoryTodos.controller';
+import { CategoryTodosService } from '@/app/services/categoryTodos.service';
 import {
   CreateCategoryTodo,
   CategoryTodoWithRelations,
@@ -9,15 +9,15 @@ import {
 } from '@/app/models/category-todo.model';
 
 describe('CategoryTodoController', () => {
-  let controller: CategoryTodoController;
-  let service: CategoryTodoService;
+  let controller: CategoryTodosController;
+  let service: CategoryTodosService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoryTodoController],
+      controllers: [CategoryTodosController],
       providers: [
         {
-          provide: CategoryTodoService,
+          provide: CategoryTodosService,
           useValue: {
             addTodoToCategory: jest.fn(),
             removeTodoFromCategory: jest.fn(),
@@ -28,8 +28,8 @@ describe('CategoryTodoController', () => {
       ],
     }).compile();
 
-    controller = module.get<CategoryTodoController>(CategoryTodoController);
-    service = module.get<CategoryTodoService>(CategoryTodoService);
+    controller = module.get<CategoryTodosController>(CategoryTodosController);
+    service = module.get<CategoryTodosService>(CategoryTodosService);
   });
 
   it('should be defined', () => {
