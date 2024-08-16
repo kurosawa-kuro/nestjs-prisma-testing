@@ -1,7 +1,21 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CategoriesService } from '@/app/services/categories.service';
 import { Category } from '@prisma/client';
-import { CreateCategory, UpdateCategory, CategoryWithTodos } from '@/app/models/category.model';
+import {
+  CreateCategory,
+  UpdateCategory,
+  CategoryWithTodos,
+} from '@/app/models/category.model';
 
 @Controller('categories')
 export class CategoriesController {
@@ -35,7 +49,10 @@ export class CategoriesController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() data: UpdateCategory): Promise<Category> {
+  async update(
+    @Param('id') id: string,
+    @Body() data: UpdateCategory,
+  ): Promise<Category> {
     const category = await this.categoryService.update(+id, data);
     if (!category) {
       throw new NotFoundException(`Category with ID ${id} not found`);
@@ -53,8 +70,11 @@ export class CategoriesController {
   }
 
   @Get(':id/todos')
-  async findCategoryWithTodos(@Param('id') id: string): Promise<CategoryWithTodos> {
-    const categoryWithTodos = await this.categoryService.findCategoryWithTodos(+id);
+  async findCategoryWithTodos(
+    @Param('id') id: string,
+  ): Promise<CategoryWithTodos> {
+    const categoryWithTodos =
+      await this.categoryService.findCategoryWithTodos(+id);
     if (!categoryWithTodos) {
       throw new NotFoundException(`Category with ID ${id} not found`);
     }

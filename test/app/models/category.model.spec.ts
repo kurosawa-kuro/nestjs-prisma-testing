@@ -3,7 +3,7 @@ import {
   CreateCategory,
   UpdateCategory,
   CategoryWithTodos,
-  Category
+  Category,
 } from '@/app/models/category.model';
 
 describe('Category Model', () => {
@@ -61,9 +61,15 @@ describe('Category Model', () => {
     });
 
     it('should inherit properties from CreateCategory', () => {
-      const updateCategoryProps = Object.getOwnPropertyNames(UpdateCategory.prototype);
-      const createCategoryProps = Object.getOwnPropertyNames(CreateCategory.prototype);
-      expect(updateCategoryProps).toEqual(expect.arrayContaining(createCategoryProps));
+      const updateCategoryProps = Object.getOwnPropertyNames(
+        UpdateCategory.prototype,
+      );
+      const createCategoryProps = Object.getOwnPropertyNames(
+        CreateCategory.prototype,
+      );
+      expect(updateCategoryProps).toEqual(
+        expect.arrayContaining(createCategoryProps),
+      );
     });
   });
 

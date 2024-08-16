@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriesController } from '@/app/controllers/categories.controller';
 import { CategoriesService } from '@/app/services/categories.service';
-import { CreateCategory, UpdateCategory, CategoryWithTodos } from '@/app/models/category.model';
+import {
+  CreateCategory,
+  UpdateCategory,
+  CategoryWithTodos,
+} from '@/app/models/category.model';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 import { Category } from '@prisma/client';
 
@@ -38,11 +42,11 @@ describe('CategoriesController', () => {
   describe('create', () => {
     it('should create a category', async () => {
       const createCategory: CreateCategory = { title: 'New Category' };
-      const expectedResult: Category = { 
-        id: 1, 
-        title: 'New Category', 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+      const expectedResult: Category = {
+        id: 1,
+        title: 'New Category',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
@@ -54,9 +58,13 @@ describe('CategoriesController', () => {
     it('should throw BadRequestException if creation fails', async () => {
       const createCategory: CreateCategory = { title: 'New Category' };
 
-      jest.spyOn(service, 'create').mockRejectedValue(new Error('Database error'));
+      jest
+        .spyOn(service, 'create')
+        .mockRejectedValue(new Error('Database error'));
 
-      await expect(controller.create(createCategory)).rejects.toThrow(BadRequestException);
+      await expect(controller.create(createCategory)).rejects.toThrow(
+        BadRequestException,
+      );
       expect(service.create).toHaveBeenCalledWith(createCategory);
     });
   });
@@ -64,12 +72,12 @@ describe('CategoriesController', () => {
   describe('findAll', () => {
     it('should return an array of categories', async () => {
       const expectedResult: Category[] = [
-        { 
-          id: 1, 
-          title: 'Category 1', 
-          createdAt: new Date(), 
-          updatedAt: new Date() 
-        }
+        {
+          id: 1,
+          title: 'Category 1',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ];
 
       jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
@@ -80,11 +88,11 @@ describe('CategoriesController', () => {
 
   describe('findOne', () => {
     it('should return a category', async () => {
-      const expectedResult: Category = { 
-        id: 1, 
-        title: 'Category 1', 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+      const expectedResult: Category = {
+        id: 1,
+        title: 'Category 1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
@@ -103,11 +111,11 @@ describe('CategoriesController', () => {
   describe('update', () => {
     it('should update a category', async () => {
       const updateCategory: UpdateCategory = { title: 'Updated Category' };
-      const expectedResult: Category = { 
-        id: 1, 
-        title: 'Updated Category', 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+      const expectedResult: Category = {
+        id: 1,
+        title: 'Updated Category',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
@@ -119,17 +127,19 @@ describe('CategoriesController', () => {
     it('should throw NotFoundException if category is not found', async () => {
       jest.spyOn(service, 'update').mockResolvedValue(null);
 
-      await expect(controller.update('1', {})).rejects.toThrow(NotFoundException);
+      await expect(controller.update('1', {})).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
   describe('remove', () => {
     it('should remove a category', async () => {
-      const deletedCategory: Category = { 
-        id: 1, 
-        title: 'Category 1', 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+      const deletedCategory: Category = {
+        id: 1,
+        title: 'Category 1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'destroy').mockResolvedValue(deletedCategory);
@@ -167,7 +177,9 @@ describe('CategoriesController', () => {
         ],
       };
 
-      jest.spyOn(service, 'findCategoryWithTodos').mockResolvedValue(expectedResult);
+      jest
+        .spyOn(service, 'findCategoryWithTodos')
+        .mockResolvedValue(expectedResult);
 
       expect(await controller.findCategoryWithTodos('1')).toBe(expectedResult);
       expect(service.findCategoryWithTodos).toHaveBeenCalledWith(1);
@@ -176,7 +188,9 @@ describe('CategoriesController', () => {
     it('should throw NotFoundException if category is not found', async () => {
       jest.spyOn(service, 'findCategoryWithTodos').mockResolvedValue(null);
 
-      await expect(controller.findCategoryWithTodos('1')).rejects.toThrow(NotFoundException);
+      await expect(controller.findCategoryWithTodos('1')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

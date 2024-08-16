@@ -87,7 +87,9 @@ describe('CategoryService', () => {
 
   describe('update', () => {
     it('should update an existing category', async () => {
-      const updatedCategory = await service.update(1, { title: 'Updated Work' });
+      const updatedCategory = await service.update(1, {
+        title: 'Updated Work',
+      });
       expect(updatedCategory).toEqual({
         id: 1,
         title: 'Updated Work',
@@ -119,11 +121,16 @@ describe('CategoryService', () => {
         title: 'Work',
         todos: [
           { todoId: 1, todo: { id: 1, title: 'Complete project', userId: 1 } },
-          { todoId: 2, todo: { id: 2, title: 'Prepare presentation', userId: 1 } },
+          {
+            todoId: 2,
+            todo: { id: 2, title: 'Prepare presentation', userId: 1 },
+          },
         ],
       };
 
-      prismaClientService.category.findUnique = jest.fn().mockResolvedValue(mockCategoryWithTodos);
+      prismaClientService.category.findUnique = jest
+        .fn()
+        .mockResolvedValue(mockCategoryWithTodos);
 
       const result = await service.findCategoryWithTodos(1);
       expect(result).toEqual(mockCategoryWithTodos);

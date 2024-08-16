@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaBaseService } from '@/lib/prisma-base.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
-import { CategoryTodoWithRelations, TodoWithCategories, CategoryWithTodos } from '@/app/models/category-todo.model';
+import {
+  CategoryTodoWithRelations,
+  TodoWithCategories,
+  CategoryWithTodos,
+} from '@/app/models/category-todo.model';
 
 @Injectable()
 export class CategoryTodoService extends PrismaBaseService<CategoryTodoWithRelations> {
@@ -9,7 +13,10 @@ export class CategoryTodoService extends PrismaBaseService<CategoryTodoWithRelat
     super(prisma, 'categoryTodo');
   }
 
-  async addTodoToCategory(todoId: number, categoryId: number): Promise<CategoryTodoWithRelations> {
+  async addTodoToCategory(
+    todoId: number,
+    categoryId: number,
+  ): Promise<CategoryTodoWithRelations> {
     return this.prisma.categoryTodo.create({
       data: {
         todoId,
@@ -22,7 +29,10 @@ export class CategoryTodoService extends PrismaBaseService<CategoryTodoWithRelat
     });
   }
 
-  async removeTodoFromCategory(todoId: number, categoryId: number): Promise<CategoryTodoWithRelations> {
+  async removeTodoFromCategory(
+    todoId: number,
+    categoryId: number,
+  ): Promise<CategoryTodoWithRelations> {
     return this.prisma.categoryTodo.delete({
       where: {
         todoId_categoryId: {

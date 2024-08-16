@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoryTodoService } from '@/app/services/category-todo.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
-import { CategoryTodoWithRelations, TodoWithCategories, CategoryWithTodos } from '@/app/models/category-todo.model';
+import {
+  CategoryTodoWithRelations,
+  TodoWithCategories,
+  CategoryWithTodos,
+} from '@/app/models/category-todo.model';
 
 describe('CategoryTodoService', () => {
   let service: CategoryTodoService;
@@ -42,10 +46,23 @@ describe('CategoryTodoService', () => {
       const mockResult: CategoryTodoWithRelations = {
         todoId: 1,
         categoryId: 1,
-        todo: { id: 1, title: 'Test Todo', userId: 1, createdAt: new Date(), updatedAt: new Date() },
-        category: { id: 1, title: 'Test Category', createdAt: new Date(), updatedAt: new Date() },
+        todo: {
+          id: 1,
+          title: 'Test Todo',
+          userId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        category: {
+          id: 1,
+          title: 'Test Category',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       };
-      (prismaClientService.categoryTodo.create as jest.Mock).mockResolvedValue(mockResult);
+      (prismaClientService.categoryTodo.create as jest.Mock).mockResolvedValue(
+        mockResult,
+      );
 
       const result = await service.addTodoToCategory(1, 1);
       expect(result).toEqual(mockResult);
@@ -61,10 +78,23 @@ describe('CategoryTodoService', () => {
       const mockResult: CategoryTodoWithRelations = {
         todoId: 1,
         categoryId: 1,
-        todo: { id: 1, title: 'Test Todo', userId: 1, createdAt: new Date(), updatedAt: new Date() },
-        category: { id: 1, title: 'Test Category', createdAt: new Date(), updatedAt: new Date() },
+        todo: {
+          id: 1,
+          title: 'Test Todo',
+          userId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        category: {
+          id: 1,
+          title: 'Test Category',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       };
-      (prismaClientService.categoryTodo.delete as jest.Mock).mockResolvedValue(mockResult);
+      (prismaClientService.categoryTodo.delete as jest.Mock).mockResolvedValue(
+        mockResult,
+      );
 
       const result = await service.removeTodoFromCategory(1, 1);
       expect(result).toEqual(mockResult);
@@ -91,11 +121,19 @@ describe('CategoryTodoService', () => {
           {
             todoId: 1,
             categoryId: 1,
-            todo: { id: 1, title: 'Test Todo', userId: 1, createdAt: new Date(), updatedAt: new Date() },
+            todo: {
+              id: 1,
+              title: 'Test Todo',
+              userId: 1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
           },
         ],
       };
-      (prismaClientService.category.findUnique as jest.Mock).mockResolvedValue(mockResult);
+      (prismaClientService.category.findUnique as jest.Mock).mockResolvedValue(
+        mockResult,
+      );
 
       const result = await service.getTodosForCategory(1);
       expect(result).toEqual(mockResult);
@@ -124,11 +162,18 @@ describe('CategoryTodoService', () => {
           {
             todoId: 1,
             categoryId: 1,
-            category: { id: 1, title: 'Test Category', createdAt: new Date(), updatedAt: new Date() },
+            category: {
+              id: 1,
+              title: 'Test Category',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
           },
         ],
       };
-      (prismaClientService.todo.findUnique as jest.Mock).mockResolvedValue(mockResult);
+      (prismaClientService.todo.findUnique as jest.Mock).mockResolvedValue(
+        mockResult,
+      );
 
       const result = await service.getCategoriesForTodo(1);
       expect(result).toEqual(mockResult);

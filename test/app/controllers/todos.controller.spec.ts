@@ -36,11 +36,11 @@ describe('TodosController', () => {
   describe('create', () => {
     it('should create a todo', async () => {
       const createTodo: CreateTodo = { title: 'New Todo', userId: 1 };
-      const expectedResult = { 
-        id: 1, 
-        ...createTodo, 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+      const expectedResult = {
+        id: 1,
+        ...createTodo,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'create').mockResolvedValue(expectedResult);
@@ -66,13 +66,13 @@ describe('TodosController', () => {
   describe('index', () => {
     it('should return an array of todos', async () => {
       const expectedResult = [
-        { 
-          id: 1, 
-          title: 'Todo 1', 
-          userId: 1, 
-          createdAt: new Date(), 
-          updatedAt: new Date() 
-        }
+        {
+          id: 1,
+          title: 'Todo 1',
+          userId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ];
 
       jest.spyOn(service, 'all').mockResolvedValue(expectedResult);
@@ -83,12 +83,12 @@ describe('TodosController', () => {
 
   describe('show', () => {
     it('should return a todo', async () => {
-      const expectedResult = { 
-        id: 1, 
-        title: 'Todo 1', 
-        userId: 1, 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+      const expectedResult = {
+        id: 1,
+        title: 'Todo 1',
+        userId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'find').mockResolvedValue(expectedResult);
@@ -107,12 +107,12 @@ describe('TodosController', () => {
   describe('update', () => {
     it('should update a todo', async () => {
       const updateTodo: UpdateTodo = { title: 'Updated Todo' };
-      const expectedResult = { 
-        id: 1, 
-        title: 'Updated Todo', 
-        userId: 1, 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+      const expectedResult = {
+        id: 1,
+        title: 'Updated Todo',
+        userId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       jest.spyOn(service, 'update').mockResolvedValue(expectedResult);
@@ -130,12 +130,12 @@ describe('TodosController', () => {
 
   describe('destroy', () => {
     it('should destroy a todo', async () => {
-      const deletedTodo = { 
-        id: 1, 
-        title: 'Todo 1', 
-        userId: 1, 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
+      const deletedTodo = {
+        id: 1,
+        title: 'Todo 1',
+        userId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
       const expectedResult = { message: 'Todo successfully deleted' };
 
