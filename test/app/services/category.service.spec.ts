@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoryService } from '@/app/services/category.service';
+import { CategoriesService } from '@/app/services/categories.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 
 describe('CategoryService', () => {
-  let service: CategoryService;
+  let service: CategoriesService;
   let prismaClientService: PrismaClientService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        CategoryService,
+        CategoriesService,
         {
           provide: PrismaClientService,
           useValue: {
@@ -40,7 +40,7 @@ describe('CategoryService', () => {
       ],
     }).compile();
 
-    service = module.get<CategoryService>(CategoryService);
+    service = module.get<CategoriesService>(CategoriesService);
     prismaClientService = module.get<PrismaClientService>(PrismaClientService);
   });
 

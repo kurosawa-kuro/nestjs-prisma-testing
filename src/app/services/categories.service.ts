@@ -1,16 +1,16 @@
-// src/category/category.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaBaseService } from '@/lib/prisma-base.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
 import { Category } from '@prisma/client';
+import { CategoryWithTodos } from '@/app/models/category.model';
 
 @Injectable()
-export class CategoryService extends PrismaBaseService<Category> {
+export class CategoriesService extends PrismaBaseService<Category> {
   constructor(prisma: PrismaClientService) {
     super(prisma, 'category');
   }
 
-  async findCategoryWithTodos(id: number) {
+  async findCategoryWithTodos(id: number): Promise<CategoryWithTodos | null> {
     return this.prisma.category.findUnique({
       where: { id },
       include: {

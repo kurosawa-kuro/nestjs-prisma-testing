@@ -1,25 +1,28 @@
-// src/category-todo/category-todo.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaBaseService } from '@/lib/prisma-base.service';
 import { PrismaClientService } from '@/orm/prisma-client.service';
-import { CategoryTodo } from '@prisma/client';
+import { CategoryTodoWithRelations, TodoWithCategories, CategoryWithTodos } from '@/app/models/category-todo.model';
 
 @Injectable()
-export class CategoryTodoService extends PrismaBaseService<CategoryTodo> {
+export class CategoryTodoService extends PrismaBaseService<CategoryTodoWithRelations> {
   constructor(prisma: PrismaClientService) {
     super(prisma, 'categoryTodo');
   }
 
-  async addTodoToCategory(todoId: number, categoryId: number): Promise<CategoryTodo> {
+  async addTodoToCategory(todoId: number, categoryId: number): Promise<CategoryTodoWithRelations> {
     return this.prisma.categoryTodo.create({
       data: {
         todoId,
         categoryId,
       },
+      include: {
+        todo: true,
+        category: true,
+      },
     });
   }
 
-  async removeTodoFromCategory(todoId: number, categoryId: number): Promise<CategoryTodo> {
+  async removeTodoFromCategory(todoId: number, categoryId: number): Promise<CategoryTodoWithRelations> {
     return this.prisma.categoryTodo.delete({
       where: {
         todoId_categoryId: {
@@ -27,20 +30,36 @@ export class CategoryTodoService extends PrismaBaseService<CategoryTodo> {
           categoryId,
         },
       },
+      include: {
+        todo: true,
+        category: true,
+      },
     });
   }
 
-  async getTodosForCategory(categoryId: number) {
-    return this.prisma.categoryTodo.findMany({
-      where: { categoryId },
-      include: { todo: true },
-    });
+  async getTodosForCategory(categoryId: number): Promise<CategoryWithTodos> {
+    return this.prisma.category.findUnique({
+      where: { id: categoryId },
+      include: {
+        todos: {
+          include: {
+            todo: true,
+          },
+        },
+      },
+    }) as Promise<CategoryWithTodos>;
   }
 
-  async getCategoriesForTodo(todoId: number) {
-    return this.prisma.categoryTodo.findMany({
-      where: { todoId },
-      include: { category: true },
-    });
+  async getCategoriesForTodo(todoId: number): Promise<TodoWithCategories> {
+    return this.prisma.todo.findUnique({
+      where: { id: todoId },
+      include: {
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    }) as Promise<TodoWithCategories>;
   }
 }
