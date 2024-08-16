@@ -1,4 +1,4 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { Category as PrismaCategory } from '@prisma/client';
 
@@ -6,14 +6,11 @@ export type Category = PrismaCategory;
 
 export class CreateCategory {
   @IsString()
+  @IsNotEmpty()
   title: string;
 }
 
-export class UpdateCategory extends PartialType(CreateCategory) {
-  @IsOptional()
-  @IsString()
-  title?: string;
-}
+export class UpdateCategory extends PartialType(CreateCategory) {}
 
 export type CategoryWithTodos = Category & {
   todos: {
