@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from '@/config/users.module';
 import { PrismaModule } from '@/orm/prisma.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { AuthModule } from './auth.module';
+import { UsersModule } from '@/config/users.module';
+import { AuthModule } from '@/config/auth.module';
 import { TodosModule } from '@/config/todos.module';
+import { CategoryModule } from '@/config/category.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { TodosModule } from '@/config/todos.module';
     AuthModule,
     UsersModule,
     TodosModule,
+    CategoryModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
